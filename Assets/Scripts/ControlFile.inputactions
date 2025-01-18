@@ -1,0 +1,34 @@
+{
+    "name": "ControlFile",
+    "maps": [
+        {
+            "name": "Grid",
+            "id": "7b262e65-e00a-464c-b66e-79d9df8d02dc",
+            "actions": [
+                {
+                    "name": "MainClick",
+                    "type": "Button",
+                    "id": "e437244a-e846-4438-a545-456470fd6792",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "35ce6588-134c-42be-a161-b73eb6542653",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Mouse+Keyboard",
+                    "action": "MainClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
