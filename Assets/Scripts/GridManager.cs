@@ -8,15 +8,16 @@ using UnityEngine.UI;
 public class GridManager : MonoBehaviour
 {
 
-    public GameObject grid_text_col;
+    public GameObject grid_text_row;
     public UIManager ui_manager;
     public RectTransform canvas_transform;
-    public GameObject example_grid_col;
+    public GameObject example_grid_row;
     public int col_count;
     public int row_count;
     private float col_size;
     private float row_size;
-    private List<GameObject> grid_text_cols = new List<GameObject>();
+    private String background_color;
+    private List<GameObject> grid_text_rows = new List<GameObject>();
     private List<List<char>> grid_array = new List<List<char>>();
     private List<(int, int, char)> preview_buffer = new List<(int, int, char)>(); //row, col, input
 
@@ -25,6 +26,7 @@ public class GridManager : MonoBehaviour
     {
         col_size = (Screen.width - ui_manager.ui_panel_transform.rect.width) / col_count;
         row_size = Screen.height / row_count;
+        background_color = "black";
 
         for (int row = 0; row < row_count; row++){
             grid_array.Add(new List<char>());
@@ -32,18 +34,19 @@ public class GridManager : MonoBehaviour
                 grid_array[row].Add(' ');
             }
         }
-
-        for (int col = 0; col < col_count; col++){
-            grid_text_cols.Add(Instantiate(
-                grid_text_col, 
+        
+        for (int row = 0; row < row_count; row++){
+            grid_text_rows.Insert(0, Instantiate(
+                grid_text_row, 
                 new Vector3(
-                    ui_manager.ui_panel_transform.rect.width + (col * col_size), 
-                    Screen.height, 0
+                    ui_manager.ui_panel_transform.rect.width + ((Screen.width - ui_manager.ui_panel_transform.rect.width) / 2), 
+                    row * row_size + (row_size / 2), 
+                    0
                 ), 
                 transform.rotation
             ));
-            grid_text_cols[col].transform.SetParent(canvas_transform);
-            grid_text_cols[col].GetComponent<RectTransform>().sizeDelta = new Vector2(col_size, Screen.height);
+            grid_text_rows[0].transform.SetParent(canvas_transform);
+            grid_text_rows[0].GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - ui_manager.ui_panel_transform.rect.width, row_size);
             /*
             Component[] components = grid_text_cols[col].GetComponents(typeof(Component));
             foreach(Component component in components) {
@@ -51,13 +54,14 @@ public class GridManager : MonoBehaviour
             }
             */
         } 
+        
 
         String auto_size_string = "";
-        for(int row = 0; row < row_count; row++){
-            auto_size_string += "N\n";
+        for(int col = 0; col < col_count; col++){
+            auto_size_string += "N ";
         }
-        auto_size_string = auto_size_string.TrimEnd('\n');
-        example_grid_col.GetComponent<TextMeshProUGUI>().text = auto_size_string;
+        example_grid_row.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - ui_manager.ui_panel_transform.rect.width, row_size);
+        example_grid_row.GetComponent<TextMeshProUGUI>().text = auto_size_string;
     }
 
     // Update is called once per frame
@@ -67,23 +71,28 @@ public class GridManager : MonoBehaviour
     }
     
     void RenderGrid(){
-        String col_string = "";
-        float full_font_size = example_grid_col.GetComponent<TextMeshProUGUI>().fontSize;
+        String row_string = "";
+        float full_font_size = example_grid_row.GetComponent<TextMeshProUGUI>().fontSize;
 
         List<List<char>> render_array = new List<List<char>>(grid_array);
         foreach ((int, int, char) item in preview_buffer){
             render_array[item.Item1][item.Item2] = item.Item3;
         }
 
-        for (int col = 0; col < col_count; col++){
-            grid_text_cols[col].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
-            col_string = "";
-            for (int row = 0; row < row_count; row++){
-                col_string += render_array[row][col] + "\n";
+        for (int row = 0; row < row_count; row++){
+            grid_text_rows[row].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
+            for (int col = 0; col < col_count; col++){
+                if (render_array[row][col] == ' '){
+                    row_string += "<color=\""+ background_color +"\">.</color>";
+                }
+                else{
+                    row_string += render_array[row][col];
+                }
+                row_string += " ";
             }
-            col_string = col_string.TrimEnd('\n');
-            grid_text_cols[col].GetComponent<TextMeshProUGUI>().text = col_string;
-        }    
+            grid_text_rows[row].GetComponent<TextMeshProUGUI>().text = row_string;
+            row_string = "";
+        } 
     }
 
     public void add_to_preview_buffer(int row, int col, String input){
