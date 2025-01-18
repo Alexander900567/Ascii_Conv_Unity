@@ -2,22 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using TMPro;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour
 {
 
-    public GameObject grid_text_box;
+    public GameObject grid_text_row;
     public UIManager ui_manager;
     public RectTransform canvas_transform;
-    public GameObject example_grid_box;
+    public GameObject example_grid_row;
     public int col_count;
     public int row_count;
     private float col_size;
     private float row_size;
-    private List<List<GameObject>> grid_text_boxes = new List<List<GameObject>>();
+    private String background_color;
+    private List<GameObject> grid_text_rows = new List<GameObject>();
     private List<List<char>> grid_array = new List<List<char>>();
     private List<(int, int, char)> preview_buffer = new List<(int, int, char)>(); //row, col, input
 
@@ -26,6 +26,7 @@ public class GridManager : MonoBehaviour
     {
         col_size = (Screen.width - ui_manager.ui_panel_transform.rect.width) / col_count;
         row_size = Screen.height / row_count;
+        background_color = "black";
 
         for (int row = 0; row < row_count; row++){
             grid_array.Add(new List<char>());
@@ -33,22 +34,19 @@ public class GridManager : MonoBehaviour
                 grid_array[row].Add(' ');
             }
         }
-        
+
         for (int row = 0; row < row_count; row++){
-            grid_text_boxes.Insert(0, new List<GameObject>());
-            for (int col = 0; col < col_count; col++){
-                grid_text_boxes[0].Add(Instantiate(
-                    grid_text_box, 
-                    new Vector3(
-                        ui_manager.ui_panel_transform.rect.width + (col * col_size) + (col_size / 2), 
-                        (row * row_size) + (row_size / 2), 
-                        0
-                    ), 
-                    transform.rotation
-                ));
-                grid_text_boxes[0][col].transform.SetParent(canvas_transform);
-                grid_text_boxes[0][col].GetComponent<RectTransform>().sizeDelta = new Vector2(col_size, row_size);
-            }
+            grid_text_rows.Insert(0, Instantiate(
+                grid_text_row, 
+                new Vector3(
+                    ui_manager.ui_panel_transform.rect.width + ((Screen.width - ui_manager.ui_panel_transform.rect.width) / 2), 
+                    row * row_size + (row_size / 2), 
+                    0
+                ), 
+                transform.rotation
+            ));
+            grid_text_rows[0].transform.SetParent(canvas_transform);
+            grid_text_rows[0].GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - ui_manager.ui_panel_transform.rect.width, row_size);
             /*
             Component[] components = grid_text_cols[col].GetComponents(typeof(Component));
             foreach(Component component in components) {
@@ -57,8 +55,13 @@ public class GridManager : MonoBehaviour
             */
         } 
         
-        example_grid_box.GetComponent<RectTransform>().sizeDelta = new Vector2(col_size, row_size);
-        example_grid_box.GetComponent<TextMeshProUGUI>().text = "N";
+
+        String auto_size_string = "";
+        for(int col = 0; col < col_count; col++){
+            auto_size_string += "N ";
+        }
+        example_grid_row.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - ui_manager.ui_panel_transform.rect.width, row_size);
+        example_grid_row.GetComponent<TextMeshProUGUI>().text = auto_size_string;
     }
 
     // Update is called once per frame
@@ -68,7 +71,8 @@ public class GridManager : MonoBehaviour
     }
     
     void RenderGrid(){
-        float full_font_size = example_grid_box.GetComponent<TextMeshProUGUI>().fontSize;
+        String row_string = "";
+        float full_font_size = example_grid_row.GetComponent<TextMeshProUGUI>().fontSize;
 
         List<List<char>> render_array = new List<List<char>>(grid_array);
         foreach ((int, int, char) item in preview_buffer){
@@ -76,10 +80,18 @@ public class GridManager : MonoBehaviour
         }
 
         for (int row = 0; row < row_count; row++){
+            grid_text_rows[row].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
             for (int col = 0; col < col_count; col++){
-                grid_text_boxes[row][col].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
-                grid_text_boxes[row][col].GetComponent<TextMeshProUGUI>().text = grid_array[row][col].ToString();
+                if (render_array[row][col] == ' '){
+                    row_string += "<color=\""+ background_color +"\">.</color>";
+                }
+                else{
+                    row_string += render_array[row][col];
+                }
+                row_string += " ";
             }
+            grid_text_rows[row].GetComponent<TextMeshProUGUI>().text = row_string;
+            row_string = "";
         } 
     }
 
@@ -115,3 +127,10 @@ public class GridManager : MonoBehaviour
     }
 
 }
+
+/*
+Component[] components = grid_text_cols[col].GetComponents(typeof(Component));
+foreach(Component component in components) {
+    Debug.Log(component.ToString());
+}
+*/
