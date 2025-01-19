@@ -252,13 +252,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5be4800d33bc59c5b2c6b99c8835efa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid_text_row: {fileID: 5731289936664375492, guid: 63dc8817bb30976b2846bb0d15a6a079, type: 3}
+  grid_text_row: {fileID: 2147302494425114375, guid: 9a2f4f1bd0201c8be86639d4a13976fa, type: 3}
   ui_manager: {fileID: 1640515705}
   canvas_transform: {fileID: 171098683}
   example_grid_row: {fileID: 1162263133}
   grid_space_outline: {fileID: 1121067319}
-  col_count: 60
-  row_count: 40
+  col_count: 10
+  row_count: 10
 --- !u!4 &202442180
 Transform:
   m_ObjectHideFlags: 0
@@ -922,7 +922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8400172018415451271, guid: 63dc8817bb30976b2846bb0d15a6a079, type: 3}
       propertyPath: m_fontSize
-      value: 36
+      value: 19.8
       objectReference: {fileID: 0}
     - target: {fileID: 8400172018415451271, guid: 63dc8817bb30976b2846bb0d15a6a079, type: 3}
       propertyPath: m_fontSizeMax

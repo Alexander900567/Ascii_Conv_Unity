@@ -24,8 +24,8 @@ public class GridManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        col_size = (Screen.width - ui_manager.ui_panel_transform.rect.width) / col_count;
-        row_size = Screen.height / row_count;
+        col_size = (float) (Screen.width - ui_manager.ui_panel_transform.rect.width) / (float) col_count;
+        row_size =  (float) Screen.height / (float) row_count;
 
         for (int row = 0; row < row_count; row++){
             grid_array.Add(new List<char>());
@@ -34,19 +34,20 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        
+
         for (int row = 0; row < row_count; row++){
             grid_text_rows.Insert(0, Instantiate(
                 grid_text_row, 
                 new Vector3(
-                    ui_manager.ui_panel_transform.rect.width + ((Screen.width - ui_manager.ui_panel_transform.rect.width) / 2), 
-                    row * row_size + (row_size / 2), 
+                    ui_manager.ui_panel_transform.rect.width, 
+                    row * row_size, 
                     0
                 ), 
                 transform.rotation
             ));
             grid_text_rows[0].transform.SetParent(canvas_transform);
             grid_text_rows[0].GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - ui_manager.ui_panel_transform.rect.width, row_size);
+            grid_text_rows[0].name = "GridRow" + row.ToString();
             /*
             Component[] components = grid_text_cols[col].GetComponents(typeof(Component));
             foreach(Component component in components) {
@@ -54,7 +55,7 @@ public class GridManager : MonoBehaviour
             }
             */
         } 
-        
+
 
         String auto_size_string = "";
         for(int col = 0; col < col_count; col++){
@@ -65,7 +66,6 @@ public class GridManager : MonoBehaviour
 
 
         grid_space_outline.sizeDelta = new Vector2(col_size, row_size);
-        //grid_space_outline.anchoredPosition = new Vector2(ui_manager.ui_panel_transform.rect.width, 0);
     }
 
     // Update is called once per frame
@@ -76,7 +76,7 @@ public class GridManager : MonoBehaviour
     
     void RenderGrid(){
         String row_string = "";
-        float position = 0;
+        float col_position;
         float col_offset = col_size * (float) 0.33;
         float full_font_size = example_grid_row.GetComponent<TextMeshProUGUI>().fontSize;
 
@@ -88,8 +88,8 @@ public class GridManager : MonoBehaviour
         for (int row = 0; row < row_count; row++){
             grid_text_rows[row].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
             for (int col = 0; col < col_count; col++){
-                position = (col_size * col) + col_offset;
-                row_string += "<pos=" + position.ToString("0.00") + "px>" + render_array[row][col];
+                col_position = (col_size * col) + col_offset;
+                row_string += "<pos=" + col_position.ToString("0.00") + "px>" + render_array[row][col];
             }
             grid_text_rows[row].GetComponent<TextMeshProUGUI>().text = row_string;
             row_string = "";
