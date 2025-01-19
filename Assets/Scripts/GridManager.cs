@@ -12,11 +12,11 @@ public class GridManager : MonoBehaviour
     public UIManager ui_manager;
     public RectTransform canvas_transform;
     public GameObject example_grid_row;
+    public RectTransform grid_space_outline;
     public int col_count;
     public int row_count;
     private float col_size;
     private float row_size;
-    private String background_color;
     private List<GameObject> grid_text_rows = new List<GameObject>();
     private List<List<char>> grid_array = new List<List<char>>();
     private List<(int, int, char)> preview_buffer = new List<(int, int, char)>(); //row, col, input
@@ -26,7 +26,6 @@ public class GridManager : MonoBehaviour
     {
         col_size = (Screen.width - ui_manager.ui_panel_transform.rect.width) / col_count;
         row_size = Screen.height / row_count;
-        background_color = "black";
 
         for (int row = 0; row < row_count; row++){
             grid_array.Add(new List<char>());
@@ -35,6 +34,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
+        
         for (int row = 0; row < row_count; row++){
             grid_text_rows.Insert(0, Instantiate(
                 grid_text_row, 
@@ -62,6 +62,10 @@ public class GridManager : MonoBehaviour
         }
         example_grid_row.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - ui_manager.ui_panel_transform.rect.width, row_size);
         example_grid_row.GetComponent<TextMeshProUGUI>().text = auto_size_string;
+
+
+        grid_space_outline.sizeDelta = new Vector2(col_size, row_size);
+        //grid_space_outline.anchoredPosition = new Vector2(ui_manager.ui_panel_transform.rect.width, 0);
     }
 
     // Update is called once per frame
@@ -72,6 +76,8 @@ public class GridManager : MonoBehaviour
     
     void RenderGrid(){
         String row_string = "";
+        float position = 0;
+        float col_offset = col_size * (float) 0.33;
         float full_font_size = example_grid_row.GetComponent<TextMeshProUGUI>().fontSize;
 
         List<List<char>> render_array = new List<List<char>>(grid_array);
@@ -82,17 +88,18 @@ public class GridManager : MonoBehaviour
         for (int row = 0; row < row_count; row++){
             grid_text_rows[row].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
             for (int col = 0; col < col_count; col++){
-                if (render_array[row][col] == ' '){
-                    row_string += "<color=\""+ background_color +"\">.</color>";
-                }
-                else{
-                    row_string += render_array[row][col];
-                }
-                row_string += " ";
+                position = (col_size * col) + col_offset;
+                row_string += "<pos=" + position.ToString("0.00") + "px>" + render_array[row][col];
             }
             grid_text_rows[row].GetComponent<TextMeshProUGUI>().text = row_string;
             row_string = "";
         } 
+
+        Vector3 mouse_pos = Input.mousePosition;
+        (int row, int col) grid_pos = get_grid_pos(mouse_pos, invert_row: false);
+        grid_space_outline.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * grid_pos.row);
+
+
     }
 
     public void add_to_preview_buffer(int row, int col, String input){
@@ -111,7 +118,7 @@ public class GridManager : MonoBehaviour
         preview_buffer.Clear();
     }
 
-    public (int row, int col) get_grid_pos(Vector3 mouse_pos){
+    public (int row, int col) get_grid_pos(Vector3 mouse_pos, bool invert_row=true){
         int col = (int) ((mouse_pos[0] - ui_manager.ui_panel_transform.rect.width) / col_size);
         int row = (int) (mouse_pos[1] / row_size);
 
@@ -121,8 +128,9 @@ public class GridManager : MonoBehaviour
         else if (row >= row_count) { row = row_count - 1; }
 
         //col = col_count - 1 - col;
-        row = row_count - 1 - row;
-
+        if (invert_row){
+            row = row_count - 1 - row;
+        }
         return (row: row, col: col);
     }
 
