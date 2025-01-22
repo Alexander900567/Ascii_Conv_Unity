@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour
 {
-
+    public GlobalOperations global;
     public GameObject grid_text_row;
     public UIManager ui_manager;
     public RectTransform canvas_transform;
@@ -20,6 +20,7 @@ public class GridManager : MonoBehaviour
     private List<GameObject> grid_text_rows = new List<GameObject>();
     private List<List<char>> grid_array = new List<List<char>>();
     private List<(int, int, char)> preview_buffer = new List<(int, int, char)>(); //row, col, input
+    private bool font_size_changed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,12 +49,6 @@ public class GridManager : MonoBehaviour
             grid_text_rows[0].transform.SetParent(canvas_transform);
             grid_text_rows[0].GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - ui_manager.ui_panel_transform.rect.width, row_size);
             grid_text_rows[0].name = "GridRow" + row.ToString();
-            /*
-            Component[] components = grid_text_cols[col].GetComponents(typeof(Component));
-            foreach(Component component in components) {
-                Debug.Log(component.ToString());
-            }
-            */
         } 
 
 
@@ -63,6 +58,7 @@ public class GridManager : MonoBehaviour
         }
         example_grid_row.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - ui_manager.ui_panel_transform.rect.width, row_size);
         example_grid_row.GetComponent<TextMeshProUGUI>().text = auto_size_string;
+        font_size_changed = true;
 
 
         grid_space_outline.sizeDelta = new Vector2(col_size, row_size);
@@ -71,10 +67,14 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RenderGrid();
+        if (global.render_update){
+            RenderGrid();
+            global.render_update = false;
+        }
+        RenderGridOutline();
     }
     
-    void RenderGrid(){
+    private void RenderGrid(){
         String row_string = "";
         float col_position;
         float col_offset = col_size * (float) 0.33;
@@ -85,8 +85,14 @@ public class GridManager : MonoBehaviour
             render_array[item.Item1][item.Item2] = item.Item3;
         }
 
+        if (font_size_changed){
+            for (int row = 0; row < row_count; row++){
+                grid_text_rows[row].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
+            } 
+            font_size_changed = false;
+        }
+
         for (int row = 0; row < row_count; row++){
-            grid_text_rows[row].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
             for (int col = 0; col < col_count; col++){
                 col_position = (col_size * col) + col_offset;
                 row_string += "<pos=" + col_position.ToString("0.00") + "px>" + render_array[row][col];
@@ -94,12 +100,12 @@ public class GridManager : MonoBehaviour
             grid_text_rows[row].GetComponent<TextMeshProUGUI>().text = row_string;
             row_string = "";
         } 
-
+    }
+    
+    private void RenderGridOutline(){
         Vector3 mouse_pos = Input.mousePosition;
         (int row, int col) grid_pos = get_grid_pos(mouse_pos, invert_row: false);
         grid_space_outline.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * grid_pos.row);
-
-
     }
 
     public void add_to_preview_buffer(int row, int col, String input){

@@ -3,14 +3,17 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour
 {
 
+    public GlobalOperations global;
     public GridManager grid_manager;
     private ControlFile controls;
     private bool clicked_grid; 
+    private (int row, int col) prev_grid_pos; 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         clicked_grid = false;
+        prev_grid_pos = (-1, -1);
     }
 
     void Awake(){
@@ -29,7 +32,14 @@ public class InputHandler : MonoBehaviour
             Vector3 mouse_pos = Input.mousePosition;
             (int row, int col) grid_pos = grid_manager.get_grid_pos(mouse_pos);
             
-            grid_manager.add_to_preview_buffer(grid_pos.row, grid_pos.col, "a");
+            if (prev_grid_pos != grid_pos){
+                grid_manager.add_to_preview_buffer(grid_pos.row, grid_pos.col, "a");
+            }
+
+            if (prev_grid_pos != grid_pos){
+                global.render_update = true;
+            }
+            prev_grid_pos = grid_pos;
             clicked_grid = true;
         }
         else if (clicked_grid && !controls.Grid.MainClick.IsPressed()){

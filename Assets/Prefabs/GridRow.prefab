@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 298.99512, y: 963.9616}
   m_SizeDelta: {x: 1620.8094, y: 116.0387}
-  m_Pivot: {x: 0.000000013038516, y: -0.000000029802322}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &887737735374127386
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}

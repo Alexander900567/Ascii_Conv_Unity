@@ -252,13 +252,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5be4800d33bc59c5b2c6b99c8835efa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid_text_row: {fileID: 2147302494425114375, guid: 9a2f4f1bd0201c8be86639d4a13976fa, type: 3}
+  global: {fileID: 1327812282}
+  grid_text_row: {fileID: 5731289936664375492, guid: 63dc8817bb30976b2846bb0d15a6a079, type: 3}
   ui_manager: {fileID: 1640515705}
   canvas_transform: {fileID: 171098683}
   example_grid_row: {fileID: 1162263133}
   grid_space_outline: {fileID: 1121067319}
-  col_count: 10
-  row_count: 10
+  col_count: 60
+  row_count: 40
 --- !u!4 &202442180
 Transform:
   m_ObjectHideFlags: 0
@@ -734,6 +735,51 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8154600591924164555, guid: 63dc8817bb30976b2846bb0d15a6a079, type: 3}
   m_PrefabInstance: {fileID: 1986651351}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1327812281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1327812283}
+  - component: {fileID: 1327812282}
+  m_Layer: 0
+  m_Name: GlobalOperations
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1327812282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327812281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a807eed1653ae7f9a33f4eb9361547, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  render_update: 0
+--- !u!4 &1327812283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327812281}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 979.95575, y: 572.1714, z: 0.017368376}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1640515704
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,6 +854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa58f8ac26a06ccab1612c0717e7527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  global: {fileID: 1327812282}
   grid_manager: {fileID: 202442179}
 --- !u!4 &1649675078
 Transform:
@@ -956,3 +1003,4 @@ SceneRoots:
   - {fileID: 202442180}
   - {fileID: 1649675078}
   - {fileID: 1640515706}
+  - {fileID: 1327812283}
