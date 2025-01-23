@@ -20,7 +20,7 @@ public class GridManager : MonoBehaviour
     private List<GameObject> grid_text_rows = new List<GameObject>();
     private List<List<char>> grid_array = new List<List<char>>();
     private List<(int, int, char)> preview_buffer = new List<(int, int, char)>(); //row, col, input
-    private bool font_size_changed;
+    private int font_size_changed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -58,7 +58,7 @@ public class GridManager : MonoBehaviour
         }
         example_grid_row.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - ui_manager.ui_panel_transform.rect.width, row_size);
         example_grid_row.GetComponent<TextMeshProUGUI>().text = auto_size_string;
-        font_size_changed = true;
+        font_size_changed = 2;
 
 
         grid_space_outline.sizeDelta = new Vector2(col_size, row_size);
@@ -90,11 +90,15 @@ public class GridManager : MonoBehaviour
             render_array[item.Item1][item.Item2] = item.Item3;
         }
 
-        if (font_size_changed){
-            for (int row = 0; row < row_count; row++){
-                grid_text_rows[row].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
-            } 
-            font_size_changed = false;
+        //font_size_changed needs to an int because it needs to skip the first frame 
+        //the text of the example row is set, as the font_size hasn't updated yet
+        if (font_size_changed > 0){
+            if (font_size_changed == 1){
+                for (int row = 0; row < row_count; row++){
+                    grid_text_rows[row].GetComponent<TextMeshProUGUI>().fontSize = full_font_size;
+                } 
+            }
+            font_size_changed -= 1;
         }
 
         for (int row = 0; row < row_count; row++){

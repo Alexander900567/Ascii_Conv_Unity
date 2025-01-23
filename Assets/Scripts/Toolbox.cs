@@ -60,14 +60,9 @@ public class Toolbox : MonoBehaviour
         bool clear_buffer=true
     ){
         
-        //Debug.Log($"previewbuffer: {grid_manager.preview_buffer}");
-        
         if (clear_buffer){
             grid_manager.empty_preview_buffer();
         }
-
-        Debug.Log($"start_grid_pos: {start_grid_pos}");
-        Debug.Log($"grid_pos: {grid_pos}");
 
         int horizontal_slope = grid_pos.row - start_grid_pos.row;
         int vertical_slope = grid_pos.col - start_grid_pos.col;
@@ -102,9 +97,6 @@ public class Toolbox : MonoBehaviour
         int per_chunk = long_slope / short_slope;
         int extra = (long_slope % short_slope) + 1;
 
-        Debug.Log($"per_chunk: {per_chunk}");
-        Debug.Log($"extra: {extra}");
-
         for (int x = 0; x < short_slope; x++){
             int this_chunk = per_chunk;
             if (extra > 0){
@@ -112,24 +104,21 @@ public class Toolbox : MonoBehaviour
                 extra -= 1;
             }
             for (int y = 0; y < this_chunk; y++){
-                Debug.Log($"adding: {grid_pos.row}, {grid_pos.col}");
-                grid_manager.add_to_preview_buffer(grid_pos.row, grid_pos.col, active_letter);
+                grid_manager.add_to_preview_buffer(start_grid_pos.row, start_grid_pos.col, active_letter);
                 if (row_length_is_long){
-                    grid_pos.row += row_iter;
+                    start_grid_pos.row += row_iter;
                 }
                 else {
-                    grid_pos.col += col_iter;
+                    start_grid_pos.col += col_iter;
                 }
             }
             if (!row_length_is_long){
-                grid_pos.row += row_iter;
+                start_grid_pos.row += row_iter;
             }
             else {
-                grid_pos.col += col_iter;
+                start_grid_pos.col += col_iter;
             }
         }
-
-        
     }
 
 }
