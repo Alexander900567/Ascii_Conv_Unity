@@ -41,6 +41,9 @@ public class Toolbox : MonoBehaviour
         else if (active_tool == 'l'){
             line(start_grid_pos, grid_pos);
         }
+        else if (active_tool == 'r'){
+            rectangle(start_grid_pos, grid_pos);
+        }
 
         if (prev_grid_pos != grid_pos){
             global.render_update = true;
@@ -119,6 +122,34 @@ public class Toolbox : MonoBehaviour
                 start_grid_pos.col += col_iter;
             }
         }
+    }
+
+    private void rectangle(
+        (int row, int col) start_grid_pos, 
+        (int row, int col) grid_pos
+    ){
+        grid_manager.empty_preview_buffer();
+
+        line(
+            (start_grid_pos.row, start_grid_pos.col),
+            (start_grid_pos.row, grid_pos.col),
+            false
+        );
+        line(
+            (start_grid_pos.row, start_grid_pos.col),
+            (grid_pos.row, start_grid_pos.col),
+            false
+        );
+        line(
+            (grid_pos.row, start_grid_pos.col),
+            (grid_pos.row, grid_pos.col),
+            false
+        );
+        line(
+            (start_grid_pos.row, grid_pos.col),
+            (grid_pos.row, grid_pos.col),
+            false
+        );
     }
 
 }
