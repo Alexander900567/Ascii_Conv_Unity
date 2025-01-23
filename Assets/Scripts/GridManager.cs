@@ -80,7 +80,12 @@ public class GridManager : MonoBehaviour
         float col_offset = col_size * (float) 0.33;
         float full_font_size = example_grid_row.GetComponent<TextMeshProUGUI>().fontSize;
 
-        List<List<char>> render_array = new List<List<char>>(grid_array);
+        List<List<char>> render_array = new List<List<char>>();
+        for (int row = 0; row < row_count; row++){
+            render_array.Add(new List<char>(grid_array[row]));
+        }
+
+
         foreach ((int, int, char) item in preview_buffer){
             render_array[item.Item1][item.Item2] = item.Item3;
         }
@@ -116,11 +121,15 @@ public class GridManager : MonoBehaviour
         preview_buffer.Add((row, col, input));
     }
 
+    public void empty_preview_buffer(){
+        preview_buffer.Clear();        
+    }
+
     public void write_pbuffer_to_array(){
         foreach ((int, int, char) item in preview_buffer){
             grid_array[item.Item1][item.Item2] = item.Item3;
         }
-        preview_buffer.Clear();
+        empty_preview_buffer();
     }
 
     public (int row, int col) get_grid_pos(Vector3 mouse_pos, bool invert_row=true){
