@@ -108,13 +108,12 @@ public class GridManager : MonoBehaviour
         grid_space_outline.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * grid_pos.row);
     }
 
-    public void add_to_preview_buffer(int row, int col, String input){
-        Debug.Assert(input.Length == 1, "input can only be one character in add_to_preview_buffer");
+    public void add_to_preview_buffer(int row, int col, char input){
 
         if (row >= row_count || row < 0){ return; }
         else if (col >= col_count || col < 0){ return; }
 
-        preview_buffer.Add((row, col, input[0]));
+        preview_buffer.Add((row, col, input));
     }
 
     public void write_pbuffer_to_array(){
