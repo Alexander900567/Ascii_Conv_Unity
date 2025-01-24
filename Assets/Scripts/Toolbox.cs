@@ -35,7 +35,7 @@ public class Toolbox : MonoBehaviour
         (int row, int col) grid_pos = grid_manager.get_grid_pos(mouse_pos);
 
 
-        if (active_tool == 'p'){
+        if (active_tool == 'p'){ //save the letters and tools as an enum (hi)
             pencil(grid_pos, prev_grid_pos);
         }
         else if (active_tool == 'l'){

@@ -35,6 +35,33 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PenSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""55f67e31-6250-439b-ac35-ef182d5860fe"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LineSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d86327a-61a1-4e62-a557-a06a2d84193e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RectangleSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""a294f0ad-efc2-4be0-98b8-9bd05f04dc92"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -48,6 +75,39 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""MainClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d0035e7-4e52-4876-96d0-d7143a5677ac"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LineSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5eef9975-b024-4be5-895b-f1d34d78d10d"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RectangleSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""567f88ee-2f96-42c3-85b9-8105063b920f"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PenSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -57,6 +117,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         // Grid
         m_Grid = asset.FindActionMap("Grid", throwIfNotFound: true);
         m_Grid_MainClick = m_Grid.FindAction("MainClick", throwIfNotFound: true);
+        m_Grid_PenSwitch = m_Grid.FindAction("PenSwitch", throwIfNotFound: true);
+        m_Grid_LineSwitch = m_Grid.FindAction("LineSwitch", throwIfNotFound: true);
+        m_Grid_RectangleSwitch = m_Grid.FindAction("RectangleSwitch", throwIfNotFound: true);
     }
 
     ~@ControlFile()
@@ -124,11 +187,17 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Grid;
     private List<IGridActions> m_GridActionsCallbackInterfaces = new List<IGridActions>();
     private readonly InputAction m_Grid_MainClick;
+    private readonly InputAction m_Grid_PenSwitch;
+    private readonly InputAction m_Grid_LineSwitch;
+    private readonly InputAction m_Grid_RectangleSwitch;
     public struct GridActions
     {
         private @ControlFile m_Wrapper;
         public GridActions(@ControlFile wrapper) { m_Wrapper = wrapper; }
         public InputAction @MainClick => m_Wrapper.m_Grid_MainClick;
+        public InputAction @PenSwitch => m_Wrapper.m_Grid_PenSwitch;
+        public InputAction @LineSwitch => m_Wrapper.m_Grid_LineSwitch;
+        public InputAction @RectangleSwitch => m_Wrapper.m_Grid_RectangleSwitch;
         public InputActionMap Get() { return m_Wrapper.m_Grid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -141,6 +210,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @MainClick.started += instance.OnMainClick;
             @MainClick.performed += instance.OnMainClick;
             @MainClick.canceled += instance.OnMainClick;
+            @PenSwitch.started += instance.OnPenSwitch;
+            @PenSwitch.performed += instance.OnPenSwitch;
+            @PenSwitch.canceled += instance.OnPenSwitch;
+            @LineSwitch.started += instance.OnLineSwitch;
+            @LineSwitch.performed += instance.OnLineSwitch;
+            @LineSwitch.canceled += instance.OnLineSwitch;
+            @RectangleSwitch.started += instance.OnRectangleSwitch;
+            @RectangleSwitch.performed += instance.OnRectangleSwitch;
+            @RectangleSwitch.canceled += instance.OnRectangleSwitch;
         }
 
         private void UnregisterCallbacks(IGridActions instance)
@@ -148,6 +226,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @MainClick.started -= instance.OnMainClick;
             @MainClick.performed -= instance.OnMainClick;
             @MainClick.canceled -= instance.OnMainClick;
+            @PenSwitch.started -= instance.OnPenSwitch;
+            @PenSwitch.performed -= instance.OnPenSwitch;
+            @PenSwitch.canceled -= instance.OnPenSwitch;
+            @LineSwitch.started -= instance.OnLineSwitch;
+            @LineSwitch.performed -= instance.OnLineSwitch;
+            @LineSwitch.canceled -= instance.OnLineSwitch;
+            @RectangleSwitch.started -= instance.OnRectangleSwitch;
+            @RectangleSwitch.performed -= instance.OnRectangleSwitch;
+            @RectangleSwitch.canceled -= instance.OnRectangleSwitch;
         }
 
         public void RemoveCallbacks(IGridActions instance)
@@ -168,5 +255,8 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     public interface IGridActions
     {
         void OnMainClick(InputAction.CallbackContext context);
+        void OnPenSwitch(InputAction.CallbackContext context);
+        void OnLineSwitch(InputAction.CallbackContext context);
+        void OnRectangleSwitch(InputAction.CallbackContext context);
     }
 }

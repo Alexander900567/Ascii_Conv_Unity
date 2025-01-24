@@ -304,6 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b214b0c6aaf9bee749d475d46fe587b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  global: {fileID: 1327812282}
   grid_manager: {fileID: 202442179}
   active_tool: 112
   active_letter: 97
@@ -901,7 +902,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa58f8ac26a06ccab1612c0717e7527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  global: {fileID: 1327812282}
   grid_manager: {fileID: 202442179}
   toolbox: {fileID: 301216679}
 --- !u!4 &1649675078
