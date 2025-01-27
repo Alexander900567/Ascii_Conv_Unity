@@ -45,6 +45,9 @@ public class InputHandler : MonoBehaviour
         }
         else if (toolbox.active_tool == Toolbox.Tools.text){
             toolbox.text();
+            if (Input.GetKeyDown(KeyCode.Escape)){
+                switch_to_pencil();
+            }
         }
         else if (clicked_grid && !controls.Grid.MainClick.IsPressed()){
             grid_manager.write_pbuffer_to_array();

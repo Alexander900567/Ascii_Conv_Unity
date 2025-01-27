@@ -165,10 +165,7 @@ public class Toolbox : MonoBehaviour
 
     public void text(){
 
-        if (Input.GetKeyDown(KeyCode.Escape)){
-            active_tool = Tools.pencil;
-        }
-        else if(Input.GetKeyDown(KeyCode.Backspace)){
+        if(Input.GetKeyDown(KeyCode.Backspace)){
             if (prev_grid_pos.col == 0){
                 grid_manager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, ' ');
             }
