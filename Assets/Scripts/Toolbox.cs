@@ -20,6 +20,7 @@ public class Toolbox : MonoBehaviour
     void Start()
     {
         prev_grid_pos = (-1, -1);
+        active_tool = Tools.pencil;
     }
 
     // Update is called once per frame
