@@ -5,10 +5,16 @@ public class Toolbox : MonoBehaviour
 
     public GlobalOperations global;
     public GridManager grid_manager;
-    public char active_tool;
     public char active_letter;
     private (int row, int col) prev_grid_pos; 
     private (int row, int col) start_grid_pos;
+
+    public enum Tools{
+        pencil,
+        line,
+        rectangle,
+    }
+    public Tools active_tool;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,13 +41,13 @@ public class Toolbox : MonoBehaviour
         (int row, int col) grid_pos = grid_manager.get_grid_pos(mouse_pos);
 
 
-        if (active_tool == 'p'){ //save the letters and tools as an enum (hi)
+        if (active_tool == Tools.pencil){ //save the letters and tools as an enum (hi)
             pencil(grid_pos, prev_grid_pos);
         }
-        else if (active_tool == 'l'){
+        else if (active_tool == Tools.line){
             line(start_grid_pos, grid_pos);
         }
-        else if (active_tool == 'r'){
+        else if (active_tool == Tools.rectangle){
             rectangle(start_grid_pos, grid_pos);
         }
 
