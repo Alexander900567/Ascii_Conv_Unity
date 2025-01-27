@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class InputHandler : MonoBehaviour
@@ -26,7 +27,9 @@ public class InputHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (controls.Grid.MainClick.IsPressed()){
+        Vector3 mouse_pos = Input.mousePosition;
+
+        if (mouse_pos.x > grid_manager.ui_manager.ui_panel_transform.rect.width && controls.Grid.MainClick.IsPressed()){
             if (!clicked_grid){
                 toolbox.set_start_grid_pos();
             }
@@ -39,13 +42,25 @@ public class InputHandler : MonoBehaviour
             toolbox.reset_start_grid_pos();
         }
         else if (controls.Grid.PenSwitch.IsPressed()) {
-            toolbox.active_tool = 'p';
+            switch_to_pencil();
         }
         else if (controls.Grid.LineSwitch.IsPressed()) {
-            toolbox.active_tool = 'l';
+            switch_to_line();
         }
         else if (controls.Grid.RectangleSwitch.IsPressed()) {
-            toolbox.active_tool = 'r';
+            switch_to_rectangle();
         }
+    }
+
+    public void switch_to_pencil(){
+        toolbox.active_tool = Toolbox.Tools.pencil;
+    }
+
+    public void switch_to_line(){
+        toolbox.active_tool = Toolbox.Tools.line;
+    }
+
+    public void switch_to_rectangle(){
+        toolbox.active_tool = Toolbox.Tools.rectangle;
     }
 }
