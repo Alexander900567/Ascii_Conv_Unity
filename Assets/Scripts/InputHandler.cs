@@ -29,12 +29,25 @@ public class InputHandler : MonoBehaviour
     {
         Vector3 mouse_pos = Input.mousePosition;
 
+        /*
+        if (Input.anyKeyDown){
+            Debug.Log(Input.anyKeyDown);
+            Debug.Log(Input.inputString);
+        }
+        */
+
         if (mouse_pos.x > grid_manager.ui_manager.ui_panel_transform.rect.width && controls.Grid.MainClick.IsPressed()){
             if (!clicked_grid){
                 toolbox.set_start_grid_pos();
             }
             toolbox.tool_draw();
             clicked_grid = true;
+        }
+        else if (toolbox.active_tool == Toolbox.Tools.text){
+            toolbox.text();
+            if (Input.GetKeyDown(KeyCode.Escape)){
+                switch_to_pencil();
+            }
         }
         else if (clicked_grid && !controls.Grid.MainClick.IsPressed()){
             grid_manager.write_pbuffer_to_array();
@@ -50,17 +63,37 @@ public class InputHandler : MonoBehaviour
         else if (controls.Grid.RectangleSwitch.IsPressed()) {
             switch_to_rectangle();
         }
+        else if (controls.Grid.TextSwitch.IsPressed()){
+            switch_to_text();
+        }
     }
 
     public void switch_to_pencil(){
+        tools_unclick();
         toolbox.active_tool = Toolbox.Tools.pencil;
     }
 
     public void switch_to_line(){
+        tools_unclick();
         toolbox.active_tool = Toolbox.Tools.line;
     }
 
     public void switch_to_rectangle(){
+        tools_unclick();
         toolbox.active_tool = Toolbox.Tools.rectangle;
+    }
+
+    public void switch_to_text(){
+        tools_unclick();
+        grid_manager.text_cursor.localScale = new Vector3(1, 1, 1);
+        if (toolbox.prev_grid_pos.row == -1) { toolbox.prev_grid_pos = (0, 0); }
+        toolbox.active_tool = Toolbox.Tools.text;
+    }
+
+    private void tools_unclick(){
+        if (toolbox.active_tool == Toolbox.Tools.text){
+            grid_manager.text_cursor.localScale = new Vector3(0, 0, 0);
+            toolbox.prev_grid_pos = (-1, -1);
+        }
     }
 }
