@@ -38,14 +38,17 @@ public class InputHandler : MonoBehaviour
             clicked_grid = false;
             toolbox.reset_start_grid_pos();
         }
-        else if (controls.Grid.PenSwitch.IsPressed()) {
+        else if (controls.Grid.PenSwitch.IsPressed()){
             toolbox.active_tool = 'p';
         }
-        else if (controls.Grid.LineSwitch.IsPressed()) {
+        else if (controls.Grid.LineSwitch.IsPressed()){
             toolbox.active_tool = 'l';
         }
-        else if (controls.Grid.RectangleSwitch.IsPressed()) {
+        else if (controls.Grid.RectangleSwitch.IsPressed()){
             toolbox.active_tool = 'r';
+        }
+        else if (controls.Grid.CircleSwitch.IsPressed()){
+            toolbox.active_tool = 'o';
         }
     }
 }

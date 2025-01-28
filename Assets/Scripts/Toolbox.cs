@@ -1,3 +1,5 @@
+using System;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class Toolbox : MonoBehaviour
@@ -44,7 +46,9 @@ public class Toolbox : MonoBehaviour
         else if (active_tool == 'r'){
             rectangle(start_grid_pos, grid_pos);
         }
-
+        else if (active_tool == 'o'){
+            circle(start_grid_pos, grid_pos);
+        }
         if (prev_grid_pos != grid_pos){
             global.render_update = true;
         }
@@ -151,5 +155,55 @@ public class Toolbox : MonoBehaviour
             false
         );
     }
+    private void circle(
+        (int row, int col) start_grid_pos,
+        (int row, int col) grid_pos
+    ){
+        grid_manager.empty_preview_buffer(); //Assume user will make a new circle
 
+        int row_dif = grid_pos.row - start_grid_pos.row; //row and col components of
+        int col_dif = grid_pos.col - start_grid_pos.col; //difference between start and end
+        float diagonal_r = (float)Math.Sqrt((row_dif * row_dif) + (col_dif * col_dif));
+        //pythag: c = sqrt(a^2 + b^2)
+        //this is not yet usable due to the geometry of a grid in non-cardinal cases
+        //Note about precision: if not good enough, make these floats into doubles
+        int r;
+        if (row_dif != 0 && col_dif != 0) { //non-cardinal case AKA trig time
+            int o = Math.Abs(col_dif); //converts o to be positive to work with sin()
+            float angle_theta = (float)Math.Asin(o / diagonal_r);
+            float h = (float)(o / diagonal_r) / (float)Math.Sin(angle_theta); //hypotenuse
+            float r0 = diagonal_r / h; //radius in terms of pixels
+            r = (int)Math.Floor(r0); //floor makes our radius usable
+        }
+        else if (row_dif == 0 || col_dif == 0) {
+            r = (int)Math.Floor(diagonal_r);
+        }
+        else {
+            r = 0;
+        }
+
+        int row_num = 0;
+        int col_num = r;
+        int p = 1 - r;
+
+        while (row_num <= col_num) { // draws 8 sections "simulataneously"
+            grid_manager.add_to_preview_buffer(start_grid_pos.row + row_num, start_grid_pos.col + col_num, active_letter);
+            grid_manager.add_to_preview_buffer(start_grid_pos.row + col_num, start_grid_pos.col + row_num, active_letter);
+            grid_manager.add_to_preview_buffer(start_grid_pos.row - col_num, start_grid_pos.col + row_num, active_letter);
+            grid_manager.add_to_preview_buffer(start_grid_pos.row - row_num, start_grid_pos.col + col_num, active_letter);
+            grid_manager.add_to_preview_buffer(start_grid_pos.row - row_num, start_grid_pos.col - col_num, active_letter);
+            grid_manager.add_to_preview_buffer(start_grid_pos.row - col_num, start_grid_pos.col - row_num, active_letter);
+            grid_manager.add_to_preview_buffer(start_grid_pos.row + col_num, start_grid_pos.col - row_num, active_letter);
+            grid_manager.add_to_preview_buffer(start_grid_pos.row + row_num, start_grid_pos.col - col_num, active_letter);
+        
+            row_num += 1;
+            if (p < 0) {
+                p += 2 * row_num + 1;
+            }
+            else {
+                col_num -= 1;
+                p += 2 * (row_num - col_num) + 1;
+            }
+        }
+    }
 }
