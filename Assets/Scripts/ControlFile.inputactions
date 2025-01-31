@@ -49,6 +49,16 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+    
+                    "name": "TextSwitch",
+                    "type": "Button",
+                    "id": "89c892ef-a4e4-499b-8f25-b90fafe05c7d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -104,6 +114,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CircleSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16cba9df-2dc6-4e37-9b29-010aca7cc41c",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TextSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

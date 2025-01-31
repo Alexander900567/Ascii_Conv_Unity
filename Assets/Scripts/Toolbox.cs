@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework.Constraints;
+using UnityEditor;
 using UnityEngine;
 
 public class Toolbox : MonoBehaviour
@@ -7,21 +8,32 @@ public class Toolbox : MonoBehaviour
 
     public GlobalOperations global;
     public GridManager grid_manager;
-    public char active_tool;
     public char active_letter;
-    private (int row, int col) prev_grid_pos; 
+    public (int row, int col) prev_grid_pos; 
     private (int row, int col) start_grid_pos;
+
+    public enum Tools{
+        pencil,
+        line,
+        rectangle,
+        circle,
+        text,
+    }
+    public Tools active_tool;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         prev_grid_pos = (-1, -1);
+        active_tool = Tools.pencil;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (active_tool == Tools.text){
+            grid_manager.RenderTextCursor(prev_grid_pos);
+        }
     }
 
     public void set_start_grid_pos(){
@@ -29,7 +41,7 @@ public class Toolbox : MonoBehaviour
     }
 
     public void reset_start_grid_pos(){
-        start_grid_pos = (0, 0);
+        start_grid_pos = (-1, -1);
     }
 
     public void tool_draw(){
@@ -37,16 +49,16 @@ public class Toolbox : MonoBehaviour
         (int row, int col) grid_pos = grid_manager.get_grid_pos(mouse_pos);
 
 
-        if (active_tool == 'p'){ //save the letters and tools as an enum (hi)
+        if (active_tool == Tools.pencil){ 
             pencil(grid_pos, prev_grid_pos);
         }
-        else if (active_tool == 'l'){
+        else if (active_tool == Tools.line){
             line(start_grid_pos, grid_pos);
         }
-        else if (active_tool == 'r'){
+        else if (active_tool == Tools.rectangle){
             rectangle(start_grid_pos, grid_pos);
         }
-        else if (active_tool == 'o'){
+        else if (active_tool == Tools.circle){
             circle(start_grid_pos, grid_pos);
         }
         if (prev_grid_pos != grid_pos){
@@ -206,4 +218,38 @@ public class Toolbox : MonoBehaviour
             }
         }
     }
+    public void text(){
+
+        if(Input.GetKeyDown(KeyCode.Backspace)){
+            if (prev_grid_pos.col == 0){
+                grid_manager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, ' ');
+            }
+            else{
+                grid_manager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col - 1, ' ');
+                prev_grid_pos.col -= 1;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow)){
+            prev_grid_pos.row = Mathf.Max(prev_grid_pos.row - 1, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow)){
+            prev_grid_pos.row = Mathf.Min(prev_grid_pos.row + 1, grid_manager.row_count - 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)){
+            prev_grid_pos.col = Mathf.Max(prev_grid_pos.col - 1, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow)){
+            prev_grid_pos.col = Mathf.Min(prev_grid_pos.col + 1, grid_manager.col_count - 1);
+        }
+        else if (Input.anyKeyDown && Input.inputString.Length > 0){
+            //Debug.Log(Input.inputString);
+            grid_manager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, Input.inputString[0]);
+            if (prev_grid_pos.col < grid_manager.col_count - 1){
+                prev_grid_pos.col += 1;
+            }
+        }
+
+        global.render_update = true;
+    }
+
 }
