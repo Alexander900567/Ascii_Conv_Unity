@@ -63,6 +63,9 @@ public class InputHandler : MonoBehaviour
         else if (controls.Grid.RectangleSwitch.IsPressed()) {
             switch_to_rectangle();
         }
+        else if (controls.Grid.CircleSwitch.IsPressed()){
+            switch_to_circle();
+        }
         else if (controls.Grid.TextSwitch.IsPressed()){
             switch_to_text();
         }
@@ -83,6 +86,10 @@ public class InputHandler : MonoBehaviour
         toolbox.active_tool = Toolbox.Tools.rectangle;
     }
 
+    public void switch_to_circle(){
+        tools_unclick();
+        toolbox.active_tool = Toolbox.Tools.circle;
+    }
     public void switch_to_text(){
         tools_unclick();
         grid_manager.text_cursor.localScale = new Vector3(1, 1, 1);
