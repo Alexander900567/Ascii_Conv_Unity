@@ -6,7 +6,8 @@ public class InputHandler : MonoBehaviour
 
     public GridManager grid_manager;
     public Toolbox toolbox;
-    private ControlFile controls;
+    public GlobalOperations global;
+
     private bool clicked_grid; 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,14 +16,6 @@ public class InputHandler : MonoBehaviour
         clicked_grid = false;
     }
 
-    void Awake(){
-        controls = new ControlFile();
-        controls.Enable();
-    }
-
-    void OnApplicationQuit(){
-        controls.Disable();
-    }
 
     // Update is called once per frame
     void Update()
@@ -36,7 +29,7 @@ public class InputHandler : MonoBehaviour
         }
         */
 
-        if (mouse_pos.x > grid_manager.ui_manager.ui_panel_transform.rect.width && controls.Grid.MainClick.IsPressed()){
+        if (mouse_pos.x > grid_manager.ui_manager.ui_panel_transform.rect.width && global.controls.Grid.MainClick.IsPressed()){
             if (!clicked_grid){
                 toolbox.set_start_grid_pos();
             }
@@ -49,24 +42,24 @@ public class InputHandler : MonoBehaviour
                 switch_to_pencil();
             }
         }
-        else if (clicked_grid && !controls.Grid.MainClick.IsPressed()){
+        else if (clicked_grid && !global.controls.Grid.MainClick.IsPressed()){
             grid_manager.write_pbuffer_to_array();
             clicked_grid = false;
             toolbox.reset_start_grid_pos();
         }
-        else if (controls.Grid.PenSwitch.IsPressed()) {
+        else if (global.controls.Grid.PenSwitch.IsPressed()) {
             switch_to_pencil();
         }
-        else if (controls.Grid.LineSwitch.IsPressed()) {
+        else if (global.controls.Grid.LineSwitch.IsPressed()) {
             switch_to_line();
         }
-        else if (controls.Grid.RectangleSwitch.IsPressed()) {
+        else if (global.controls.Grid.RectangleSwitch.IsPressed()) {
             switch_to_rectangle();
         }
-        else if (controls.Grid.CircleSwitch.IsPressed()){
+        else if (global.controls.Grid.CircleSwitch.IsPressed()){
             switch_to_circle();
         }
-        else if (controls.Grid.TextSwitch.IsPressed()){
+        else if (global.controls.Grid.TextSwitch.IsPressed()){
             switch_to_text();
         }
     }

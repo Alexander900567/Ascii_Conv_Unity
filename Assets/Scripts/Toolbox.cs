@@ -8,10 +8,7 @@ public class Toolbox : MonoBehaviour
 
     public GlobalOperations global;
     public GridManager grid_manager;
-    public char active_letter;
     public (int row, int col) prev_grid_pos; 
-    private (int row, int col) start_grid_pos;
-
     public enum Tools{
         pencil,
         line,
@@ -19,7 +16,11 @@ public class Toolbox : MonoBehaviour
         circle,
         text,
     }
+    public char active_letter;
+
+    private (int row, int col) start_grid_pos;
     public Tools active_tool;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -53,7 +54,7 @@ public class Toolbox : MonoBehaviour
             pencil(grid_pos, prev_grid_pos);
         }
         else if (active_tool == Tools.line){
-            line(start_grid_pos, grid_pos);
+            line(start_grid_pos, grid_pos, true);
         }
         else if (active_tool == Tools.rectangle){
             rectangle(start_grid_pos, grid_pos);
@@ -76,7 +77,7 @@ public class Toolbox : MonoBehaviour
     private void line(
         (int row, int col) start_grid_pos, 
         (int row, int col) grid_pos, 
-        bool clear_buffer=true
+        bool clear_buffer
     ){
         
         if (clear_buffer){
@@ -233,18 +234,18 @@ public class Toolbox : MonoBehaviour
             prev_grid_pos.row = Mathf.Max(prev_grid_pos.row - 1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow)){
-            prev_grid_pos.row = Mathf.Min(prev_grid_pos.row + 1, grid_manager.row_count - 1);
+            prev_grid_pos.row = Mathf.Min(prev_grid_pos.row + 1, grid_manager.get_row_count() - 1);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow)){
             prev_grid_pos.col = Mathf.Max(prev_grid_pos.col - 1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow)){
-            prev_grid_pos.col = Mathf.Min(prev_grid_pos.col + 1, grid_manager.col_count - 1);
+            prev_grid_pos.col = Mathf.Min(prev_grid_pos.col + 1, grid_manager.get_col_count() - 1);
         }
         else if (Input.anyKeyDown && Input.inputString.Length > 0){
             //Debug.Log(Input.inputString);
             grid_manager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, Input.inputString[0]);
-            if (prev_grid_pos.col < grid_manager.col_count - 1){
+            if (prev_grid_pos.col < grid_manager.get_col_count() - 1){
                 prev_grid_pos.col += 1;
             }
         }

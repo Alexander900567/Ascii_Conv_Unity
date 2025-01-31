@@ -8,14 +8,15 @@ using UnityEngine.UI;
 public class GridManager : MonoBehaviour
 {
     public GlobalOperations global;
-    public GameObject grid_text_row;
     public UIManager ui_manager;
+    public GameObject grid_text_row;
     public RectTransform canvas_transform;
     public GameObject example_grid_row;
     public RectTransform grid_space_outline;
     public RectTransform text_cursor;
-    public int col_count;
-    public int row_count;
+
+    [SerializeField] private int col_count;
+    [SerializeField] private int row_count;
     private float col_size;
     private float row_size;
     private List<GameObject> grid_text_rows = new List<GameObject>();
@@ -160,11 +161,18 @@ public class GridManager : MonoBehaviour
         if (row < 0) { row = 0; }
         else if (row >= row_count) { row = row_count - 1; }
 
-        //col = col_count - 1 - col;
         if (invert_row){
             row = row_count - 1 - row;
         }
         return (row: row, col: col);
+    }
+    
+    public int get_col_count(){
+        return col_count;
+    }
+    
+    public int get_row_count(){
+        return row_count;
     }
 
 }
