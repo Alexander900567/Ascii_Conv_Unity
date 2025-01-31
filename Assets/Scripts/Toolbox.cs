@@ -1,5 +1,9 @@
 using System;
+using System.Data;
+using System.IO;
+using System.Runtime.CompilerServices;
 using NUnit.Framework.Constraints;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,12 +18,24 @@ public class Toolbox : MonoBehaviour
 
     public enum Tools{
         pencil,
+        eraser,
         line,
         rectangle,
+        filled_rectangle,
         circle,
+        filled_circle,
         text,
     }
+
+    public enum Mods { //TODO: Implement
+        fill_modifier,
+        regular_modifier //Makes shape "regular" e.g. square or circle vs. rectangle or ellipse
+    }
+
+    //Make a tool by: Adding to above enum, adding to draw, creating behvaior by creating a function, creating a switch function, creating an IsPressed() func
+    // You should also be assigning button and keybind
     public Tools active_tool;
+    public Tools active_mod;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,9 +64,11 @@ public class Toolbox : MonoBehaviour
         Vector3 mouse_pos = Input.mousePosition;
         (int row, int col) grid_pos = grid_manager.get_grid_pos(mouse_pos);
 
-
         if (active_tool == Tools.pencil){ 
             pencil(grid_pos, prev_grid_pos);
+        }
+        else if (active_tool == Tools.eraser) {
+            eraser(grid_pos, prev_grid_pos);
         }
         else if (active_tool == Tools.line){
             line(start_grid_pos, grid_pos);
@@ -58,13 +76,23 @@ public class Toolbox : MonoBehaviour
         else if (active_tool == Tools.rectangle){
             rectangle(start_grid_pos, grid_pos);
         }
+        else if (active_tool == Tools.filled_rectangle) {
+            filled_rectangle(start_grid_pos, grid_pos);
+        }
         else if (active_tool == Tools.circle){
             circle(start_grid_pos, grid_pos);
+        }
+        else if (active_tool == Tools.filled_circle) {
+            filled_circle(start_grid_pos, grid_pos);
         }
         if (prev_grid_pos != grid_pos){
             global.render_update = true;
         }
         prev_grid_pos = grid_pos;
+    }
+
+    public void switch_active_letter(char new_active_letter) {
+        active_letter = new_active_letter;
     }
 
     private void pencil((int row, int col) grid_pos, (int row, int col) prev_grid_pos){
@@ -73,6 +101,11 @@ public class Toolbox : MonoBehaviour
         }
     }
 
+    private void eraser ((int row, int col) grid_pos,(int row, int col) prev_grid_pos) {
+        if (grid_pos != prev_grid_pos) {
+            grid_manager.add_to_preview_buffer(grid_pos.row, grid_pos.col, ' ');
+        }
+    }
     private void line(
         (int row, int col) start_grid_pos, 
         (int row, int col) grid_pos, 
@@ -139,7 +172,6 @@ public class Toolbox : MonoBehaviour
             }
         }
     }
-
     private void rectangle(
         (int row, int col) start_grid_pos, 
         (int row, int col) grid_pos
@@ -167,11 +199,40 @@ public class Toolbox : MonoBehaviour
             false
         );
     }
-    private void circle(
+
+    private void filled_rectangle(
         (int row, int col) start_grid_pos,
         (int row, int col) grid_pos
-    ){
-        grid_manager.empty_preview_buffer(); //Assume user will make a new circle
+    )
+    {
+        grid_manager.empty_preview_buffer();
+
+        int upper_row;
+        int lower_row;
+
+        if (start_grid_pos.row <= grid_pos.row) {
+            upper_row = start_grid_pos.row;
+            lower_row = grid_pos.row;
+        }
+        else { //hopefully no error
+            upper_row = grid_pos.row;
+            lower_row = start_grid_pos.row;
+        }
+
+        for (int i = upper_row; i <= lower_row; i++) {
+            line(
+                (i, start_grid_pos.col),
+                (i, grid_pos.col),
+                false
+            );
+        }
+    }
+
+        private void circle(
+        (int row, int col) start_grid_pos,
+        (int row, int col) grid_pos
+    ) {
+        grid_manager.empty_preview_buffer();
 
         int row_dif = grid_pos.row - start_grid_pos.row; //row and col components of
         int col_dif = grid_pos.col - start_grid_pos.col; //difference between start and end
@@ -218,6 +279,70 @@ public class Toolbox : MonoBehaviour
             }
         }
     }
+    private void filled_circle(
+        (int row, int col) start_grid_pos,
+        (int row, int col) grid_pos
+    ){
+        grid_manager.empty_preview_buffer(); //Assume user will make a new circle
+
+        int row_dif = grid_pos.row - start_grid_pos.row; //row and col components of
+        int col_dif = grid_pos.col - start_grid_pos.col; //difference between start and end
+        float diagonal_r = (float)Math.Sqrt((row_dif * row_dif) + (col_dif * col_dif));
+        //pythag: c = sqrt(a^2 + b^2)
+        //this is not yet usable due to the geometry of a grid in non-cardinal cases
+        //Note about precision: if not good enough, make these floats into doubles
+        int r;
+        if (row_dif != 0 && col_dif != 0) { //non-cardinal case AKA trig time
+            int o = Math.Abs(col_dif); //converts o to be positive to work with sin()
+            float angle_theta = (float)Math.Asin(o / diagonal_r);
+            float h = (float)(o / diagonal_r) / (float)Math.Sin(angle_theta); //hypotenuse
+            float r0 = diagonal_r / h; //radius in terms of pixels
+            r = (int)Math.Floor(r0); //floor makes our radius usable
+        }
+        else if (row_dif == 0 || col_dif == 0) {
+            r = (int)Math.Floor(diagonal_r);
+        }
+        else {
+            r = 0;
+        }
+
+        int row_num = 0;
+        int col_num = r;
+        int p = 1 - r;
+
+        while (row_num <= col_num) { // draws each section "simulataneously"
+
+            line(
+            (start_grid_pos.row + row_num, start_grid_pos.col + col_num),
+            (start_grid_pos.row - row_num, start_grid_pos.col + col_num),
+            false);
+            line(
+            (start_grid_pos.row + col_num, start_grid_pos.col + row_num),
+            (start_grid_pos.row - col_num, start_grid_pos.col + row_num),
+            false);
+            line(
+            (start_grid_pos.row + row_num, start_grid_pos.col - col_num),
+            (start_grid_pos.row - row_num, start_grid_pos.col - col_num),
+            false);
+            line(
+            (start_grid_pos.row + col_num, start_grid_pos.col - row_num),
+            (start_grid_pos.row - col_num, start_grid_pos.col - row_num),
+            false);
+
+            row_num += 1;
+            if (p < 0) {
+                p += 2 * row_num + 1;
+            }
+            else {
+                col_num -= 1;
+                p += 2 * (row_num - col_num) + 1;
+            }
+        }
+    }
+
+    private void draw_ellipse() {
+
+    }
     public void text(){
 
         if(Input.GetKeyDown(KeyCode.Backspace)){
@@ -250,6 +375,33 @@ public class Toolbox : MonoBehaviour
         }
 
         global.render_update = true;
+    }
+
+        private void square_modifier(
+        (int row, int col) start_grid_pos,
+        (int row, int col) grid_pos
+    ) {
+        int row_dif = grid_pos.row - start_grid_pos.row;
+        int col_dif = grid_pos.col - start_grid_pos.col;
+        int smaller_dif;
+
+        if (row_dif <= col_dif) {
+            smaller_dif = row_dif;
+        }
+        else {
+            smaller_dif = col_dif;
+        }
+
+        if (active_tool == Tools.rectangle) {
+            rectangle((start_grid_pos.row, start_grid_pos.col),
+            (start_grid_pos.row + smaller_dif, start_grid_pos.col + smaller_dif));
+        }
+
+        else if (active_tool == Tools.filled_rectangle) {
+            filled_rectangle((start_grid_pos.row, start_grid_pos.col),
+            (start_grid_pos.row + smaller_dif, start_grid_pos.col + smaller_dif));
+        }
+
     }
 
 }

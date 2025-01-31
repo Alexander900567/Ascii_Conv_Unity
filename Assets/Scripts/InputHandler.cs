@@ -57,14 +57,23 @@ public class InputHandler : MonoBehaviour
         else if (controls.Grid.PenSwitch.IsPressed()) {
             switch_to_pencil();
         }
+        else if (controls.Grid.EraserSwitch.IsPressed()) {
+            switch_to_eraser();
+        }
         else if (controls.Grid.LineSwitch.IsPressed()) {
             switch_to_line();
         }
         else if (controls.Grid.RectangleSwitch.IsPressed()) {
             switch_to_rectangle();
         }
+        else if (controls.Grid.FilledRectangleSwitch.IsPressed()) {
+            switch_to_filled_rectangle();
+        }
         else if (controls.Grid.CircleSwitch.IsPressed()){
             switch_to_circle();
+        }
+        else if (controls.Grid.FilledCircleSwitch.IsPressed()) {
+            switch_to_filled_circle();
         }
         else if (controls.Grid.TextSwitch.IsPressed()){
             switch_to_text();
@@ -76,6 +85,10 @@ public class InputHandler : MonoBehaviour
         toolbox.active_tool = Toolbox.Tools.pencil;
     }
 
+    public void switch_to_eraser(){
+        tools_unclick();
+        toolbox.active_tool = Toolbox.Tools.eraser;
+    }
     public void switch_to_line(){
         tools_unclick();
         toolbox.active_tool = Toolbox.Tools.line;
@@ -86,9 +99,18 @@ public class InputHandler : MonoBehaviour
         toolbox.active_tool = Toolbox.Tools.rectangle;
     }
 
+    public void switch_to_filled_rectangle() {
+        tools_unclick();
+        toolbox.active_tool = Toolbox.Tools.filled_rectangle;
+    }
     public void switch_to_circle(){
         tools_unclick();
         toolbox.active_tool = Toolbox.Tools.circle;
+    }
+
+    public void switch_to_filled_circle() {
+        tools_unclick();
+        toolbox.active_tool = Toolbox.Tools.filled_circle;
     }
     public void switch_to_text(){
         tools_unclick();

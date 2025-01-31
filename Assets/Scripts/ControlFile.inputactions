@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "EraserSwitch",
+                    "type": "Button",
+                    "id": "223bc957-abbf-4719-85af-ba1bd844ba35",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LineSwitch",
                     "type": "Button",
                     "id": "1d86327a-61a1-4e62-a557-a06a2d84193e",
@@ -42,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "FilledRectangleSwitch",
+                    "type": "Button",
+                    "id": "2b5caccc-3f0f-4597-b894-3ef544bd8572",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "CircleSwitch",
                     "type": "Button",
                     "id": "36513a82-249c-47ac-a98a-c5ec9bb9ced6",
@@ -51,7 +69,15 @@
                     "initialStateCheck": false
                 },
                 {
-    
+                    "name": "FilledCircleSwitch",
+                    "type": "Button",
+                    "id": "a8fa6d64-c791-401e-99e5-d66894d93750",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "TextSwitch",
                     "type": "Button",
                     "id": "89c892ef-a4e4-499b-8f25-b90fafe05c7d",
@@ -125,6 +151,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "TextSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c7469394-eb26-467d-a0d3-690d3587f3d3",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FilledRectangleSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "427aa711-900d-4113-9b0b-12e8d01af2ca",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FilledCircleSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "45ef1687-83c5-4358-ae89-43e21b5cb980",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EraserSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
