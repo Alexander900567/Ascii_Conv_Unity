@@ -30,10 +30,11 @@ public class InputHandler : MonoBehaviour
         */
 
         if (mouse_pos.x > grid_manager.ui_manager.ui_panel_transform.rect.width && global.controls.Grid.MainClick.IsPressed()){
+            bool mouse_just_down = false;
             if (!clicked_grid){
-                toolbox.set_start_grid_pos();
+                mouse_just_down = true;
             }
-            toolbox.tool_draw();
+            toolbox.tool_draw(mouse_just_down);
             clicked_grid = true;
         }
         else if (toolbox.active_tool == Toolbox.Tools.text){
@@ -43,7 +44,12 @@ public class InputHandler : MonoBehaviour
             }
         }
         else if (clicked_grid && !global.controls.Grid.MainClick.IsPressed()){
-            grid_manager.write_pbuffer_to_array();
+            if (toolbox.active_tool == Toolbox.Tools.rectangle_selector){
+                toolbox.rectangle_selector.on_mouse_up(grid_manager);
+            }
+            else{
+                grid_manager.write_pbuffer_to_array();
+            }
             clicked_grid = false;
             toolbox.reset_start_grid_pos();
         }
@@ -88,6 +94,10 @@ public class InputHandler : MonoBehaviour
         grid_manager.text_cursor.localScale = new Vector3(1, 1, 1);
         if (toolbox.prev_grid_pos.row == -1) { toolbox.prev_grid_pos = (0, 0); }
         toolbox.active_tool = Toolbox.Tools.text;
+    }
+    public void switch_to_rectangle_selector(){
+        tools_unclick();
+        toolbox.active_tool = Toolbox.Tools.rectangle_selector;
     }
 
     private void tools_unclick(){

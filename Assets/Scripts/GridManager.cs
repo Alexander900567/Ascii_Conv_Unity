@@ -14,14 +14,14 @@ public class GridManager : MonoBehaviour
     public GameObject example_grid_row;
     public RectTransform grid_space_outline;
     public RectTransform text_cursor;
-
-    [SerializeField] private int col_count;
-    [SerializeField] private int row_count;
-    private float col_size;
-    private float row_size;
+    
     private List<GameObject> grid_text_rows = new List<GameObject>();
     private List<List<char>> grid_array = new List<List<char>>();
     private List<(int, int, char)> preview_buffer = new List<(int, int, char)>(); //row, col, input
+    private float col_size;
+    private float row_size;
+    [SerializeField] private int col_count;
+    [SerializeField] private int row_count;
     private int font_size_changed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -125,25 +125,6 @@ public class GridManager : MonoBehaviour
         text_cursor.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * (row_count - 1 - grid_pos.row));
     }
 
-    public void add_to_preview_buffer(int row, int col, char input){
-
-        if (row >= row_count || row < 0){ return; }
-        else if (col >= col_count || col < 0){ return; }
-
-        preview_buffer.Add((row, col, input));
-    }
-
-    public void add_to_grid_array(int row, int col, char input){
-
-        if (row >= row_count || row < 0){ return; }
-        else if (col >= col_count || col < 0){ return; }
-
-        grid_array[row][col] = input;
-    }
-
-    public void empty_preview_buffer(){
-        preview_buffer.Clear();        
-    }
 
     public void write_pbuffer_to_array(){
         foreach ((int, int, char) item in preview_buffer){
@@ -166,13 +147,53 @@ public class GridManager : MonoBehaviour
         }
         return (row: row, col: col);
     }
-    
+
+    //---setters---
+
+    public void add_to_preview_buffer(int row, int col, char input){
+
+        if (row >= row_count || row < 0){ return; }
+        else if (col >= col_count || col < 0){ return; }
+
+        preview_buffer.Add((row, col, input));
+    }
+
+    public void edit_pbuffer_item_pos(int ind, int row_delta, int col_delta){
+        preview_buffer[ind] = (
+            preview_buffer[ind].Item1 + row_delta,
+            preview_buffer[ind].Item2 + col_delta,
+            preview_buffer[ind].Item3
+        );
+    }
+
+    public void empty_preview_buffer(){
+        preview_buffer.Clear();        
+    }
+
+    public void add_to_grid_array(int row, int col, char input){
+
+        if (row >= row_count || row < 0){ return; }
+        else if (col >= col_count || col < 0){ return; }
+
+        grid_array[row][col] = input;
+    }
+
+    //---getters---
+
     public int get_col_count(){
         return col_count;
     }
     
     public int get_row_count(){
         return row_count;
+    }
+
+    public char get_garr_space(int row, int col){
+        return grid_array[row][col];
+    }
+
+    public int get_pbuffer_length(){
+        return preview_buffer.Count;
     }
 
 }

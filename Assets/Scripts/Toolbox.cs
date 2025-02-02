@@ -8,6 +8,7 @@ public class Toolbox : MonoBehaviour
 
     public GlobalOperations global;
     public GridManager grid_manager;
+    public RectangleSelector rectangle_selector;
     public (int row, int col) prev_grid_pos; 
     public enum Tools{
         pencil,
@@ -15,6 +16,7 @@ public class Toolbox : MonoBehaviour
         rectangle,
         circle,
         text,
+        rectangle_selector,
     }
     public char active_letter;
 
@@ -45,10 +47,12 @@ public class Toolbox : MonoBehaviour
         start_grid_pos = (-1, -1);
     }
 
-    public void tool_draw(){
+    public void tool_draw(bool mouse_just_down){
+        if (mouse_just_down){
+            set_start_grid_pos();
+        } 
         Vector3 mouse_pos = Input.mousePosition;
         (int row, int col) grid_pos = grid_manager.get_grid_pos(mouse_pos);
-
 
         if (active_tool == Tools.pencil){ 
             pencil(grid_pos, prev_grid_pos);
@@ -61,6 +65,14 @@ public class Toolbox : MonoBehaviour
         }
         else if (active_tool == Tools.circle){
             circle(start_grid_pos, grid_pos);
+        }
+        else if (active_tool == Tools.rectangle_selector){
+            if (mouse_just_down){
+                rectangle_selector.on_mouse_down(grid_pos);
+            }
+            else{
+                rectangle_selector.on_mouse_move(grid_manager, grid_pos);
+            }
         }
         if (prev_grid_pos != grid_pos){
             global.render_update = true;
@@ -75,7 +87,7 @@ public class Toolbox : MonoBehaviour
     }
 
     private void line(
-        (int row, int col) start_grid_pos, 
+        (int row, int col) start_grid_pos,
         (int row, int col) grid_pos, 
         bool clear_buffer
     ){
