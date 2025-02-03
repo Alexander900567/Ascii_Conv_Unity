@@ -45,7 +45,7 @@ public class InputHandler : MonoBehaviour
         }
         else if (clicked_grid && !global.controls.Grid.MainClick.IsPressed()){
             if (toolbox.active_tool == Toolbox.Tools.rectangle_selector){
-                toolbox.rectangle_selector.on_mouse_up(grid_manager);
+                toolbox.rectangle_selector.on_mouse_up();
             }
             else{
                 grid_manager.write_pbuffer_to_array();

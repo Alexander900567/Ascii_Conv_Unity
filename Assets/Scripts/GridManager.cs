@@ -122,7 +122,7 @@ public class GridManager : MonoBehaviour
     }
 
     public void RenderTextCursor((int row, int col) grid_pos){
-        text_cursor.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * (row_count - 1 - grid_pos.row));
+        text_cursor.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * invert_row_pos(grid_pos.row));
     }
 
 
@@ -146,6 +146,10 @@ public class GridManager : MonoBehaviour
             row = row_count - 1 - row;
         }
         return (row: row, col: col);
+    }
+
+    public int invert_row_pos(int row){
+        return row_count - 1 - row;
     }
 
     //---setters---
@@ -186,6 +190,14 @@ public class GridManager : MonoBehaviour
     
     public int get_row_count(){
         return row_count;
+    }
+
+    public float get_col_size(){
+        return col_size;
+    }
+
+    public float get_row_size(){
+        return row_size;
     }
 
     public char get_garr_space(int row, int col){

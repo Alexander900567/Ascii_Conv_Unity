@@ -71,7 +71,7 @@ public class Toolbox : MonoBehaviour
                 rectangle_selector.on_mouse_down(grid_pos);
             }
             else{
-                rectangle_selector.on_mouse_move(grid_manager, grid_pos);
+                rectangle_selector.on_mouse_move(grid_pos);
             }
         }
         if (prev_grid_pos != grid_pos){

@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class RectangleSelector : MonoBehaviour
 {
+    public GridManager grid_manager;
+
+    [SerializeField] private GameObject selector_box;
+    private GameObject selector_box_instance;
     private bool active;
     private (int row, int col) start_gpos;
     private (int row, int col) top_left;
@@ -20,11 +24,43 @@ public class RectangleSelector : MonoBehaviour
         size = (-1, -1);
         original_buffer = new List<(int, int, char)>();
     }
+
+    void Update(){
+        if (active){
+            render_rectangle_selector();
+        }
+    }
+
+    public void render_rectangle_selector(){
+        selector_box_instance.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            grid_manager.get_col_size() * size.col,
+            grid_manager.get_row_size() * size.row 
+        );
+        selector_box_instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(
+            grid_manager.ui_manager.ui_panel_transform.rect.width + top_left.col * grid_manager.get_col_size(),
+            grid_manager.invert_row_pos(bot_right.row) * grid_manager.get_row_size()
+        );
+    }
+
+    public void initialize_selector_box(){
+        selector_box_instance = Instantiate(
+            selector_box,
+            new Vector3(0, 0, 0),
+            transform.rotation
+        );
+        selector_box_instance.transform.SetParent(grid_manager.canvas_transform);
+    }
+
+    public void destroy_selector_box(){
+
+    }
     
     public void on_mouse_down((int row, int col) gpos){
         if (!active){
             start_gpos = (gpos.row, gpos.col);
             change_corners(gpos);
+            initialize_selector_box();
+            render_rectangle_selector();
         }
         else{
             start_gpos = (gpos.row, gpos.col);
@@ -32,12 +68,10 @@ public class RectangleSelector : MonoBehaviour
 
     }
 
-    public void on_mouse_move(
-        GridManager grid_manager,
-        (int row, int col) gpos 
-    ){
+    public void on_mouse_move((int row, int col) gpos){
         if (!active){
             change_corners(gpos);
+            render_rectangle_selector();
         }
         else if (gpos != start_gpos){
             int row_delta = gpos.row - start_gpos.row;
@@ -68,20 +102,20 @@ public class RectangleSelector : MonoBehaviour
         }
     }
 
-    public void on_mouse_up(GridManager gridManager){
+    public void on_mouse_up(){
         if (!active){
             active = true;
             for(int row = top_left.row; row <= bot_right.row; row++){
                 for(int col = top_left.col; col <= bot_right.col; col++){
-                    gridManager.add_to_preview_buffer(row, col, gridManager.get_garr_space(row, col));
-                    original_buffer.Add((row, col, gridManager.get_garr_space(row, col)));
-                    gridManager.add_to_grid_array(row, col, ' ');
+                    grid_manager.add_to_preview_buffer(row, col, grid_manager.get_garr_space(row, col));
+                    original_buffer.Add((row, col, grid_manager.get_garr_space(row, col)));
+                    grid_manager.add_to_grid_array(row, col, ' ');
                 }
             } 
         }
     }
 
-    public void reset_box(GridManager grid_manager){
+    public void reset_box(){
         active = false;
         top_left = (-1, -1);
         bot_right = (-1, -1);
