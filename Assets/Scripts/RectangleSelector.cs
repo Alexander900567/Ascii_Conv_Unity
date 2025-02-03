@@ -7,6 +7,8 @@ public class RectangleSelector : MonoBehaviour
 
     [SerializeField] private GameObject selector_box;
     private GameObject selector_box_instance;
+    [SerializeField] private GameObject commit_button;
+
     private bool active;
     private (int row, int col) start_gpos;
     private (int row, int col) top_left;
@@ -105,6 +107,7 @@ public class RectangleSelector : MonoBehaviour
     public void on_mouse_up(){
         if (!active){
             active = true;
+            commit_button.SetActive(true);
             for(int row = top_left.row; row <= bot_right.row; row++){
                 for(int col = top_left.col; col <= bot_right.col; col++){
                     grid_manager.add_to_preview_buffer(row, col, grid_manager.get_garr_space(row, col));
@@ -123,6 +126,8 @@ public class RectangleSelector : MonoBehaviour
         start_gpos = (-1, -1);
 
         grid_manager.write_pbuffer_to_array();
+        Destroy(selector_box_instance);
+        commit_button.SetActive(false);
     }
 
     public void change_corners((int row, int col) new_gpos){
