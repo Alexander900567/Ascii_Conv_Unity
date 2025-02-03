@@ -66,17 +66,14 @@ public class InputHandler : MonoBehaviour
         else if (controls.Grid.RectangleSwitch.IsPressed()) {
             switch_to_rectangle();
         }
-        else if (controls.Grid.FilledRectangleSwitch.IsPressed()) {
-            switch_to_filled_rectangle();
-        }
         else if (controls.Grid.CircleSwitch.IsPressed()){
             switch_to_circle();
         }
-        else if (controls.Grid.FilledCircleSwitch.IsPressed()) {
-            switch_to_filled_circle();
-        }
         else if (controls.Grid.TextSwitch.IsPressed()){
             switch_to_text();
+        }
+        else if (controls.Grid.FIllSwitch.IsPressed()){
+            enable_fill();
         }
     }
 
@@ -84,7 +81,6 @@ public class InputHandler : MonoBehaviour
         tools_unclick();
         toolbox.active_tool = Toolbox.Tools.pencil;
     }
-
     public void switch_to_eraser(){
         tools_unclick();
         toolbox.active_tool = Toolbox.Tools.eraser;
@@ -93,30 +89,22 @@ public class InputHandler : MonoBehaviour
         tools_unclick();
         toolbox.active_tool = Toolbox.Tools.line;
     }
-
     public void switch_to_rectangle(){
         tools_unclick();
         toolbox.active_tool = Toolbox.Tools.rectangle;
     }
-
-    public void switch_to_filled_rectangle() {
-        tools_unclick();
-        toolbox.active_tool = Toolbox.Tools.filled_rectangle;
-    }
     public void switch_to_circle(){
         tools_unclick();
         toolbox.active_tool = Toolbox.Tools.circle;
-    }
-
-    public void switch_to_filled_circle() {
-        tools_unclick();
-        toolbox.active_tool = Toolbox.Tools.filled_circle;
     }
     public void switch_to_text(){
         tools_unclick();
         grid_manager.text_cursor.localScale = new Vector3(1, 1, 1);
         if (toolbox.prev_grid_pos.row == -1) { toolbox.prev_grid_pos = (0, 0); }
         toolbox.active_tool = Toolbox.Tools.text;
+    }
+    public void enable_fill(){
+        toolbox.active_mod = Toolbox.Mods.fill;
     }
 
     private void tools_unclick(){

@@ -37,6 +37,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""RegularHold"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f268322-2bea-4042-8d2d-aa93da9c9414"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""PenSwitch"",
                     ""type"": ""Button"",
                     ""id"": ""55f67e31-6250-439b-ac35-ef182d5860fe"",
@@ -73,15 +82,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""FilledRectangleSwitch"",
-                    ""type"": ""Button"",
-                    ""id"": ""2b5caccc-3f0f-4597-b894-3ef544bd8572"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""CircleSwitch"",
                     ""type"": ""Button"",
                     ""id"": ""36513a82-249c-47ac-a98a-c5ec9bb9ced6"",
@@ -91,18 +91,18 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""FilledCircleSwitch"",
+                    ""name"": ""TextSwitch"",
                     ""type"": ""Button"",
-                    ""id"": ""a8fa6d64-c791-401e-99e5-d66894d93750"",
+                    ""id"": ""89c892ef-a4e4-499b-8f25-b90fafe05c7d"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""TextSwitch"",
+                    ""name"": ""FIllSwitch"",
                     ""type"": ""Button"",
-                    ""id"": ""89c892ef-a4e4-499b-8f25-b90fafe05c7d"",
+                    ""id"": ""6d0de5b0-00f3-422e-9123-e469d0b5fafa"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -178,34 +178,34 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c7469394-eb26-467d-a0d3-690d3587f3d3"",
-                    ""path"": ""<Keyboard>/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""FilledRectangleSwitch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""427aa711-900d-4113-9b0b-12e8d01af2ca"",
-                    ""path"": ""<Keyboard>/i"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""FilledCircleSwitch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""45ef1687-83c5-4358-ae89-43e21b5cb980"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""EraserSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""879cdb3d-0e5f-4e5e-8fa1-2fed3b152620"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RegularHold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73b54cf9-6e8d-47d4-a4e9-5a506a2cbf1e"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FIllSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -217,14 +217,14 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         // Grid
         m_Grid = asset.FindActionMap("Grid", throwIfNotFound: true);
         m_Grid_MainClick = m_Grid.FindAction("MainClick", throwIfNotFound: true);
+        m_Grid_RegularHold = m_Grid.FindAction("RegularHold", throwIfNotFound: true);
         m_Grid_PenSwitch = m_Grid.FindAction("PenSwitch", throwIfNotFound: true);
         m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
         m_Grid_LineSwitch = m_Grid.FindAction("LineSwitch", throwIfNotFound: true);
         m_Grid_RectangleSwitch = m_Grid.FindAction("RectangleSwitch", throwIfNotFound: true);
-        m_Grid_FilledRectangleSwitch = m_Grid.FindAction("FilledRectangleSwitch", throwIfNotFound: true);
         m_Grid_CircleSwitch = m_Grid.FindAction("CircleSwitch", throwIfNotFound: true);
-        m_Grid_FilledCircleSwitch = m_Grid.FindAction("FilledCircleSwitch", throwIfNotFound: true);
         m_Grid_TextSwitch = m_Grid.FindAction("TextSwitch", throwIfNotFound: true);
+        m_Grid_FIllSwitch = m_Grid.FindAction("FIllSwitch", throwIfNotFound: true);
     }
 
     ~@ControlFile()
@@ -292,27 +292,27 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Grid;
     private List<IGridActions> m_GridActionsCallbackInterfaces = new List<IGridActions>();
     private readonly InputAction m_Grid_MainClick;
+    private readonly InputAction m_Grid_RegularHold;
     private readonly InputAction m_Grid_PenSwitch;
     private readonly InputAction m_Grid_EraserSwitch;
     private readonly InputAction m_Grid_LineSwitch;
     private readonly InputAction m_Grid_RectangleSwitch;
-    private readonly InputAction m_Grid_FilledRectangleSwitch;
     private readonly InputAction m_Grid_CircleSwitch;
-    private readonly InputAction m_Grid_FilledCircleSwitch;
     private readonly InputAction m_Grid_TextSwitch;
+    private readonly InputAction m_Grid_FIllSwitch;
     public struct GridActions
     {
         private @ControlFile m_Wrapper;
         public GridActions(@ControlFile wrapper) { m_Wrapper = wrapper; }
         public InputAction @MainClick => m_Wrapper.m_Grid_MainClick;
+        public InputAction @RegularHold => m_Wrapper.m_Grid_RegularHold;
         public InputAction @PenSwitch => m_Wrapper.m_Grid_PenSwitch;
         public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
         public InputAction @LineSwitch => m_Wrapper.m_Grid_LineSwitch;
         public InputAction @RectangleSwitch => m_Wrapper.m_Grid_RectangleSwitch;
-        public InputAction @FilledRectangleSwitch => m_Wrapper.m_Grid_FilledRectangleSwitch;
         public InputAction @CircleSwitch => m_Wrapper.m_Grid_CircleSwitch;
-        public InputAction @FilledCircleSwitch => m_Wrapper.m_Grid_FilledCircleSwitch;
         public InputAction @TextSwitch => m_Wrapper.m_Grid_TextSwitch;
+        public InputAction @FIllSwitch => m_Wrapper.m_Grid_FIllSwitch;
         public InputActionMap Get() { return m_Wrapper.m_Grid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -325,6 +325,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @MainClick.started += instance.OnMainClick;
             @MainClick.performed += instance.OnMainClick;
             @MainClick.canceled += instance.OnMainClick;
+            @RegularHold.started += instance.OnRegularHold;
+            @RegularHold.performed += instance.OnRegularHold;
+            @RegularHold.canceled += instance.OnRegularHold;
             @PenSwitch.started += instance.OnPenSwitch;
             @PenSwitch.performed += instance.OnPenSwitch;
             @PenSwitch.canceled += instance.OnPenSwitch;
@@ -337,18 +340,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @RectangleSwitch.started += instance.OnRectangleSwitch;
             @RectangleSwitch.performed += instance.OnRectangleSwitch;
             @RectangleSwitch.canceled += instance.OnRectangleSwitch;
-            @FilledRectangleSwitch.started += instance.OnFilledRectangleSwitch;
-            @FilledRectangleSwitch.performed += instance.OnFilledRectangleSwitch;
-            @FilledRectangleSwitch.canceled += instance.OnFilledRectangleSwitch;
             @CircleSwitch.started += instance.OnCircleSwitch;
             @CircleSwitch.performed += instance.OnCircleSwitch;
             @CircleSwitch.canceled += instance.OnCircleSwitch;
-            @FilledCircleSwitch.started += instance.OnFilledCircleSwitch;
-            @FilledCircleSwitch.performed += instance.OnFilledCircleSwitch;
-            @FilledCircleSwitch.canceled += instance.OnFilledCircleSwitch;
             @TextSwitch.started += instance.OnTextSwitch;
             @TextSwitch.performed += instance.OnTextSwitch;
             @TextSwitch.canceled += instance.OnTextSwitch;
+            @FIllSwitch.started += instance.OnFIllSwitch;
+            @FIllSwitch.performed += instance.OnFIllSwitch;
+            @FIllSwitch.canceled += instance.OnFIllSwitch;
         }
 
         private void UnregisterCallbacks(IGridActions instance)
@@ -356,6 +356,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @MainClick.started -= instance.OnMainClick;
             @MainClick.performed -= instance.OnMainClick;
             @MainClick.canceled -= instance.OnMainClick;
+            @RegularHold.started -= instance.OnRegularHold;
+            @RegularHold.performed -= instance.OnRegularHold;
+            @RegularHold.canceled -= instance.OnRegularHold;
             @PenSwitch.started -= instance.OnPenSwitch;
             @PenSwitch.performed -= instance.OnPenSwitch;
             @PenSwitch.canceled -= instance.OnPenSwitch;
@@ -368,18 +371,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @RectangleSwitch.started -= instance.OnRectangleSwitch;
             @RectangleSwitch.performed -= instance.OnRectangleSwitch;
             @RectangleSwitch.canceled -= instance.OnRectangleSwitch;
-            @FilledRectangleSwitch.started -= instance.OnFilledRectangleSwitch;
-            @FilledRectangleSwitch.performed -= instance.OnFilledRectangleSwitch;
-            @FilledRectangleSwitch.canceled -= instance.OnFilledRectangleSwitch;
             @CircleSwitch.started -= instance.OnCircleSwitch;
             @CircleSwitch.performed -= instance.OnCircleSwitch;
             @CircleSwitch.canceled -= instance.OnCircleSwitch;
-            @FilledCircleSwitch.started -= instance.OnFilledCircleSwitch;
-            @FilledCircleSwitch.performed -= instance.OnFilledCircleSwitch;
-            @FilledCircleSwitch.canceled -= instance.OnFilledCircleSwitch;
             @TextSwitch.started -= instance.OnTextSwitch;
             @TextSwitch.performed -= instance.OnTextSwitch;
             @TextSwitch.canceled -= instance.OnTextSwitch;
+            @FIllSwitch.started -= instance.OnFIllSwitch;
+            @FIllSwitch.performed -= instance.OnFIllSwitch;
+            @FIllSwitch.canceled -= instance.OnFIllSwitch;
         }
 
         public void RemoveCallbacks(IGridActions instance)
@@ -400,13 +400,13 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     public interface IGridActions
     {
         void OnMainClick(InputAction.CallbackContext context);
+        void OnRegularHold(InputAction.CallbackContext context);
         void OnPenSwitch(InputAction.CallbackContext context);
         void OnEraserSwitch(InputAction.CallbackContext context);
         void OnLineSwitch(InputAction.CallbackContext context);
         void OnRectangleSwitch(InputAction.CallbackContext context);
-        void OnFilledRectangleSwitch(InputAction.CallbackContext context);
         void OnCircleSwitch(InputAction.CallbackContext context);
-        void OnFilledCircleSwitch(InputAction.CallbackContext context);
         void OnTextSwitch(InputAction.CallbackContext context);
+        void OnFIllSwitch(InputAction.CallbackContext context);
     }
 }
