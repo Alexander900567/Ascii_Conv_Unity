@@ -105,5 +105,8 @@ public class InputHandler : MonoBehaviour
             grid_manager.text_cursor.localScale = new Vector3(0, 0, 0);
             toolbox.prev_grid_pos = (-1, -1);
         }
+        else if (toolbox.active_tool == Toolbox.Tools.rectangle_selector){
+            toolbox.rectangle_selector.reset_box();
+        }
     }
 }
