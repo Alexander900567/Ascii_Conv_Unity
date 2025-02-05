@@ -72,8 +72,8 @@ public class InputHandler : MonoBehaviour
         else if (controls.Grid.TextSwitch.IsPressed()){
             switch_to_text();
         }
-        else if (controls.Grid.FIllSwitch.IsPressed()){
-            enable_fill();
+        else if (controls.Grid.FillSwitch.IsPressed()){
+            switch_fill_mode();
         }
     }
 
@@ -103,10 +103,21 @@ public class InputHandler : MonoBehaviour
         if (toolbox.prev_grid_pos.row == -1) { toolbox.prev_grid_pos = (0, 0); }
         toolbox.active_tool = Toolbox.Tools.text;
     }
-    public void enable_fill(){
-        toolbox.active_mod = Toolbox.Mods.fill;
-    }
 
+    public void switch_fill_mode(){
+        if (toolbox.active_mod == Toolbox.Mods.none){
+           toolbox.active_mod = Toolbox.Mods.fill;     
+        }
+        else if (toolbox.active_mod == Toolbox.Mods.regular){
+            toolbox.active_mod = Toolbox.Mods.regular_fill;
+        }
+        else if (toolbox.active_mod == Toolbox.Mods.fill){
+            toolbox.active_mod = Toolbox.Mods.none;
+        }
+        else if (toolbox.active_mod == Toolbox.Mods.regular_fill){
+            toolbox.active_mod = Toolbox.Mods.regular;
+        }
+    }
     private void tools_unclick(){
         if (toolbox.active_tool == Toolbox.Tools.text){
             grid_manager.text_cursor.localScale = new Vector3(0, 0, 0);

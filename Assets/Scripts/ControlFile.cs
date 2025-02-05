@@ -100,7 +100,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""FIllSwitch"",
+                    ""name"": ""FillSwitch"",
                     ""type"": ""Button"",
                     ""id"": ""6d0de5b0-00f3-422e-9123-e469d0b5fafa"",
                     ""expectedControlType"": """",
@@ -205,7 +205,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""FIllSwitch"",
+                    ""action"": ""FillSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -224,7 +224,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_RectangleSwitch = m_Grid.FindAction("RectangleSwitch", throwIfNotFound: true);
         m_Grid_CircleSwitch = m_Grid.FindAction("CircleSwitch", throwIfNotFound: true);
         m_Grid_TextSwitch = m_Grid.FindAction("TextSwitch", throwIfNotFound: true);
-        m_Grid_FIllSwitch = m_Grid.FindAction("FIllSwitch", throwIfNotFound: true);
+        m_Grid_FillSwitch = m_Grid.FindAction("FillSwitch", throwIfNotFound: true);
     }
 
     ~@ControlFile()
@@ -299,7 +299,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_RectangleSwitch;
     private readonly InputAction m_Grid_CircleSwitch;
     private readonly InputAction m_Grid_TextSwitch;
-    private readonly InputAction m_Grid_FIllSwitch;
+    private readonly InputAction m_Grid_FillSwitch;
     public struct GridActions
     {
         private @ControlFile m_Wrapper;
@@ -312,7 +312,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @RectangleSwitch => m_Wrapper.m_Grid_RectangleSwitch;
         public InputAction @CircleSwitch => m_Wrapper.m_Grid_CircleSwitch;
         public InputAction @TextSwitch => m_Wrapper.m_Grid_TextSwitch;
-        public InputAction @FIllSwitch => m_Wrapper.m_Grid_FIllSwitch;
+        public InputAction @FillSwitch => m_Wrapper.m_Grid_FillSwitch;
         public InputActionMap Get() { return m_Wrapper.m_Grid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -346,9 +346,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @TextSwitch.started += instance.OnTextSwitch;
             @TextSwitch.performed += instance.OnTextSwitch;
             @TextSwitch.canceled += instance.OnTextSwitch;
-            @FIllSwitch.started += instance.OnFIllSwitch;
-            @FIllSwitch.performed += instance.OnFIllSwitch;
-            @FIllSwitch.canceled += instance.OnFIllSwitch;
+            @FillSwitch.started += instance.OnFillSwitch;
+            @FillSwitch.performed += instance.OnFillSwitch;
+            @FillSwitch.canceled += instance.OnFillSwitch;
         }
 
         private void UnregisterCallbacks(IGridActions instance)
@@ -377,9 +377,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @TextSwitch.started -= instance.OnTextSwitch;
             @TextSwitch.performed -= instance.OnTextSwitch;
             @TextSwitch.canceled -= instance.OnTextSwitch;
-            @FIllSwitch.started -= instance.OnFIllSwitch;
-            @FIllSwitch.performed -= instance.OnFIllSwitch;
-            @FIllSwitch.canceled -= instance.OnFIllSwitch;
+            @FillSwitch.started -= instance.OnFillSwitch;
+            @FillSwitch.performed -= instance.OnFillSwitch;
+            @FillSwitch.canceled -= instance.OnFillSwitch;
         }
 
         public void RemoveCallbacks(IGridActions instance)
@@ -407,6 +407,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnRectangleSwitch(InputAction.CallbackContext context);
         void OnCircleSwitch(InputAction.CallbackContext context);
         void OnTextSwitch(InputAction.CallbackContext context);
-        void OnFIllSwitch(InputAction.CallbackContext context);
+        void OnFillSwitch(InputAction.CallbackContext context);
     }
 }

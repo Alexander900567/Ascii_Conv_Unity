@@ -13,6 +13,8 @@ public class Toolbox : MonoBehaviour
     public GlobalOperations global;
     public GridManager grid_manager;
     public char active_letter;
+
+    public int stroke_width;
     public (int row, int col) prev_grid_pos; 
     private (int row, int col) start_grid_pos;
 
@@ -28,7 +30,8 @@ public class Toolbox : MonoBehaviour
     public enum Mods { //TODO: Implement
         none,
         fill,
-        regular //Makes shape "regular" e.g. square or circle vs. rectangle or ellipse
+        regular, //Makes shape "regular" e.g. square or circle vs. rectangle or ellipse
+        regular_fill //Both
     }
 
     //Make a tool by: Adding to above enum, adding to draw, creating behvaior by creating a function, creating a switch function, creating an IsPressed() func
@@ -42,6 +45,7 @@ public class Toolbox : MonoBehaviour
         prev_grid_pos = (-1, -1);
         active_tool = Tools.pencil;
         active_mod = Mods.none; //TODO: Make compatible w/ multiple mods
+        stroke_width = 0;
     }
 
     // Update is called once per frame
@@ -67,20 +71,27 @@ public class Toolbox : MonoBehaviour
         if (active_tool == Tools.pencil){ 
             pencil(grid_pos, prev_grid_pos);
         }
-        else if (active_tool == Tools.eraser) {
+        else if (active_tool == Tools.eraser){
             eraser(grid_pos, prev_grid_pos);
         }
         else if (active_tool == Tools.line){
             line(start_grid_pos, grid_pos);
         }
-        else if (active_mod == Mods.fill && active_tool == Tools.rectangle){ //TODO: These are tests, make bool a bool array
-            rectangle(start_grid_pos, grid_pos, true);
-        }
-        else if (active_mod == Mods.none && active_tool == Tools.rectangle){
-            rectangle(start_grid_pos, grid_pos, false);
+        else if (active_tool == Tools.rectangle){
+            if (active_mod == Mods.none){
+                rectangle(start_grid_pos, grid_pos, false);
+            }
+            else if (active_mod == Mods.fill){
+                rectangle(start_grid_pos, grid_pos, true);
+            }
         }
         else if (active_tool == Tools.circle){
-            circle(start_grid_pos, grid_pos, false);
+            if (active_mod == Mods.none){
+                circle(start_grid_pos, grid_pos, false);
+            }
+            else if (active_mod == Mods.fill){
+                circle(start_grid_pos, grid_pos, true);
+            }
         }
         if (prev_grid_pos != grid_pos){
             global.render_update = true;

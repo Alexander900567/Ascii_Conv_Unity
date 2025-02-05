@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "FIllSwitch",
+                    "name": "FillSwitch",
                     "type": "Button",
                     "id": "6d0de5b0-00f3-422e-9123-e469d0b5fafa",
                     "expectedControlType": "",
@@ -183,7 +183,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "FIllSwitch",
+                    "action": "FillSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
