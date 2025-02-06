@@ -5,8 +5,8 @@ public abstract class Tool : MonoBehaviour
 
     [SerializeField] protected GlobalOperations globalOperations;
     [SerializeField] protected GridManager gridManager;
-    private (int row, int col) startGpos = (-1, -1);
-    private bool clickedGrid = false; 
+    protected (int row, int col) startGpos = (-1, -1);
+    protected bool clickedGrid = false; 
 
     // Update is called once per frame
     public virtual void onUpdate(){

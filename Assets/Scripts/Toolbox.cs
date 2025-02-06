@@ -8,24 +8,24 @@ public class Toolbox : MonoBehaviour
 
     public GlobalOperations global;
     public GridManager gridManager;
-    public RectangleSelector rectangle_selector;
-    public (int row, int col) prevGpos; 
 
-    private Tool active_tool;
+    private (int row, int col) prevGpos; 
+    private Tool activeTool;
     [SerializeField] private Pencil Pencil;
+    [SerializeField] private Line Line;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         prevGpos = (-1, -1);
-        active_tool = Pencil;
+        activeTool = Pencil;
     }
 
     // Update is called once per frame
     void Update()
     {
-        active_tool.onUpdate();
+        activeTool.onUpdate();
 
         (int row, int col) gpos = gridManager.getGridPos();
         if (gpos != prevGpos){
@@ -34,10 +34,21 @@ public class Toolbox : MonoBehaviour
         prevGpos = gpos; 
     }
 
-/*
-    private void pencil((int row, int col) grid_pos, (int row, int col) prev_grid_pos){
+    public void changeActiveTool(Tool newTool){
+        activeTool.onExit();
+        activeTool = newTool;
+        activeTool.onEnter();
     }
 
+    //-----button functions-----
+    public void changeToPencil(){
+        changeActiveTool(Pencil);
+    }
+    public void changeToLine(){
+        changeActiveTool(Line);
+    }
+
+/*
     private void line(
         (int row, int col) start_grid_pos,
         (int row, int col) grid_pos 

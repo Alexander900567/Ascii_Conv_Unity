@@ -15,7 +15,4 @@ public class Pencil : Tool
         prevGpos = gpos;
     }
 
-
-
-
 }
