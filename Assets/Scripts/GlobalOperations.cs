@@ -3,6 +3,7 @@ using UnityEngine;
 public class GlobalOperations : MonoBehaviour
 {
     public bool render_update;
+    public char active_letter;
     public ControlFile controls;
 
 
