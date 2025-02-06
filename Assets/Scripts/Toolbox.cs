@@ -15,6 +15,7 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Line Line;
     [SerializeField] private Rectangle Rectangle;
     [SerializeField] private Text Text;
+    [SerializeField] private Circle Circle;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -54,6 +55,9 @@ public class Toolbox : MonoBehaviour
     }
     public void changeToText(){
         changeActiveTool(Text);
+    }
+    public void changeToCircle(){
+        changeActiveTool(Circle);
     }
 
 /*
