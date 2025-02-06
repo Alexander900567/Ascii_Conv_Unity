@@ -13,7 +13,6 @@ public class GridManager : MonoBehaviour
     public RectTransform canvas_transform;
     public GameObject example_grid_row;
     public RectTransform grid_space_outline;
-    public RectTransform text_cursor;
     
     private List<GameObject> grid_text_rows = new List<GameObject>();
     private List<List<char>> grid_array = new List<List<char>>();
@@ -64,8 +63,6 @@ public class GridManager : MonoBehaviour
 
 
         grid_space_outline.sizeDelta = new Vector2(col_size, row_size);
-        text_cursor.sizeDelta = new Vector2(col_size, row_size);
-        text_cursor.localScale = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
@@ -120,9 +117,6 @@ public class GridManager : MonoBehaviour
         grid_space_outline.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * grid_pos.row);
     }
 
-    public void renderTextCursor((int row, int col) grid_pos){
-        text_cursor.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * invert_row_pos(grid_pos.row));
-    }
 
 
     public void writePbufferToArray(){

@@ -14,6 +14,7 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Pencil Pencil;
     [SerializeField] private Line Line;
     [SerializeField] private Rectangle Rectangle;
+    [SerializeField] private Text Text;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -50,6 +51,9 @@ public class Toolbox : MonoBehaviour
     }
     public void changeToRectangle(){
         changeActiveTool(Rectangle);
+    }
+    public void changeToText(){
+        changeActiveTool(Text);
     }
 
 /*
@@ -107,34 +111,6 @@ public class Toolbox : MonoBehaviour
     }
     public void text(){
 
-        if(Input.GetKeyDown(KeyCode.Backspace)){
-            if (prev_grid_pos.col == 0){
-                gridManager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, ' ');
-            }
-            else{
-                gridManager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col - 1, ' ');
-                prev_grid_pos.col -= 1;
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow)){
-            prev_grid_pos.row = Mathf.Max(prev_grid_pos.row - 1, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow)){
-            prev_grid_pos.row = Mathf.Min(prev_grid_pos.row + 1, gridManager.get_row_count() - 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)){
-            prev_grid_pos.col = Mathf.Max(prev_grid_pos.col - 1, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow)){
-            prev_grid_pos.col = Mathf.Min(prev_grid_pos.col + 1, gridManager.get_col_count() - 1);
-        }
-        else if (Input.anyKeyDown && Input.inputString.Length > 0){
-            //Debug.Log(Input.inputString);
-            gridManager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, Input.inputString[0]);
-            if (prev_grid_pos.col < gridManager.get_col_count() - 1){
-                prev_grid_pos.col += 1;
-            }
-        }
 
         global.render_update = true;
     }
