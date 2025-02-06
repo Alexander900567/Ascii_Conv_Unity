@@ -7,94 +7,43 @@ public class Toolbox : MonoBehaviour
 {
 
     public GlobalOperations global;
-    public GridManager grid_manager;
+    public GridManager gridManager;
     public RectangleSelector rectangle_selector;
-    public (int row, int col) prev_grid_pos; 
-    public enum Tools{
-        pencil,
-        line,
-        rectangle,
-        circle,
-        text,
-        rectangle_selector,
-    }
-    public char active_letter;
+    public (int row, int col) prevGpos; 
 
-    private (int row, int col) start_grid_pos;
-    public Tools active_tool;
+    private Tool active_tool;
+    [SerializeField] private Pencil Pencil;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        prev_grid_pos = (-1, -1);
-        active_tool = Tools.pencil;
+        prevGpos = (-1, -1);
+        active_tool = Pencil;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (active_tool == Tools.text){
-            grid_manager.RenderTextCursor(prev_grid_pos);
-        }
-    }
+        active_tool.onUpdate();
 
-    public void set_start_grid_pos(){
-        start_grid_pos = grid_manager.get_grid_pos(Input.mousePosition);
-    }
-
-    public void reset_start_grid_pos(){
-        start_grid_pos = (-1, -1);
-    }
-
-    public void tool_draw(bool mouse_just_down){
-        if (mouse_just_down){
-            set_start_grid_pos();
-        } 
-        Vector3 mouse_pos = Input.mousePosition;
-        (int row, int col) grid_pos = grid_manager.get_grid_pos(mouse_pos);
-
-        if (active_tool == Tools.pencil){ 
-            pencil(grid_pos, prev_grid_pos);
-        }
-        else if (active_tool == Tools.line){
-            line(start_grid_pos, grid_pos, true);
-        }
-        else if (active_tool == Tools.rectangle){
-            rectangle(start_grid_pos, grid_pos);
-        }
-        else if (active_tool == Tools.circle){
-            circle(start_grid_pos, grid_pos);
-        }
-        else if (active_tool == Tools.rectangle_selector){
-            if (mouse_just_down){
-                rectangle_selector.on_mouse_down(grid_pos);
-            }
-            else{
-                rectangle_selector.on_mouse_move(grid_pos);
-            }
-        }
-        if (prev_grid_pos != grid_pos){
+        (int row, int col) gpos = gridManager.getGridPos();
+        if (gpos != prevGpos){
             global.render_update = true;
         }
-        prev_grid_pos = grid_pos;
+        prevGpos = gpos; 
     }
 
+/*
     private void pencil((int row, int col) grid_pos, (int row, int col) prev_grid_pos){
-        if (grid_pos != prev_grid_pos){
-            grid_manager.add_to_preview_buffer(grid_pos.row, grid_pos.col, active_letter);
-        }
     }
 
     private void line(
         (int row, int col) start_grid_pos,
-        (int row, int col) grid_pos, 
-        bool clear_buffer
+        (int row, int col) grid_pos 
     ){
         
-        if (clear_buffer){
-            grid_manager.empty_preview_buffer();
-        }
+        grid_manager.emptyPreviewBuffer();
 
         int horizontal_slope = grid_pos.row - start_grid_pos.row;
         int vertical_slope = grid_pos.col - start_grid_pos.col;
@@ -265,4 +214,5 @@ public class Toolbox : MonoBehaviour
         global.render_update = true;
     }
 
+*/
 }

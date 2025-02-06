@@ -72,13 +72,13 @@ public class GridManager : MonoBehaviour
     void Update()
     {
         if (global.render_update){
-            RenderGrid();
+            renderGrid();
             global.render_update = false;
         }
-        RenderGridOutline();
+        renderGridOutline();
     }
     
-    private void RenderGrid(){
+    private void renderGrid(){
         String row_string = "";
         float col_position;
         float col_offset = col_size * (float) 0.33;
@@ -115,25 +115,25 @@ public class GridManager : MonoBehaviour
         } 
     }
     
-    private void RenderGridOutline(){
-        Vector3 mouse_pos = Input.mousePosition;
-        (int row, int col) grid_pos = get_grid_pos(mouse_pos, invert_row: false);
+    private void renderGridOutline(){
+        (int row, int col) grid_pos = getGridPos(invert_row: false);
         grid_space_outline.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * grid_pos.row);
     }
 
-    public void RenderTextCursor((int row, int col) grid_pos){
+    public void renderTextCursor((int row, int col) grid_pos){
         text_cursor.anchoredPosition = new Vector2(col_size * grid_pos.col + ui_manager.ui_panel_transform.rect.width, row_size * invert_row_pos(grid_pos.row));
     }
 
 
-    public void write_pbuffer_to_array(){
+    public void writePbufferToArray(){
         foreach ((int, int, char) item in preview_buffer){
             grid_array[item.Item1][item.Item2] = item.Item3;
         }
-        empty_preview_buffer();
+        emptyPreviewBuffer();
     }
 
-    public (int row, int col) get_grid_pos(Vector3 mouse_pos, bool invert_row=true){
+    public (int row, int col) getGridPos(bool invert_row=true){
+        Vector3 mouse_pos = Input.mousePosition;
         int col = (int) ((mouse_pos[0] - ui_manager.ui_panel_transform.rect.width) / col_size);
         int row = (int) (mouse_pos[1] / row_size);
 
@@ -170,7 +170,7 @@ public class GridManager : MonoBehaviour
         );
     }
 
-    public void empty_preview_buffer(){
+    public void emptyPreviewBuffer(){
         preview_buffer.Clear();        
     }
 

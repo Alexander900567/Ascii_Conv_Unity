@@ -125,7 +125,7 @@ public class RectangleSelector : MonoBehaviour
         size = (-1, -1);
         start_gpos = (-1, -1);
 
-        grid_manager.write_pbuffer_to_array();
+        grid_manager.writePbufferToArray();
         Destroy(selector_box_instance);
         commit_button.SetActive(false);
     }
