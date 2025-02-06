@@ -1,35 +1,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RectangleSelector : MonoBehaviour
+public class RectangleSelector : Tool
 {
-    public GridManager gridManager;
-
     [SerializeField] private GameObject selector_box;
     private GameObject selector_box_instance;
     [SerializeField] private GameObject commit_button;
 
     private bool active;
-    private (int row, int col) start_gpos;
     private (int row, int col) top_left;
     private (int row, int col) bot_right;
     private (int row, int col) size;
     private List<(int, int, char)> original_buffer;
 
-    
-    void Start()
-    {
+    public override void onUpdate(){
+        handleInput();
+        if (active){
+            render_rectangle_selector();
+        }
+    }
+
+    public override void handleInput(){
+        (int row, int col) gpos = gridManager.getGridPos();
+        if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.triggered){
+            clickedGrid = true;
+            on_mouse_down(gpos);
+        }
+        else if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.IsPressed()){
+           on_mouse_move(gpos);
+        }
+
+        if (clickedGrid && globalOperations.controls.Grid.MainClick.WasReleasedThisFrame()){
+            clickedGrid = false;
+            on_mouse_up();
+        }
+        
+    }
+
+    public override void onEnter(){
         active = false;
-        start_gpos = (-1, -1);
+        startGpos = (-1, -1);
         top_left = (-1, -1);
         bot_right = (-1, -1);
         size = (-1, -1);
         original_buffer = new List<(int, int, char)>();
     }
 
-    void Update(){
+    public override void onExit(){
         if (active){
-            render_rectangle_selector();
+            reset_box();
         }
     }
 
@@ -53,19 +72,16 @@ public class RectangleSelector : MonoBehaviour
         selector_box_instance.transform.SetParent(gridManager.canvas_transform);
     }
 
-    public void destroy_selector_box(){
-
-    }
     
     public void on_mouse_down((int row, int col) gpos){
         if (!active){
-            start_gpos = (gpos.row, gpos.col);
+            startGpos = (gpos.row, gpos.col);
             change_corners(gpos);
             initialize_selector_box();
             render_rectangle_selector();
         }
         else{
-            start_gpos = (gpos.row, gpos.col);
+            startGpos = (gpos.row, gpos.col);
         }
 
     }
@@ -75,16 +91,16 @@ public class RectangleSelector : MonoBehaviour
             change_corners(gpos);
             render_rectangle_selector();
         }
-        else if (gpos != start_gpos){
-            int row_delta = gpos.row - start_gpos.row;
-            int col_delta = gpos.col - start_gpos.col;
+        else if (gpos != startGpos){
+            int row_delta = gpos.row - startGpos.row;
+            int col_delta = gpos.col - startGpos.col;
 
             bound_deltas(top_left);
             bound_deltas(bot_right);
 
             top_left = (top_left.row + row_delta, top_left.col + col_delta);
             bot_right = (bot_right.row + row_delta, bot_right.col + col_delta); 
-            start_gpos = gpos;
+            startGpos = gpos;
             if (row_delta != 0 || col_delta != 0){
                 for(int x = 0; x < gridManager.get_pbuffer_length(); x++){
                     gridManager.edit_pbuffer_item_pos(x, row_delta, col_delta);
@@ -123,7 +139,7 @@ public class RectangleSelector : MonoBehaviour
         top_left = (-1, -1);
         bot_right = (-1, -1);
         size = (-1, -1);
-        start_gpos = (-1, -1);
+        startGpos = (-1, -1);
 
         gridManager.writePbufferToArray();
         Destroy(selector_box_instance);
@@ -132,12 +148,12 @@ public class RectangleSelector : MonoBehaviour
 
     public void change_corners((int row, int col) new_gpos){
         top_left = (
-            Mathf.Min(start_gpos.row, new_gpos.row),
-            Mathf.Min(start_gpos.col, new_gpos.col)
+            Mathf.Min(startGpos.row, new_gpos.row),
+            Mathf.Min(startGpos.col, new_gpos.col)
         );
         bot_right = (
-            Mathf.Max(start_gpos.row, new_gpos.row),
-            Mathf.Max(start_gpos.col, new_gpos.col)
+            Mathf.Max(startGpos.row, new_gpos.row),
+            Mathf.Max(startGpos.col, new_gpos.col)
         );
         size = (bot_right.row - top_left.row + 1, bot_right.col - top_left.col + 1); 
     }
