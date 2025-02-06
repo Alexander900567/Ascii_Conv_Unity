@@ -154,7 +154,7 @@ public class GridManager : MonoBehaviour
 
     //---setters---
 
-    public void add_to_preview_buffer(int row, int col, char input){
+    public void addToPreviewBuffer(int row, int col, char input){
 
         if (row >= row_count || row < 0){ return; }
         else if (col >= col_count || col < 0){ return; }

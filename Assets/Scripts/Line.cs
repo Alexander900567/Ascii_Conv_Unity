@@ -7,8 +7,8 @@ public class Line : Tool
         line(startGpos, gridManager.getGridPos(), true);
     }
 
-    private void line(
-        (int row, int col) start_grid_pos,
+    public void line(
+        (int row, int col) startGpos,
         (int row, int col) grid_pos,
         bool clearBuffer
     ){
@@ -17,8 +17,8 @@ public class Line : Tool
             gridManager.emptyPreviewBuffer();
         }
 
-        int horizontal_slope = grid_pos.row - start_grid_pos.row;
-        int vertical_slope = grid_pos.col - start_grid_pos.col;
+        int horizontal_slope = grid_pos.row - startGpos.row;
+        int vertical_slope = grid_pos.col - startGpos.col;
         int row_iter = 0;
         int col_iter = 0;
 
@@ -57,19 +57,19 @@ public class Line : Tool
                 extra -= 1;
             }
             for (int y = 0; y < this_chunk; y++){
-                gridManager.add_to_preview_buffer(start_grid_pos.row, start_grid_pos.col, globalOperations.active_letter);
+                gridManager.addToPreviewBuffer(startGpos.row, startGpos.col, globalOperations.active_letter);
                 if (row_length_is_long){
-                    start_grid_pos.row += row_iter;
+                    startGpos.row += row_iter;
                 }
                 else {
-                    start_grid_pos.col += col_iter;
+                    startGpos.col += col_iter;
                 }
             }
             if (!row_length_is_long){
-                start_grid_pos.row += row_iter;
+                startGpos.row += row_iter;
             }
             else {
-                start_grid_pos.col += col_iter;
+                startGpos.col += col_iter;
             }
         }
     }

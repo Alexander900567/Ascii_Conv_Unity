@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RectangleSelector : MonoBehaviour
 {
-    public GridManager grid_manager;
+    public GridManager gridManager;
 
     [SerializeField] private GameObject selector_box;
     private GameObject selector_box_instance;
@@ -35,12 +35,12 @@ public class RectangleSelector : MonoBehaviour
 
     public void render_rectangle_selector(){
         selector_box_instance.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            grid_manager.get_col_size() * size.col,
-            grid_manager.get_row_size() * size.row 
+            gridManager.get_col_size() * size.col,
+            gridManager.get_row_size() * size.row 
         );
         selector_box_instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            grid_manager.ui_manager.ui_panel_transform.rect.width + top_left.col * grid_manager.get_col_size(),
-            grid_manager.invert_row_pos(bot_right.row) * grid_manager.get_row_size()
+            gridManager.ui_manager.ui_panel_transform.rect.width + top_left.col * gridManager.get_col_size(),
+            gridManager.invert_row_pos(bot_right.row) * gridManager.get_row_size()
         );
     }
 
@@ -50,7 +50,7 @@ public class RectangleSelector : MonoBehaviour
             new Vector3(0, 0, 0),
             transform.rotation
         );
-        selector_box_instance.transform.SetParent(grid_manager.canvas_transform);
+        selector_box_instance.transform.SetParent(gridManager.canvas_transform);
     }
 
     public void destroy_selector_box(){
@@ -86,19 +86,19 @@ public class RectangleSelector : MonoBehaviour
             bot_right = (bot_right.row + row_delta, bot_right.col + col_delta); 
             start_gpos = gpos;
             if (row_delta != 0 || col_delta != 0){
-                for(int x = 0; x < grid_manager.get_pbuffer_length(); x++){
-                    grid_manager.edit_pbuffer_item_pos(x, row_delta, col_delta);
+                for(int x = 0; x < gridManager.get_pbuffer_length(); x++){
+                    gridManager.edit_pbuffer_item_pos(x, row_delta, col_delta);
                 }
             }
 
             void bound_deltas((int row, int col) corner){
                 if (row_delta + corner.row < 0) {row_delta = corner.row * -1;}
-                else if (row_delta + corner.row >= grid_manager.get_row_count()) {
-                    row_delta = grid_manager.get_row_count() - 1 - corner.row;
+                else if (row_delta + corner.row >= gridManager.get_row_count()) {
+                    row_delta = gridManager.get_row_count() - 1 - corner.row;
                 }
                 if (col_delta + corner.col < 0) {col_delta = corner.col * -1;}
-                else if (col_delta + corner.col >= grid_manager.get_col_count()) {
-                    col_delta = grid_manager.get_col_count() - 1 - corner.col;
+                else if (col_delta + corner.col >= gridManager.get_col_count()) {
+                    col_delta = gridManager.get_col_count() - 1 - corner.col;
                 }
             };
         }
@@ -110,9 +110,9 @@ public class RectangleSelector : MonoBehaviour
             commit_button.SetActive(true);
             for(int row = top_left.row; row <= bot_right.row; row++){
                 for(int col = top_left.col; col <= bot_right.col; col++){
-                    grid_manager.add_to_preview_buffer(row, col, grid_manager.get_garr_space(row, col));
-                    original_buffer.Add((row, col, grid_manager.get_garr_space(row, col)));
-                    grid_manager.add_to_grid_array(row, col, ' ');
+                    gridManager.addToPreviewBuffer(row, col, gridManager.get_garr_space(row, col));
+                    original_buffer.Add((row, col, gridManager.get_garr_space(row, col)));
+                    gridManager.add_to_grid_array(row, col, ' ');
                 }
             } 
         }
@@ -125,7 +125,7 @@ public class RectangleSelector : MonoBehaviour
         size = (-1, -1);
         start_gpos = (-1, -1);
 
-        grid_manager.writePbufferToArray();
+        gridManager.writePbufferToArray();
         Destroy(selector_box_instance);
         commit_button.SetActive(false);
     }

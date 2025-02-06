@@ -13,6 +13,7 @@ public class Toolbox : MonoBehaviour
     private Tool activeTool;
     [SerializeField] private Pencil Pencil;
     [SerializeField] private Line Line;
+    [SerializeField] private Rectangle Rectangle;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -47,107 +48,20 @@ public class Toolbox : MonoBehaviour
     public void changeToLine(){
         changeActiveTool(Line);
     }
+    public void changeToRectangle(){
+        changeActiveTool(Rectangle);
+    }
 
 /*
-    private void line(
-        (int row, int col) start_grid_pos,
-        (int row, int col) grid_pos 
-    ){
-        
-        grid_manager.emptyPreviewBuffer();
 
-        int horizontal_slope = grid_pos.row - start_grid_pos.row;
-        int vertical_slope = grid_pos.col - start_grid_pos.col;
-        int row_iter = 0;
-        int col_iter = 0;
-
-        if (horizontal_slope != 0){
-            row_iter = horizontal_slope / System.Math.Abs(horizontal_slope);
-        }
-        if (vertical_slope != 0){
-            col_iter = vertical_slope / System.Math.Abs(vertical_slope);
-        }
-
-        horizontal_slope = System.Math.Abs(horizontal_slope);
-        vertical_slope = System.Math.Abs(vertical_slope);
-
-        int long_slope;
-        int short_slope;
-        bool row_length_is_long;
-
-        if (horizontal_slope > vertical_slope){
-            long_slope = horizontal_slope;
-            short_slope = vertical_slope + 1;
-            row_length_is_long = true;
-        }        
-        else{
-            long_slope = vertical_slope;
-            short_slope = horizontal_slope + 1;
-            row_length_is_long = false;
-        }
-
-        int per_chunk = long_slope / short_slope;
-        int extra = (long_slope % short_slope) + 1;
-
-        for (int x = 0; x < short_slope; x++){
-            int this_chunk = per_chunk;
-            if (extra > 0){
-                this_chunk += 1;
-                extra -= 1;
-            }
-            for (int y = 0; y < this_chunk; y++){
-                grid_manager.add_to_preview_buffer(start_grid_pos.row, start_grid_pos.col, active_letter);
-                if (row_length_is_long){
-                    start_grid_pos.row += row_iter;
-                }
-                else {
-                    start_grid_pos.col += col_iter;
-                }
-            }
-            if (!row_length_is_long){
-                start_grid_pos.row += row_iter;
-            }
-            else {
-                start_grid_pos.col += col_iter;
-            }
-        }
-    }
-
-    private void rectangle(
-        (int row, int col) start_grid_pos, 
-        (int row, int col) grid_pos
-    ){
-        grid_manager.empty_preview_buffer();
-
-        line(
-            (start_grid_pos.row, start_grid_pos.col),
-            (start_grid_pos.row, grid_pos.col),
-            false
-        );
-        line(
-            (start_grid_pos.row, start_grid_pos.col),
-            (grid_pos.row, start_grid_pos.col),
-            false
-        );
-        line(
-            (grid_pos.row, start_grid_pos.col),
-            (grid_pos.row, grid_pos.col),
-            false
-        );
-        line(
-            (start_grid_pos.row, grid_pos.col),
-            (grid_pos.row, grid_pos.col),
-            false
-        );
-    }
     private void circle(
-        (int row, int col) start_grid_pos,
+        (int row, int col) startGpos,
         (int row, int col) grid_pos
     ){
-        grid_manager.empty_preview_buffer(); //Assume user will make a new circle
+        gridManager.empty_preview_buffer(); //Assume user will make a new circle
 
-        int row_dif = grid_pos.row - start_grid_pos.row; //row and col components of
-        int col_dif = grid_pos.col - start_grid_pos.col; //difference between start and end
+        int row_dif = grid_pos.row - startGpos.row; //row and col components of
+        int col_dif = grid_pos.col - startGpos.col; //difference between start and end
         float diagonal_r = (float)Math.Sqrt((row_dif * row_dif) + (col_dif * col_dif));
         //pythag: c = sqrt(a^2 + b^2)
         //this is not yet usable due to the geometry of a grid in non-cardinal cases
@@ -172,14 +86,14 @@ public class Toolbox : MonoBehaviour
         int p = 1 - r;
 
         while (row_num <= col_num) { // draws 8 sections "simulataneously"
-            grid_manager.add_to_preview_buffer(start_grid_pos.row + row_num, start_grid_pos.col + col_num, active_letter);
-            grid_manager.add_to_preview_buffer(start_grid_pos.row + col_num, start_grid_pos.col + row_num, active_letter);
-            grid_manager.add_to_preview_buffer(start_grid_pos.row - col_num, start_grid_pos.col + row_num, active_letter);
-            grid_manager.add_to_preview_buffer(start_grid_pos.row - row_num, start_grid_pos.col + col_num, active_letter);
-            grid_manager.add_to_preview_buffer(start_grid_pos.row - row_num, start_grid_pos.col - col_num, active_letter);
-            grid_manager.add_to_preview_buffer(start_grid_pos.row - col_num, start_grid_pos.col - row_num, active_letter);
-            grid_manager.add_to_preview_buffer(start_grid_pos.row + col_num, start_grid_pos.col - row_num, active_letter);
-            grid_manager.add_to_preview_buffer(start_grid_pos.row + row_num, start_grid_pos.col - col_num, active_letter);
+            gridManager.addToPreviewBuffer(startGpos.row + row_num, startGpos.col + col_num, active_letter);
+            gridManager.addToPreviewBuffer(startGpos.row + col_num, startGpos.col + row_num, active_letter);
+            gridManager.addToPreviewBuffer(startGpos.row - col_num, startGpos.col + row_num, active_letter);
+            gridManager.addToPreviewBuffer(startGpos.row - row_num, startGpos.col + col_num, active_letter);
+            gridManager.addToPreviewBuffer(startGpos.row - row_num, startGpos.col - col_num, active_letter);
+            gridManager.addToPreviewBuffer(startGpos.row - col_num, startGpos.col - row_num, active_letter);
+            gridManager.addToPreviewBuffer(startGpos.row + col_num, startGpos.col - row_num, active_letter);
+            gridManager.addToPreviewBuffer(startGpos.row + row_num, startGpos.col - col_num, active_letter);
         
             row_num += 1;
             if (p < 0) {
@@ -195,10 +109,10 @@ public class Toolbox : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Backspace)){
             if (prev_grid_pos.col == 0){
-                grid_manager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, ' ');
+                gridManager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, ' ');
             }
             else{
-                grid_manager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col - 1, ' ');
+                gridManager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col - 1, ' ');
                 prev_grid_pos.col -= 1;
             }
         }
@@ -206,18 +120,18 @@ public class Toolbox : MonoBehaviour
             prev_grid_pos.row = Mathf.Max(prev_grid_pos.row - 1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow)){
-            prev_grid_pos.row = Mathf.Min(prev_grid_pos.row + 1, grid_manager.get_row_count() - 1);
+            prev_grid_pos.row = Mathf.Min(prev_grid_pos.row + 1, gridManager.get_row_count() - 1);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow)){
             prev_grid_pos.col = Mathf.Max(prev_grid_pos.col - 1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow)){
-            prev_grid_pos.col = Mathf.Min(prev_grid_pos.col + 1, grid_manager.get_col_count() - 1);
+            prev_grid_pos.col = Mathf.Min(prev_grid_pos.col + 1, gridManager.get_col_count() - 1);
         }
         else if (Input.anyKeyDown && Input.inputString.Length > 0){
             //Debug.Log(Input.inputString);
-            grid_manager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, Input.inputString[0]);
-            if (prev_grid_pos.col < grid_manager.get_col_count() - 1){
+            gridManager.add_to_grid_array(prev_grid_pos.row, prev_grid_pos.col, Input.inputString[0]);
+            if (prev_grid_pos.col < gridManager.get_col_count() - 1){
                 prev_grid_pos.col += 1;
             }
         }
