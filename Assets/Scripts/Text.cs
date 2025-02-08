@@ -18,39 +18,39 @@ public class Text : Tool
     public override void draw(){
         if(Input.GetKeyDown(KeyCode.Backspace)){
             if (cursorGpos.col == 0){
-                gridManager.add_to_grid_array(cursorGpos.row, cursorGpos.col, ' ');
+                gridManager.addToGridArray(cursorGpos.row, cursorGpos.col, ' ');
             }
             else{
-                gridManager.add_to_grid_array(cursorGpos.row, cursorGpos.col - 1, ' ');
+                gridManager.addToGridArray(cursorGpos.row, cursorGpos.col - 1, ' ');
                 cursorGpos.col -= 1;
             }
-            globalOperations.render_update = true;
+            globalOperations.renderUpdate = true;
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow)){
             cursorGpos.row = Mathf.Max(cursorGpos.row - 1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow)){
-            cursorGpos.row = Mathf.Min(cursorGpos.row + 1, gridManager.get_row_count() - 1);
+            cursorGpos.row = Mathf.Min(cursorGpos.row + 1, gridManager.getRowCount() - 1);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow)){
             cursorGpos.col = Mathf.Max(cursorGpos.col - 1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow)){
-            cursorGpos.col = Mathf.Min(cursorGpos.col + 1, gridManager.get_col_count() - 1);
+            cursorGpos.col = Mathf.Min(cursorGpos.col + 1, gridManager.getColCount() - 1);
         }
         else if (Input.anyKeyDown && Input.inputString.Length > 0){
             //Debug.Log(Input.inputString);
-            gridManager.add_to_grid_array(cursorGpos.row, cursorGpos.col, Input.inputString[0]);
-            if (cursorGpos.col < gridManager.get_col_count() - 1){
+            gridManager.addToGridArray(cursorGpos.row, cursorGpos.col, Input.inputString[0]);
+            if (cursorGpos.col < gridManager.getColCount() - 1){
                 cursorGpos.col += 1;
             }
-            globalOperations.render_update = true;
+            globalOperations.renderUpdate = true;
         }
     }
 
     public override void onEnter(){
         cursorGpos = (0, 0);
-        textCursor.sizeDelta = new Vector2(gridManager.get_col_size(), gridManager.get_row_size());
+        textCursor.sizeDelta = new Vector2(gridManager.getColSize(), gridManager.getRowSize());
         textCursor.localScale = new Vector3(1, 1, 1);
     }
 
@@ -60,8 +60,8 @@ public class Text : Tool
 
     public void renderTextCursor(){
         textCursor.anchoredPosition = new Vector2(
-            gridManager.get_col_size() * cursorGpos.col + gridManager.ui_manager.ui_panel_transform.rect.width, 
-            gridManager.get_row_size() * gridManager.invert_row_pos(cursorGpos.row)
+            gridManager.getColSize() * cursorGpos.col + gridManager.uiPanelTransform.rect.width, 
+            gridManager.getRowSize() * gridManager.invertRowPos(cursorGpos.row)
         );
     }
 }

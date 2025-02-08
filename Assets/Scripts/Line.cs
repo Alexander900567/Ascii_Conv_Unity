@@ -9,7 +9,7 @@ public class Line : Tool
 
     public void line(
         (int row, int col) startGpos,
-        (int row, int col) grid_pos,
+        (int row, int col) gridPos,
         bool clearBuffer
     ){
         
@@ -17,59 +17,59 @@ public class Line : Tool
             gridManager.emptyPreviewBuffer();
         }
 
-        int horizontal_slope = grid_pos.row - startGpos.row;
-        int vertical_slope = grid_pos.col - startGpos.col;
-        int row_iter = 0;
-        int col_iter = 0;
+        int horizontalSlope = gridPos.row - startGpos.row;
+        int verticalSlope = gridPos.col - startGpos.col;
+        int rowIter = 0;
+        int colIter = 0;
 
-        if (horizontal_slope != 0){
-            row_iter = horizontal_slope / System.Math.Abs(horizontal_slope);
+        if (horizontalSlope != 0){
+            rowIter = horizontalSlope / System.Math.Abs(horizontalSlope);
         }
-        if (vertical_slope != 0){
-            col_iter = vertical_slope / System.Math.Abs(vertical_slope);
+        if (verticalSlope != 0){
+            colIter = verticalSlope / System.Math.Abs(verticalSlope);
         }
 
-        horizontal_slope = System.Math.Abs(horizontal_slope);
-        vertical_slope = System.Math.Abs(vertical_slope);
+        horizontalSlope = System.Math.Abs(horizontalSlope);
+        verticalSlope = System.Math.Abs(verticalSlope);
 
-        int long_slope;
-        int short_slope;
-        bool row_length_is_long;
+        int longSlope;
+        int shortSlope;
+        bool rowLengthIsLong;
 
-        if (horizontal_slope > vertical_slope){
-            long_slope = horizontal_slope;
-            short_slope = vertical_slope + 1;
-            row_length_is_long = true;
+        if (horizontalSlope > verticalSlope){
+            longSlope = horizontalSlope;
+            shortSlope = verticalSlope + 1;
+            rowLengthIsLong = true;
         }        
         else{
-            long_slope = vertical_slope;
-            short_slope = horizontal_slope + 1;
-            row_length_is_long = false;
+            longSlope = verticalSlope;
+            shortSlope = horizontalSlope + 1;
+            rowLengthIsLong = false;
         }
 
-        int per_chunk = long_slope / short_slope;
-        int extra = (long_slope % short_slope) + 1;
+        int perChunk = longSlope / shortSlope;
+        int extra = (longSlope % shortSlope) + 1;
 
-        for (int x = 0; x < short_slope; x++){
-            int this_chunk = per_chunk;
+        for (int x = 0; x < shortSlope; x++){
+            int thisChunk = perChunk;
             if (extra > 0){
-                this_chunk += 1;
+                thisChunk += 1;
                 extra -= 1;
             }
-            for (int y = 0; y < this_chunk; y++){
-                gridManager.addToPreviewBuffer(startGpos.row, startGpos.col, globalOperations.active_letter);
-                if (row_length_is_long){
-                    startGpos.row += row_iter;
+            for (int y = 0; y < thisChunk; y++){
+                gridManager.addToPreviewBuffer(startGpos.row, startGpos.col, globalOperations.activeLetter);
+                if (rowLengthIsLong){
+                    startGpos.row += rowIter;
                 }
                 else {
-                    startGpos.col += col_iter;
+                    startGpos.col += colIter;
                 }
             }
-            if (!row_length_is_long){
-                startGpos.row += row_iter;
+            if (!rowLengthIsLong){
+                startGpos.row += rowIter;
             }
             else {
-                startGpos.col += col_iter;
+                startGpos.col += colIter;
             }
         }
     }

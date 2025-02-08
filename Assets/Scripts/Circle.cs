@@ -9,48 +9,48 @@ public class Circle : Tool
 
         gridManager.emptyPreviewBuffer(); //Assume user will make a new circle
 
-        int row_dif = gpos.row - startGpos.row; //row and col components of
-        int col_dif = gpos.col - startGpos.col; //difference between start and end
-        float diagonal_r = (float)Math.Sqrt((row_dif * row_dif) + (col_dif * col_dif));
+        int rowDif = gpos.row - startGpos.row; //row and col components of
+        int colDif = gpos.col - startGpos.col; //difference between start and end
+        float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
         //pythag: c = sqrt(a^2 + b^2)
         //this is not yet usable due to the geometry of a grid in non-cardinal cases
         //Note about precision: if not good enough, make these floats into doubles
         int r;
-        if (row_dif != 0 && col_dif != 0) { //non-cardinal case AKA trig time
-            int o = Math.Abs(col_dif); //converts o to be positive to work with sin()
-            float angle_theta = (float)Math.Asin(o / diagonal_r);
-            float h = (float)(o / diagonal_r) / (float)Math.Sin(angle_theta); //hypotenuse
-            float r0 = diagonal_r / h; //radius in terms of pixels
+        if (rowDif != 0 && colDif != 0) { //non-cardinal case AKA trig time
+            int o = Math.Abs(colDif); //converts o to be positive to work with sin()
+            float angleTheta = (float)Math.Asin(o / diagonalR);
+            float h = (float)(o / diagonalR) / (float)Math.Sin(angleTheta); //hypotenuse
+            float r0 = diagonalR / h; //radius in terms of pixels
             r = (int)Math.Floor(r0); //floor makes our radius usable
         }
-        else if (row_dif == 0 || col_dif == 0) {
-            r = (int)Math.Floor(diagonal_r);
+        else if (rowDif == 0 || colDif == 0) {
+            r = (int)Math.Floor(diagonalR);
         }
         else {
             r = 0;
         }
 
-        int row_num = 0;
-        int col_num = r;
+        int rowNum = 0;
+        int colNum = r;
         int p = 1 - r;
 
-        while (row_num <= col_num) { // draws 8 sections "simulataneously"
-            gridManager.addToPreviewBuffer(startGpos.row + row_num, startGpos.col + col_num, globalOperations.active_letter);
-            gridManager.addToPreviewBuffer(startGpos.row + col_num, startGpos.col + row_num, globalOperations.active_letter);
-            gridManager.addToPreviewBuffer(startGpos.row - col_num, startGpos.col + row_num, globalOperations.active_letter);
-            gridManager.addToPreviewBuffer(startGpos.row - row_num, startGpos.col + col_num, globalOperations.active_letter);
-            gridManager.addToPreviewBuffer(startGpos.row - row_num, startGpos.col - col_num, globalOperations.active_letter);
-            gridManager.addToPreviewBuffer(startGpos.row - col_num, startGpos.col - row_num, globalOperations.active_letter);
-            gridManager.addToPreviewBuffer(startGpos.row + col_num, startGpos.col - row_num, globalOperations.active_letter);
-            gridManager.addToPreviewBuffer(startGpos.row + row_num, startGpos.col - col_num, globalOperations.active_letter);
+        while (rowNum <= colNum) { // draws 8 sections "simulataneously"
+            gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col + colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row + colNum, startGpos.col + rowNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row - colNum, startGpos.col + rowNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col + colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col - colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row - colNum, startGpos.col - rowNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row + colNum, startGpos.col - rowNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col - colNum, globalOperations.activeLetter);
         
-            row_num += 1;
+            rowNum += 1;
             if (p < 0) {
-                p += 2 * row_num + 1;
+                p += 2 * rowNum + 1;
             }
             else {
-                col_num -= 1;
-                p += 2 * (row_num - col_num) + 1;
+                colNum -= 1;
+                p += 2 * (rowNum - colNum) + 1;
             }
         }
     }

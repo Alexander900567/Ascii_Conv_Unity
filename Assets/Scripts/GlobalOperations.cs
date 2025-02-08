@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class GlobalOperations : MonoBehaviour
 {
-    public bool render_update;
-    public char active_letter;
+    public bool renderUpdate;
+    public char activeLetter;
     public ControlFile controls;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        render_update = true; 
+        renderUpdate = true; 
     }
 
     void Awake(){

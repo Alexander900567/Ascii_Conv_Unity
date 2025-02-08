@@ -33,7 +33,7 @@ public class Toolbox : MonoBehaviour
 
         (int row, int col) gpos = gridManager.getGridPos();
         if (gpos != prevGpos){
-            global.render_update = true;
+            global.renderUpdate = true;
         }
         prevGpos = gpos; 
     }

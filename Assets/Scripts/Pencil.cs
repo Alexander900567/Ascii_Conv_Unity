@@ -9,7 +9,7 @@ public class Pencil : Tool
         (int row, int col) gpos = gridManager.getGridPos();
 
         if (gpos != prevGpos){
-            gridManager.addToPreviewBuffer(gpos.row, gpos.col, globalOperations.active_letter);
+            gridManager.addToPreviewBuffer(gpos.row, gpos.col, globalOperations.activeLetter);
         } 
 
         prevGpos = gpos;

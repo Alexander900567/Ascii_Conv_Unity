@@ -37,6 +37,6 @@ public abstract class Tool : MonoBehaviour
 
     public bool isMouseOnGrid(){
         Vector3 mousePos = Input.mousePosition;
-        return mousePos.x > gridManager.ui_manager.ui_panel_transform.rect.width;
+        return mousePos.x > gridManager.uiPanelTransform.rect.width;
     }
 }
