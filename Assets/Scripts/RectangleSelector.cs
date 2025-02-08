@@ -3,20 +3,20 @@ using UnityEngine;
 
 public class RectangleSelector : Tool
 {
-    [SerializeField] private GameObject selector_box;
-    private GameObject selector_box_instance;
-    [SerializeField] private GameObject commit_button;
+    [SerializeField] private GameObject selectorBox;
+    private GameObject selectorBoxInstance;
+    [SerializeField] private GameObject commitButton;
 
     private bool active;
-    private (int row, int col) top_left;
-    private (int row, int col) bot_right;
+    private (int row, int col) topLeft;
+    private (int row, int col) botRight;
     private (int row, int col) size;
-    private List<(int, int, char)> original_buffer;
+    private List<(int, int, char)> originalBuffer;
 
     public override void onUpdate(){
         handleInput();
         if (active){
-            render_rectangle_selector();
+            renderRectangleSelector();
         }
     }
 
@@ -24,15 +24,15 @@ public class RectangleSelector : Tool
         (int row, int col) gpos = gridManager.getGridPos();
         if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.triggered){
             clickedGrid = true;
-            on_mouse_down(gpos);
+            onMouseDown(gpos);
         }
         else if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.IsPressed()){
-           on_mouse_move(gpos);
+           onMouseMove(gpos);
         }
 
         if (clickedGrid && globalOperations.controls.Grid.MainClick.WasReleasedThisFrame()){
             clickedGrid = false;
-            on_mouse_up();
+            onMouseUp();
         }
         
     }
@@ -40,45 +40,45 @@ public class RectangleSelector : Tool
     public override void onEnter(){
         active = false;
         startGpos = (-1, -1);
-        top_left = (-1, -1);
-        bot_right = (-1, -1);
+        topLeft = (-1, -1);
+        botRight = (-1, -1);
         size = (-1, -1);
-        original_buffer = new List<(int, int, char)>();
+        originalBuffer = new List<(int, int, char)>();
     }
 
     public override void onExit(){
         if (active){
-            reset_box();
+            resetBox();
         }
     }
 
-    public void render_rectangle_selector(){
-        selector_box_instance.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            gridManager.get_col_size() * size.col,
-            gridManager.get_row_size() * size.row 
+    public void renderRectangleSelector(){
+        selectorBoxInstance.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            gridManager.getColSize() * size.col,
+            gridManager.getRowSize() * size.row 
         );
-        selector_box_instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            gridManager.ui_manager.ui_panel_transform.rect.width + top_left.col * gridManager.get_col_size(),
-            gridManager.invert_row_pos(bot_right.row) * gridManager.get_row_size()
+        selectorBoxInstance.GetComponent<RectTransform>().anchoredPosition = new Vector2(
+            gridManager.uiManager.uiPanelTransform.rect.width + topLeft.col * gridManager.getColSize(),
+            gridManager.invertRowPos(botRight.row) * gridManager.getRowSize()
         );
     }
 
-    public void initialize_selector_box(){
-        selector_box_instance = Instantiate(
-            selector_box,
+    public void initializeSelectorBox(){
+        selectorBoxInstance = Instantiate(
+            selectorBox,
             new Vector3(0, 0, 0),
             transform.rotation
         );
-        selector_box_instance.transform.SetParent(gridManager.canvas_transform);
+        selectorBoxInstance.transform.SetParent(gridManager.canvasTransform);
     }
 
     
-    public void on_mouse_down((int row, int col) gpos){
+    public void onMouseDown((int row, int col) gpos){
         if (!active){
             startGpos = (gpos.row, gpos.col);
-            change_corners(gpos);
-            initialize_selector_box();
-            render_rectangle_selector();
+            changeCorners(gpos);
+            initializeSelectorBox();
+            renderRectangleSelector();
         }
         else{
             startGpos = (gpos.row, gpos.col);
@@ -86,76 +86,76 @@ public class RectangleSelector : Tool
 
     }
 
-    public void on_mouse_move((int row, int col) gpos){
+    public void onMouseMove((int row, int col) gpos){
         if (!active){
-            change_corners(gpos);
-            render_rectangle_selector();
+            changeCorners(gpos);
+            renderRectangleSelector();
         }
         else if (gpos != startGpos){
-            int row_delta = gpos.row - startGpos.row;
-            int col_delta = gpos.col - startGpos.col;
+            int rowDelta = gpos.row - startGpos.row;
+            int colDelta = gpos.col - startGpos.col;
 
-            bound_deltas(top_left);
-            bound_deltas(bot_right);
+            boundDeltas(topLeft);
+            boundDeltas(botRight);
 
-            top_left = (top_left.row + row_delta, top_left.col + col_delta);
-            bot_right = (bot_right.row + row_delta, bot_right.col + col_delta); 
+            topLeft = (topLeft.row + rowDelta, topLeft.col + colDelta);
+            botRight = (botRight.row + rowDelta, botRight.col + colDelta); 
             startGpos = gpos;
-            if (row_delta != 0 || col_delta != 0){
-                for(int x = 0; x < gridManager.get_pbuffer_length(); x++){
-                    gridManager.edit_pbuffer_item_pos(x, row_delta, col_delta);
+            if (rowDelta != 0 || colDelta != 0){
+                for(int x = 0; x < gridManager.getPbufferLength(); x++){
+                    gridManager.editPbufferItemPos(x, rowDelta, colDelta);
                 }
             }
 
-            void bound_deltas((int row, int col) corner){
-                if (row_delta + corner.row < 0) {row_delta = corner.row * -1;}
-                else if (row_delta + corner.row >= gridManager.get_row_count()) {
-                    row_delta = gridManager.get_row_count() - 1 - corner.row;
+            void boundDeltas((int row, int col) corner){
+                if (rowDelta + corner.row < 0) {rowDelta = corner.row * -1;}
+                else if (rowDelta + corner.row >= gridManager.getRowCount()) {
+                    rowDelta = gridManager.getRowCount() - 1 - corner.row;
                 }
-                if (col_delta + corner.col < 0) {col_delta = corner.col * -1;}
-                else if (col_delta + corner.col >= gridManager.get_col_count()) {
-                    col_delta = gridManager.get_col_count() - 1 - corner.col;
+                if (colDelta + corner.col < 0) {colDelta = corner.col * -1;}
+                else if (colDelta + corner.col >= gridManager.getColCount()) {
+                    colDelta = gridManager.getColCount() - 1 - corner.col;
                 }
             };
         }
     }
 
-    public void on_mouse_up(){
+    public void onMouseUp(){
         if (!active){
             active = true;
-            commit_button.SetActive(true);
-            for(int row = top_left.row; row <= bot_right.row; row++){
-                for(int col = top_left.col; col <= bot_right.col; col++){
-                    gridManager.addToPreviewBuffer(row, col, gridManager.get_garr_space(row, col));
-                    original_buffer.Add((row, col, gridManager.get_garr_space(row, col)));
-                    gridManager.add_to_grid_array(row, col, ' ');
+            commitButton.SetActive(true);
+            for(int row = topLeft.row; row <= botRight.row; row++){
+                for(int col = topLeft.col; col <= botRight.col; col++){
+                    gridManager.addToPreviewBuffer(row, col, gridManager.getGarrSpace(row, col));
+                    originalBuffer.Add((row, col, gridManager.getGarrSpace(row, col)));
+                    gridManager.addToGridArray(row, col, ' ');
                 }
             } 
         }
     }
 
-    public void reset_box(){
+    public void resetBox(){
         active = false;
-        top_left = (-1, -1);
-        bot_right = (-1, -1);
+        topLeft = (-1, -1);
+        botRight = (-1, -1);
         size = (-1, -1);
         startGpos = (-1, -1);
 
         gridManager.writePbufferToArray();
-        Destroy(selector_box_instance);
-        commit_button.SetActive(false);
+        Destroy(selectorBoxInstance);
+        commitButton.SetActive(false);
     }
 
-    public void change_corners((int row, int col) new_gpos){
-        top_left = (
-            Mathf.Min(startGpos.row, new_gpos.row),
-            Mathf.Min(startGpos.col, new_gpos.col)
+    public void changeCorners((int row, int col) newGpos){
+        topLeft = (
+            Mathf.Min(startGpos.row, newGpos.row),
+            Mathf.Min(startGpos.col, newGpos.col)
         );
-        bot_right = (
-            Mathf.Max(startGpos.row, new_gpos.row),
-            Mathf.Max(startGpos.col, new_gpos.col)
+        botRight = (
+            Mathf.Max(startGpos.row, newGpos.row),
+            Mathf.Max(startGpos.col, newGpos.col)
         );
-        size = (bot_right.row - top_left.row + 1, bot_right.col - top_left.col + 1); 
+        size = (botRight.row - topLeft.row + 1, botRight.col - topLeft.col + 1); 
     }
 
 

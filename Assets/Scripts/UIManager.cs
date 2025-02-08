@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
-    public RectTransform ui_panel_transform;
+    public RectTransform uiPanelTransform;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
