@@ -58,7 +58,7 @@ public class RectangleSelector : Tool
             gridManager.getRowSize() * size.row 
         );
         selectorBoxInstance.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            gridManager.uiManager.uiPanelTransform.rect.width + topLeft.col * gridManager.getColSize(),
+            gridManager.uiPanelTransform.rect.width + topLeft.col * gridManager.getColSize(),
             gridManager.invertRowPos(botRight.row) * gridManager.getRowSize()
         );
     }

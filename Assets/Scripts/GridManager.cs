@@ -8,11 +8,11 @@ using UnityEngine.UI;
 public class GridManager : MonoBehaviour
 {
     public GlobalOperations global;
-    public UIManager uiManager;
     public GameObject gridTextRow;
     public RectTransform canvasTransform;
     public GameObject exampleGridRow;
     public RectTransform gridSpaceOutline;
+    public RectTransform uiPanelTransform;
     
     private List<GameObject> gridTextRows = new List<GameObject>();
     private List<List<char>> gridArray = new List<List<char>>();
@@ -26,7 +26,7 @@ public class GridManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        colSize = (float) (Screen.width - uiManager.uiPanelTransform.rect.width) / (float) colCount;
+        colSize = (float) (Screen.width - uiPanelTransform.rect.width) / (float) colCount;
         rowSize =  (float) Screen.height / (float) rowCount;
 
         for (int row = 0; row < rowCount; row++){
@@ -41,14 +41,14 @@ public class GridManager : MonoBehaviour
             gridTextRows.Insert(0, Instantiate(
                 gridTextRow, 
                 new Vector3(
-                    uiManager.uiPanelTransform.rect.width, 
+                    uiPanelTransform.rect.width, 
                     row * rowSize, 
                     0
                 ), 
                 transform.rotation
             ));
             gridTextRows[0].transform.SetParent(canvasTransform);
-            gridTextRows[0].GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - uiManager.uiPanelTransform.rect.width, rowSize);
+            gridTextRows[0].GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - uiPanelTransform.rect.width, rowSize);
             gridTextRows[0].name = "GridRow" + row.ToString();
         } 
 
@@ -57,7 +57,7 @@ public class GridManager : MonoBehaviour
         for(int col = 0; col < colCount; col++){
             autoSizeString += "N ";
         }
-        exampleGridRow.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - uiManager.uiPanelTransform.rect.width, rowSize);
+        exampleGridRow.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - uiPanelTransform.rect.width, rowSize);
         exampleGridRow.GetComponent<TextMeshProUGUI>().text = autoSizeString;
         fontSizeChanged = 2;
 
@@ -114,7 +114,7 @@ public class GridManager : MonoBehaviour
     
     private void renderGridOutline(){
         (int row, int col) gridPos = getGridPos(invertRow: false);
-        gridSpaceOutline.anchoredPosition = new Vector2(colSize * gridPos.col + uiManager.uiPanelTransform.rect.width, rowSize * gridPos.row);
+        gridSpaceOutline.anchoredPosition = new Vector2(colSize * gridPos.col + uiPanelTransform.rect.width, rowSize * gridPos.row);
     }
 
 
@@ -128,7 +128,7 @@ public class GridManager : MonoBehaviour
 
     public (int row, int col) getGridPos(bool invertRow=true){
         Vector3 mousePos = Input.mousePosition;
-        int col = (int) ((mousePos[0] - uiManager.uiPanelTransform.rect.width) / colSize);
+        int col = (int) ((mousePos[0] - uiPanelTransform.rect.width) / colSize);
         int row = (int) (mousePos[1] / rowSize);
 
         if (col < 0) { col = 0; }
