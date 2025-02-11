@@ -3,8 +3,13 @@ using UnityEngine;
 public class Text : Tool
 {
 
-    (int row, int col) cursorGpos;
+    [SerializeField] private UndoRedo undoRedo; 
     [SerializeField] private RectTransform textCursor;
+    private (int row, int col) cursorGpos;
+    private float commitTimer;
+    private bool isTimerActive;
+    private bool isTimerRinging;
+    //[SerializeField] private 
 
     public override void handleInput()
     {
@@ -13,6 +18,10 @@ public class Text : Tool
         }
         draw();
         renderTextCursor();
+        decrementTimer();
+        if(isTimerRinging){
+
+        }
     }
 
     public override void draw(){
@@ -25,6 +34,7 @@ public class Text : Tool
                 cursorGpos.col -= 1;
             }
             globalOperations.renderUpdate = true;
+            initTimer();
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow)){
             cursorGpos.row = Mathf.Max(cursorGpos.row - 1, 0);
@@ -45,11 +55,14 @@ public class Text : Tool
                 cursorGpos.col += 1;
             }
             globalOperations.renderUpdate = true;
+            initTimer();
         }
     }
 
     public override void onEnter(){
         cursorGpos = (0, 0);
+        isTimerActive = false;
+        isTimerRinging = false;
         textCursor.sizeDelta = new Vector2(gridManager.getColSize(), gridManager.getRowSize());
         textCursor.localScale = new Vector3(1, 1, 1);
         globalOperations.controls.Grid.Disable();
@@ -66,5 +79,19 @@ public class Text : Tool
             gridManager.getColSize() * cursorGpos.col + gridManager.uiPanelTransform.rect.width, 
             gridManager.getRowSize() * gridManager.invertRowPos(cursorGpos.row)
         );
+    }
+
+    private void initTimer(){
+        commitTimer = 3;
+        isTimerActive = true;
+    }
+    private void decrementTimer(){
+        if (isTimerActive){
+            commitTimer -= Time.deltaTime;
+            if (commitTimer <= 0){
+                isTimerActive = false;
+                isTimerRinging = true;
+            }
+        }
     }
 }

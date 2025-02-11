@@ -3,7 +3,7 @@ using UnityEngine;
 public class Eraser : Tool
 {
     private char lastActiveLetter;
-    [SerializeField] Pencil pencil;
+    [SerializeField] private Pencil pencil;
 
     public override void draw(){
         pencil.draw();
