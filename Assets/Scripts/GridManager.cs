@@ -121,11 +121,11 @@ public class GridManager : MonoBehaviour
 
 
     public void writePbufferToArray(bool addToUndo=true){
-        foreach ((int, int, char) item in previewBuffer){
-            gridArray[item.Item1][item.Item2] = item.Item3;
-        }
         if (addToUndo){
             undoRedo.addUndoFromPbuffer();
+        }
+        foreach ((int, int, char) item in previewBuffer){
+            gridArray[item.Item1][item.Item2] = item.Item3;
         }
         emptyPreviewBuffer();
     }

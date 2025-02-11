@@ -28,7 +28,7 @@ public class UndoRedo : MonoBehaviour
     }
 
     public void performUndo(){
-        if (undoBuffer.Count > 1){
+        if (undoBuffer.Count > 0){
             //stash redo
             List<(int, int, char)> redoElement = new List<(int, int, char)>();
             foreach((int, int, char) item in undoBuffer[^1]){
@@ -46,8 +46,20 @@ public class UndoRedo : MonoBehaviour
     }
 
     public void performRedo(){
-        if (redoBuffer.Count > 1){
+        if (redoBuffer.Count > 0){
+            //stash undo
+            List<(int, int, char)> undoElement = new List<(int, int, char)>();
+            foreach((int, int, char) item in redoBuffer[^1]){
+                undoElement.Add((item.Item1, item.Item2, gridManager.getGarrSpace(item.Item1, item.Item2)));
+            }
+            undoBuffer.Add(undoElement);
 
+            //perform redo
+            foreach((int, int, char) item in redoBuffer[^1]){
+                gridManager.addToGridArray(item.Item1, item.Item2, item.Item3);
+            }
+            redoBuffer.RemoveAt(redoBuffer.Count - 1);
+            global.renderUpdate = true;
         }
     }
 
