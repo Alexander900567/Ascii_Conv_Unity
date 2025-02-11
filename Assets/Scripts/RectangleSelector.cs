@@ -143,6 +143,14 @@ public class RectangleSelector : Tool
         size = (-1, -1);
         startGpos = (-1, -1);
 
+        List<(int, int, char)> undoElement = new List<(int, int, char)>();
+        foreach((int, int, char) item in gridManager.getPbuffer()){
+            undoElement.Add((item.Item1, item.Item2, gridManager.getGarrSpace(item.Item1, item.Item2)));
+        }
+        foreach((int, int, char) item in originalBuffer){
+            undoElement.Add((item.Item1, item.Item2, item.Item3));
+        }
+        undoRedo.addUndoElement(undoElement);
         gridManager.writePbufferToArray(addToUndo:false);
 
         Destroy(selectorBoxInstance);
