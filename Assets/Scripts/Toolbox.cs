@@ -32,10 +32,7 @@ public class Toolbox : MonoBehaviour
     void Update()
     {
         //handle any keyboard input
-        //If this if statement gets more complicated than just excluding during text mode, think up a better solution
-        if (activeTool != Text){
-            handleInput();
-        }
+        handleInput();
 
         //let the active tool do its thing
         activeTool.onUpdate();
