@@ -515,6 +515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
+  undoRedo: {fileID: 0}
   textCursor: {fileID: 1102333683}
 --- !u!114 &301216683
 MonoBehaviour:
