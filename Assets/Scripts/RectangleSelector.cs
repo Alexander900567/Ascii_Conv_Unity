@@ -26,7 +26,7 @@ public class RectangleSelector : Tool
             clickedGrid = true;
             onMouseDown(gpos);
         }
-        else if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.IsPressed()){
+        else if (clickedGrid && globalOperations.controls.Grid.MainClick.IsPressed()){
            onMouseMove(gpos);
         }
 

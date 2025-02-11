@@ -18,7 +18,7 @@ public abstract class Tool : MonoBehaviour
             clickedGrid = true;
             startGpos = gridManager.getGridPos();
         }
-        else if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.IsPressed()){
+        else if (clickedGrid && globalOperations.controls.Grid.MainClick.IsPressed()){
            draw(); 
         }
 
