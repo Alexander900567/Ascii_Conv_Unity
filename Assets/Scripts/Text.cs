@@ -8,7 +8,7 @@ public class Text : Tool
 
     public override void handleInput()
     {
-        if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.triggered){
+        if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.IsPressed()){
             cursorGpos = gridManager.getGridPos();
         }
         draw();
@@ -53,6 +53,7 @@ public class Text : Tool
         textCursor.sizeDelta = new Vector2(gridManager.getColSize(), gridManager.getRowSize());
         textCursor.localScale = new Vector3(1, 1, 1);
         globalOperations.controls.Grid.Disable();
+        globalOperations.controls.Grid.MainClick.Enable();
     }
 
     public override void onExit(){

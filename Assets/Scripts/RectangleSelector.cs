@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class RectangleSelector : Tool
 {
+    [SerializeField] private UndoRedo undoRedo;
     [SerializeField] private GameObject selectorBox;
     private GameObject selectorBoxInstance;
     [SerializeField] private GameObject commitButton;
@@ -79,6 +80,7 @@ public class RectangleSelector : Tool
             changeCorners(gpos);
             initializeSelectorBox();
             renderRectangleSelector();
+            undoRedo.disableUndoRedo();
         }
         else{
             startGpos = (gpos.row, gpos.col);
@@ -142,8 +144,10 @@ public class RectangleSelector : Tool
         startGpos = (-1, -1);
 
         gridManager.writePbufferToArray(addToUndo:false);
+
         Destroy(selectorBoxInstance);
         commitButton.SetActive(false);
+        undoRedo.enableUnodRedo();
     }
 
     public void changeCorners((int row, int col) newGpos){
@@ -157,7 +161,4 @@ public class RectangleSelector : Tool
         );
         size = (botRight.row - topLeft.row + 1, botRight.col - topLeft.col + 1); 
     }
-
-
-
 }

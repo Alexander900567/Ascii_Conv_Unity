@@ -5,6 +5,8 @@ public class UndoRedo : MonoBehaviour
 {
     [SerializeField] private GlobalOperations global;
     [SerializeField] private GridManager gridManager;
+    [SerializeField] private GameObject undoButton;
+    [SerializeField] private GameObject redoButton;
     private List<List<(int, int, char)>> undoBuffer;
     private List<List<(int, int, char)>> redoBuffer;
     private int maxUndos = 50;
@@ -79,4 +81,17 @@ public class UndoRedo : MonoBehaviour
         redoBuffer = new List<List<(int, int, char)>>();
     }
 
+    public void disableUndoRedo(){
+        undoButton.SetActive(false);
+        redoButton.SetActive(false);
+        global.controls.Grid.PerformUndo.Disable();
+        global.controls.Grid.PerformRedo.Disable();
+    }
+    
+    public void enableUnodRedo(){
+        undoButton.SetActive(true);
+        redoButton.SetActive(true);
+        global.controls.Grid.PerformUndo.Enable();
+        global.controls.Grid.PerformRedo.Enable();
+    }
 }
