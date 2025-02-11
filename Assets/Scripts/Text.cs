@@ -3,28 +3,39 @@ using UnityEngine;
 public class Text : Tool
 {
 
-    (int row, int col) cursorGpos;
+    [SerializeField] private UndoRedo undoRedo; 
     [SerializeField] private RectTransform textCursor;
+    private (int row, int col) cursorGpos;
+    private float commitTimer;
+    private bool isTimerActive;
+    private bool isTimerRinging;
+    //[SerializeField] private 
 
     public override void handleInput()
     {
-        if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.triggered){
+        if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.IsPressed()){
             cursorGpos = gridManager.getGridPos();
         }
         draw();
         renderTextCursor();
+        decrementTimer();
+        if(isTimerRinging){
+            gridManager.writePbufferToArray();
+            isTimerRinging = false;
+        }
     }
 
     public override void draw(){
         if(Input.GetKeyDown(KeyCode.Backspace)){
             if (cursorGpos.col == 0){
-                gridManager.addToGridArray(cursorGpos.row, cursorGpos.col, ' ');
+                gridManager.addToPreviewBuffer(cursorGpos.row, cursorGpos.col, ' ');
             }
             else{
-                gridManager.addToGridArray(cursorGpos.row, cursorGpos.col - 1, ' ');
+                gridManager.addToPreviewBuffer(cursorGpos.row, cursorGpos.col - 1, ' ');
                 cursorGpos.col -= 1;
             }
             globalOperations.renderUpdate = true;
+            initTimer();
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow)){
             cursorGpos.row = Mathf.Max(cursorGpos.row - 1, 0);
@@ -40,19 +51,23 @@ public class Text : Tool
         }
         else if (Input.anyKeyDown && Input.inputString.Length > 0){
             //Debug.Log(Input.inputString);
-            gridManager.addToGridArray(cursorGpos.row, cursorGpos.col, Input.inputString[0]);
+            gridManager.addToPreviewBuffer(cursorGpos.row, cursorGpos.col, Input.inputString[0]);
             if (cursorGpos.col < gridManager.getColCount() - 1){
                 cursorGpos.col += 1;
             }
             globalOperations.renderUpdate = true;
+            initTimer();
         }
     }
 
     public override void onEnter(){
         cursorGpos = (0, 0);
+        isTimerActive = false;
+        isTimerRinging = false;
         textCursor.sizeDelta = new Vector2(gridManager.getColSize(), gridManager.getRowSize());
         textCursor.localScale = new Vector3(1, 1, 1);
         globalOperations.controls.Grid.Disable();
+        globalOperations.controls.Grid.MainClick.Enable();
     }
 
     public override void onExit(){
@@ -65,5 +80,19 @@ public class Text : Tool
             gridManager.getColSize() * cursorGpos.col + gridManager.uiPanelTransform.rect.width, 
             gridManager.getRowSize() * gridManager.invertRowPos(cursorGpos.row)
         );
+    }
+
+    private void initTimer(){
+        commitTimer = 2;
+        isTimerActive = true;
+    }
+    private void decrementTimer(){
+        if (isTimerActive){
+            commitTimer -= Time.deltaTime;
+            if (commitTimer <= 0){
+                isTimerActive = false;
+                isTimerRinging = true;
+            }
+        }
     }
 }

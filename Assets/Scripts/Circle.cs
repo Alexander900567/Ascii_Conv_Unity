@@ -4,7 +4,7 @@ using System;
 public class Circle : Tool
 {
 
-    [SerializeField] Line Line;
+    [SerializeField] private Line Line;
     private bool isFilled = false;
 
     public override void draw(){
