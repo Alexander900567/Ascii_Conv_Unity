@@ -399,6 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   global: {fileID: 1327812282}
+  undoRedo: {fileID: 1561618751}
   gridTextRow: {fileID: 5731289936664375492, guid: 63dc8817bb30976b2846bb0d15a6a079, type: 3}
   canvasTransform: {fileID: 171098683}
   exampleGridRow: {fileID: 1162263133}
@@ -2441,6 +2442,52 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5604399938738863938, guid: 37227d08d50862e9bb3777280c3f7660, type: 3}
   m_PrefabInstance: {fileID: 1757586198}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1561618750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1561618752}
+  - component: {fileID: 1561618751}
+  m_Layer: 0
+  m_Name: UndoRedo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1561618751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561618750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b59bd471cd9a993b91ed3ba5f87d7b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  global: {fileID: 1327812282}
+  gridManager: {fileID: 202442179}
+--- !u!4 &1561618752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561618750}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 467.8908, y: 536.27734, z: -4.8061147}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1582401693
 GameObject:
   m_ObjectHideFlags: 0
@@ -3612,3 +3659,4 @@ SceneRoots:
   - {fileID: 202442180}
   - {fileID: 301216680}
   - {fileID: 1327812283}
+  - {fileID: 1561618752}

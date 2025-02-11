@@ -141,7 +141,7 @@ public class RectangleSelector : Tool
         size = (-1, -1);
         startGpos = (-1, -1);
 
-        gridManager.writePbufferToArray();
+        gridManager.writePbufferToArray(addToUndo:false);
         Destroy(selectorBoxInstance);
         commitButton.SetActive(false);
     }

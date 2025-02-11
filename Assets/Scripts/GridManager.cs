@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class GridManager : MonoBehaviour
 {
     public GlobalOperations global;
+    public UndoRedo undoRedo;
     public GameObject gridTextRow;
     public RectTransform canvasTransform;
     public GameObject exampleGridRow;
@@ -119,9 +120,12 @@ public class GridManager : MonoBehaviour
 
 
 
-    public void writePbufferToArray(){
+    public void writePbufferToArray(bool addToUndo=true){
         foreach ((int, int, char) item in previewBuffer){
             gridArray[item.Item1][item.Item2] = item.Item3;
+        }
+        if (addToUndo){
+            undoRedo.addUndoFromPbuffer();
         }
         emptyPreviewBuffer();
     }
@@ -200,6 +204,10 @@ public class GridManager : MonoBehaviour
 
     public int getPbufferLength(){
         return previewBuffer.Count;
+    }
+
+    public List<(int, int, char)> getPbuffer(){
+        return new List<(int, int, char)>(previewBuffer);
     }
 
 }

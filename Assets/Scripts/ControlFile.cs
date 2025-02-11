@@ -107,6 +107,24 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformUndo"",
+                    ""type"": ""Button"",
+                    ""id"": ""41541943-87b0-430b-9208-9819d11c0d07"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformRedo"",
+                    ""type"": ""Button"",
+                    ""id"": ""cf1b426c-7cfb-481d-8ba3-455c5a7dcb1f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -208,6 +226,28 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""RegularToggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7afbf044-a977-4c54-9172-346b4291f55d"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformUndo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16a3caf0-889d-422d-87d5-1531d7684a8e"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformRedo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -225,6 +265,8 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
         m_Grid_FilledToggle = m_Grid.FindAction("FilledToggle", throwIfNotFound: true);
         m_Grid_RegularToggle = m_Grid.FindAction("RegularToggle", throwIfNotFound: true);
+        m_Grid_PerformUndo = m_Grid.FindAction("PerformUndo", throwIfNotFound: true);
+        m_Grid_PerformRedo = m_Grid.FindAction("PerformRedo", throwIfNotFound: true);
     }
 
     ~@ControlFile()
@@ -300,6 +342,8 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_EraserSwitch;
     private readonly InputAction m_Grid_FilledToggle;
     private readonly InputAction m_Grid_RegularToggle;
+    private readonly InputAction m_Grid_PerformUndo;
+    private readonly InputAction m_Grid_PerformRedo;
     public struct GridActions
     {
         private @ControlFile m_Wrapper;
@@ -313,6 +357,8 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
         public InputAction @FilledToggle => m_Wrapper.m_Grid_FilledToggle;
         public InputAction @RegularToggle => m_Wrapper.m_Grid_RegularToggle;
+        public InputAction @PerformUndo => m_Wrapper.m_Grid_PerformUndo;
+        public InputAction @PerformRedo => m_Wrapper.m_Grid_PerformRedo;
         public InputActionMap Get() { return m_Wrapper.m_Grid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -349,6 +395,12 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @RegularToggle.started += instance.OnRegularToggle;
             @RegularToggle.performed += instance.OnRegularToggle;
             @RegularToggle.canceled += instance.OnRegularToggle;
+            @PerformUndo.started += instance.OnPerformUndo;
+            @PerformUndo.performed += instance.OnPerformUndo;
+            @PerformUndo.canceled += instance.OnPerformUndo;
+            @PerformRedo.started += instance.OnPerformRedo;
+            @PerformRedo.performed += instance.OnPerformRedo;
+            @PerformRedo.canceled += instance.OnPerformRedo;
         }
 
         private void UnregisterCallbacks(IGridActions instance)
@@ -380,6 +432,12 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @RegularToggle.started -= instance.OnRegularToggle;
             @RegularToggle.performed -= instance.OnRegularToggle;
             @RegularToggle.canceled -= instance.OnRegularToggle;
+            @PerformUndo.started -= instance.OnPerformUndo;
+            @PerformUndo.performed -= instance.OnPerformUndo;
+            @PerformUndo.canceled -= instance.OnPerformUndo;
+            @PerformRedo.started -= instance.OnPerformRedo;
+            @PerformRedo.performed -= instance.OnPerformRedo;
+            @PerformRedo.canceled -= instance.OnPerformRedo;
         }
 
         public void RemoveCallbacks(IGridActions instance)
@@ -408,5 +466,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnEraserSwitch(InputAction.CallbackContext context);
         void OnFilledToggle(InputAction.CallbackContext context);
         void OnRegularToggle(InputAction.CallbackContext context);
+        void OnPerformUndo(InputAction.CallbackContext context);
+        void OnPerformRedo(InputAction.CallbackContext context);
     }
 }
