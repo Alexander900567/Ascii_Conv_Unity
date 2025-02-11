@@ -80,6 +80,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EraserSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""08a42d42-d6e8-4a1a-9e89-500010ebf4fe"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -148,6 +157,17 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""TextSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""58e900e9-0b77-4232-b4ff-50e2b0f3f472"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EraserSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -162,6 +182,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_RectangleSwitch = m_Grid.FindAction("RectangleSwitch", throwIfNotFound: true);
         m_Grid_CircleSwitch = m_Grid.FindAction("CircleSwitch", throwIfNotFound: true);
         m_Grid_TextSwitch = m_Grid.FindAction("TextSwitch", throwIfNotFound: true);
+        m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
     }
 
     ~@ControlFile()
@@ -234,6 +255,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_RectangleSwitch;
     private readonly InputAction m_Grid_CircleSwitch;
     private readonly InputAction m_Grid_TextSwitch;
+    private readonly InputAction m_Grid_EraserSwitch;
     public struct GridActions
     {
         private @ControlFile m_Wrapper;
@@ -244,6 +266,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @RectangleSwitch => m_Wrapper.m_Grid_RectangleSwitch;
         public InputAction @CircleSwitch => m_Wrapper.m_Grid_CircleSwitch;
         public InputAction @TextSwitch => m_Wrapper.m_Grid_TextSwitch;
+        public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
         public InputActionMap Get() { return m_Wrapper.m_Grid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -271,6 +294,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @TextSwitch.started += instance.OnTextSwitch;
             @TextSwitch.performed += instance.OnTextSwitch;
             @TextSwitch.canceled += instance.OnTextSwitch;
+            @EraserSwitch.started += instance.OnEraserSwitch;
+            @EraserSwitch.performed += instance.OnEraserSwitch;
+            @EraserSwitch.canceled += instance.OnEraserSwitch;
         }
 
         private void UnregisterCallbacks(IGridActions instance)
@@ -293,6 +319,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @TextSwitch.started -= instance.OnTextSwitch;
             @TextSwitch.performed -= instance.OnTextSwitch;
             @TextSwitch.canceled -= instance.OnTextSwitch;
+            @EraserSwitch.started -= instance.OnEraserSwitch;
+            @EraserSwitch.performed -= instance.OnEraserSwitch;
+            @EraserSwitch.canceled -= instance.OnEraserSwitch;
         }
 
         public void RemoveCallbacks(IGridActions instance)
@@ -318,5 +347,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnRectangleSwitch(InputAction.CallbackContext context);
         void OnCircleSwitch(InputAction.CallbackContext context);
         void OnTextSwitch(InputAction.CallbackContext context);
+        void OnEraserSwitch(InputAction.CallbackContext context);
     }
 }

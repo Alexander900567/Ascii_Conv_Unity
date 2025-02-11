@@ -51,10 +51,18 @@
                     "initialStateCheck": false
                 },
                 {
-    
                     "name": "TextSwitch",
                     "type": "Button",
                     "id": "89c892ef-a4e4-499b-8f25-b90fafe05c7d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "EraserSwitch",
+                    "type": "Button",
+                    "id": "08a42d42-d6e8-4a1a-9e89-500010ebf4fe",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -125,6 +133,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "TextSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "58e900e9-0b77-4232-b4ff-50e2b0f3f472",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EraserSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

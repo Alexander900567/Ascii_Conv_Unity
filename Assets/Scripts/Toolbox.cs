@@ -18,6 +18,7 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Text Text;
     [SerializeField] private Circle Circle;
     [SerializeField] private RectangleSelector RectangleSelector;
+    [SerializeField] private Eraser Eraser;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -75,6 +76,9 @@ public class Toolbox : MonoBehaviour
     public void changeToRectangleSelector(){
         changeActiveTool(RectangleSelector);
     }
+    public void changeToEraser(){
+        changeActiveTool(Eraser);
+    }
     public void setLetterListeningTrue(){
         isLetterListening = true;
     }
@@ -97,6 +101,9 @@ public class Toolbox : MonoBehaviour
         }
         else if(global.controls.Grid.CircleSwitch.triggered){
             changeToCircle();
+        }
+        else if(global.controls.Grid.EraserSwitch.triggered){
+            changeToEraser();
         }
         /* Uncomment when keybind is added
         else if(global.controls.Grid.RectangleSelectorSwitch.triggered){
