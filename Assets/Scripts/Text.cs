@@ -20,17 +20,18 @@ public class Text : Tool
         renderTextCursor();
         decrementTimer();
         if(isTimerRinging){
-
+            gridManager.writePbufferToArray();
+            isTimerRinging = false;
         }
     }
 
     public override void draw(){
         if(Input.GetKeyDown(KeyCode.Backspace)){
             if (cursorGpos.col == 0){
-                gridManager.addToGridArray(cursorGpos.row, cursorGpos.col, ' ');
+                gridManager.addToPreviewBuffer(cursorGpos.row, cursorGpos.col, ' ');
             }
             else{
-                gridManager.addToGridArray(cursorGpos.row, cursorGpos.col - 1, ' ');
+                gridManager.addToPreviewBuffer(cursorGpos.row, cursorGpos.col - 1, ' ');
                 cursorGpos.col -= 1;
             }
             globalOperations.renderUpdate = true;
@@ -50,7 +51,7 @@ public class Text : Tool
         }
         else if (Input.anyKeyDown && Input.inputString.Length > 0){
             //Debug.Log(Input.inputString);
-            gridManager.addToGridArray(cursorGpos.row, cursorGpos.col, Input.inputString[0]);
+            gridManager.addToPreviewBuffer(cursorGpos.row, cursorGpos.col, Input.inputString[0]);
             if (cursorGpos.col < gridManager.getColCount() - 1){
                 cursorGpos.col += 1;
             }
@@ -82,7 +83,7 @@ public class Text : Tool
     }
 
     private void initTimer(){
-        commitTimer = 3;
+        commitTimer = 2;
         isTimerActive = true;
     }
     private void decrementTimer(){
