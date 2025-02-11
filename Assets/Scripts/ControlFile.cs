@@ -98,6 +98,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RegularToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""3acc2d48-7dc9-4528-854c-0562cc9c4b24"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -188,6 +197,17 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""FilledToggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5aabc66-1727-4274-a806-750096f9266d"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RegularToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -204,6 +224,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_TextSwitch = m_Grid.FindAction("TextSwitch", throwIfNotFound: true);
         m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
         m_Grid_FilledToggle = m_Grid.FindAction("FilledToggle", throwIfNotFound: true);
+        m_Grid_RegularToggle = m_Grid.FindAction("RegularToggle", throwIfNotFound: true);
     }
 
     ~@ControlFile()
@@ -278,6 +299,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_TextSwitch;
     private readonly InputAction m_Grid_EraserSwitch;
     private readonly InputAction m_Grid_FilledToggle;
+    private readonly InputAction m_Grid_RegularToggle;
     public struct GridActions
     {
         private @ControlFile m_Wrapper;
@@ -290,6 +312,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @TextSwitch => m_Wrapper.m_Grid_TextSwitch;
         public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
         public InputAction @FilledToggle => m_Wrapper.m_Grid_FilledToggle;
+        public InputAction @RegularToggle => m_Wrapper.m_Grid_RegularToggle;
         public InputActionMap Get() { return m_Wrapper.m_Grid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -323,6 +346,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @FilledToggle.started += instance.OnFilledToggle;
             @FilledToggle.performed += instance.OnFilledToggle;
             @FilledToggle.canceled += instance.OnFilledToggle;
+            @RegularToggle.started += instance.OnRegularToggle;
+            @RegularToggle.performed += instance.OnRegularToggle;
+            @RegularToggle.canceled += instance.OnRegularToggle;
         }
 
         private void UnregisterCallbacks(IGridActions instance)
@@ -351,6 +377,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @FilledToggle.started -= instance.OnFilledToggle;
             @FilledToggle.performed -= instance.OnFilledToggle;
             @FilledToggle.canceled -= instance.OnFilledToggle;
+            @RegularToggle.started -= instance.OnRegularToggle;
+            @RegularToggle.performed -= instance.OnRegularToggle;
+            @RegularToggle.canceled -= instance.OnRegularToggle;
         }
 
         public void RemoveCallbacks(IGridActions instance)
@@ -378,5 +407,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnTextSwitch(InputAction.CallbackContext context);
         void OnEraserSwitch(InputAction.CallbackContext context);
         void OnFilledToggle(InputAction.CallbackContext context);
+        void OnRegularToggle(InputAction.CallbackContext context);
     }
 }
