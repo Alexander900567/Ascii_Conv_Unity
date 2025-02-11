@@ -31,11 +31,13 @@ public class Toolbox : MonoBehaviour
     {
         activeTool.onUpdate();
 
-        (int row, int col) gpos = gridManager.getGridPos();
-        if (gpos != prevGpos){
-            global.renderUpdate = true;
-        }
-        prevGpos = gpos; 
+        if(global.controls.Grid.MainClick.IsPressed()){
+            (int row, int col) gpos = gridManager.getGridPos();
+            if (gpos != prevGpos){
+                global.renderUpdate = true;
+            }
+            prevGpos = gpos;
+        } 
     }
 
     public void changeActiveTool(Tool newTool){
