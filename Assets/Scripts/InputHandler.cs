@@ -75,6 +75,9 @@ public class InputHandler : MonoBehaviour
         else if (controls.Grid.FillSwitch.IsPressed()){
             switch_fill_mode();
         }
+        else if (controls.Grid.RegularHold.IsPressed()){
+            temp_switch_regular_mode();
+        }
     }
 
     public void switch_to_pencil(){
@@ -116,6 +119,28 @@ public class InputHandler : MonoBehaviour
         }
         else if (toolbox.active_mod == Toolbox.Mods.regular_fill){
             toolbox.active_mod = Toolbox.Mods.regular;
+        }
+    }
+
+    public void switch_regular_mode(){
+        if (toolbox.active_mod == Toolbox.Mods.none){
+            toolbox.active_mod = Toolbox.Mods.regular;
+        }
+        else if (toolbox.active_mod == Toolbox.Mods.regular){
+            toolbox.active_mod = Toolbox.Mods.none;
+        }
+        else if (toolbox.active_mod == Toolbox.Mods.fill){
+            toolbox.active_mod = Toolbox.Mods.regular_fill;
+        }
+        else if (toolbox.active_mod == Toolbox.Mods.regular_fill){
+            toolbox.active_mod = Toolbox.Mods.fill; 
+        }
+    }
+
+    public void temp_switch_regular_mode(){
+        if (toolbox.active_mod == Toolbox.Mods.none || toolbox.active_mod == Toolbox.Mods.fill){
+            Toolbox.Mods temp = toolbox.active_mod;
+            switch_regular_mode();
         }
     }
     private void tools_unclick(){

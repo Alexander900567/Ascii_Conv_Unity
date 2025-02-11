@@ -77,12 +77,18 @@ public class Toolbox : MonoBehaviour
         else if (active_tool == Tools.line){
             line(start_grid_pos, grid_pos);
         }
-        else if (active_tool == Tools.rectangle){
+        else if (active_tool == Tools.rectangle){ //Case handling for different mods
             if (active_mod == Mods.none){
-                rectangle(start_grid_pos, grid_pos, false);
+                rectangle(start_grid_pos, grid_pos, false, false);
             }
             else if (active_mod == Mods.fill){
-                rectangle(start_grid_pos, grid_pos, true);
+                rectangle(start_grid_pos, grid_pos, true, false);
+            }
+            else if (active_mod == Mods.regular){
+                rectangle(start_grid_pos, grid_pos, false, true);
+            }
+            else if (active_mod == Mods.regular_fill){
+                rectangle(start_grid_pos, grid_pos, true, true);
             }
         }
         else if (active_tool == Tools.circle){
@@ -114,7 +120,7 @@ public class Toolbox : MonoBehaviour
             grid_manager.add_to_preview_buffer(grid_pos.row, grid_pos.col, ' ');
         }
     }
-    private void line(
+    private void line( //TODO: Enable regular support
         (int row, int col) start_grid_pos, 
         (int row, int col) grid_pos, 
         bool clear_buffer=true
@@ -183,56 +189,94 @@ public class Toolbox : MonoBehaviour
     private void rectangle(
         (int row, int col) start_grid_pos, 
         (int row, int col) grid_pos,
-        bool fill
+        bool fill,
+        bool regular
     ){
         grid_manager.empty_preview_buffer();
 
+        int start_grid_row = start_grid_pos.row; //These ill be changed iff regular
+        int start_grid_col = start_grid_pos.col;
+        int end_grid_row = grid_pos.row;
+        int end_grid_col = grid_pos.col;
+
         bool fill_enabled = fill;
-        bool regular_enabled;
+        bool regular_enabled = regular;
+
+        if (regular_enabled){ //Math to make rectangle a square
+            int row_dif = grid_pos.row - start_grid_pos.row;
+            int col_dif = grid_pos.col - start_grid_pos.col;
+
+            if (Math.Abs(row_dif) != Math.Abs(col_dif)) { //If not already a square, then make square
+                int smaller_dif;
+                if (Math.Abs(row_dif) < Math.Abs(col_dif)){ //Determine shorter side
+                    smaller_dif = row_dif;
+                }
+                else{
+                    smaller_dif = col_dif;
+                }
+                smaller_dif = Math.Abs(smaller_dif); //The math can be optimized I bet
+                if (col_dif > 0 && row_dif < 0){
+                    end_grid_row = start_grid_row - smaller_dif;
+                    end_grid_col = start_grid_col + smaller_dif;
+                }
+                else if (col_dif > 0 && row_dif > 0){ //Conforms longer side to be equal to smaller side
+                    end_grid_row = start_grid_row + smaller_dif;
+                    end_grid_col = start_grid_col + smaller_dif;
+                }
+                else if (col_dif < 0 && row_dif > 0){
+                    end_grid_row = start_grid_row + smaller_dif;
+                    end_grid_col = start_grid_col - smaller_dif;
+                }
+                else if (col_dif < 0 && row_dif < 0){
+                    end_grid_row = start_grid_row - smaller_dif;
+                    end_grid_col = start_grid_col - smaller_dif;
+                }
+            }
+        }
 
         if (!fill_enabled) {
-        line(
-        (start_grid_pos.row, start_grid_pos.col),
-        (start_grid_pos.row, grid_pos.col),
-        false
-        );
-        line(
-            (start_grid_pos.row, start_grid_pos.col),
-            (grid_pos.row, start_grid_pos.col),
+            line(
+            (start_grid_row, start_grid_col),
+            (start_grid_row, end_grid_col),
             false
-        );
-        line(
-            (grid_pos.row, start_grid_pos.col),
-            (grid_pos.row, grid_pos.col),
-            false
-        );
-        line(
-            (start_grid_pos.row, grid_pos.col),
-            (grid_pos.row, grid_pos.col),
-            false
-        );
+            );
+            line(
+                (start_grid_row, start_grid_col),
+                (end_grid_row, start_grid_col),
+                false
+            );
+            line(
+                (end_grid_row, start_grid_col),
+                (end_grid_row, end_grid_col),
+                false
+            );
+            line(
+                (start_grid_row, end_grid_col),
+                (end_grid_row, end_grid_col),
+                false
+            );
         }
 
         else if (fill_enabled) {
         int upper_row;
         int lower_row;
 
-        if (start_grid_pos.row <= grid_pos.row) {
-            upper_row = start_grid_pos.row;
-            lower_row = grid_pos.row;
-        }
-        else { //hopefully no error
-            upper_row = grid_pos.row;
-            lower_row = start_grid_pos.row;
-        }
+            if (start_grid_row <= end_grid_row) {
+                upper_row = start_grid_row;
+                lower_row = end_grid_row;
+            }
+            else { //hopefully no error
+                upper_row = end_grid_row;
+                lower_row = start_grid_row;
+            }
 
-        for (int i = upper_row; i <= lower_row; i++) {
-            line(
-                (i, start_grid_pos.col),
-                (i, grid_pos.col),
-                false
-            );
-        }   
+            for (int i = upper_row; i <= lower_row; i++) {
+                line(
+                    (i, start_grid_col),
+                    (i, end_grid_col),
+                    false
+                );
+            }   
         }
     }
 
@@ -350,32 +394,5 @@ public class Toolbox : MonoBehaviour
 
         global.render_update = true;
     }
-
-/*         private void square_modifier(
-        (int row, int col) start_grid_pos,
-        (int row, int col) grid_pos
-    ) {
-        int row_dif = grid_pos.row - start_grid_pos.row;
-        int col_dif = grid_pos.col - start_grid_pos.col;
-        int smaller_dif;
-
-        if (row_dif <= col_dif) {
-            smaller_dif = row_dif;
-        }
-        else {
-            smaller_dif = col_dif;
-        }
-
-        if (active_tool == Tools.rectangle) {
-            rectangle((start_grid_pos.row, start_grid_pos.col),
-            (start_grid_pos.row + smaller_dif, start_grid_pos.col + smaller_dif));
-        }
-
-        else if (active_tool == Tools.filled_rectangle) {
-            filled_rectangle((start_grid_pos.row, start_grid_pos.col),
-            (start_grid_pos.row + smaller_dif, start_grid_pos.col + smaller_dif));
-        }
-
-    } */
 
 }
