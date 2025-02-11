@@ -155,7 +155,7 @@ public class RectangleSelector : Tool
 
         Destroy(selectorBoxInstance);
         commitButton.SetActive(false);
-        undoRedo.enableUnodRedo();
+        undoRedo.enableUndoRedo();
     }
 
     public void changeCorners((int row, int col) newGpos){

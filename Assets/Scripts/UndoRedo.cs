@@ -88,7 +88,7 @@ public class UndoRedo : MonoBehaviour
         global.controls.Grid.PerformRedo.Disable();
     }
     
-    public void enableUnodRedo(){
+    public void enableUndoRedo(){
         undoButton.SetActive(true);
         redoButton.SetActive(true);
         global.controls.Grid.PerformUndo.Enable();
