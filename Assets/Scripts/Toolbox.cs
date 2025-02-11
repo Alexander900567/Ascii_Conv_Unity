@@ -32,14 +32,11 @@ public class Toolbox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //handle any keyboard input
-        //If this if statement gets more complicated than just excluding during text mode, think up a better solution
-        if (activeTool != Text){
-            handleInput();
-        }
-
         //let the active tool do its thing
         activeTool.onUpdate();
+
+        //handle any keyboard input.
+        handleInput();
 
         //handle if a rerender of the grid should happen
         if(global.controls.Grid.MainClick.IsPressed()){

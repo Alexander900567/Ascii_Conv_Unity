@@ -52,10 +52,12 @@ public class Text : Tool
         cursorGpos = (0, 0);
         textCursor.sizeDelta = new Vector2(gridManager.getColSize(), gridManager.getRowSize());
         textCursor.localScale = new Vector3(1, 1, 1);
+        globalOperations.controls.Grid.Disable();
     }
 
     public override void onExit(){
         textCursor.localScale = new Vector3(0, 0, 0);
+        globalOperations.controls.Grid.Enable();
     }
 
     public void renderTextCursor(){
