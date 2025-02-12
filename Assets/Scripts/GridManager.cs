@@ -84,7 +84,6 @@ public class GridManager : MonoBehaviour
         float fullFontSize = exampleGridRow.GetComponent<TextMeshProUGUI>().fontSize;
 
         List<List<char>> renderArray = getGridArray();
-
         foreach ((int, int, char) item in previewBuffer){
             renderArray[item.Item1][item.Item2] = item.Item3;
         }
