@@ -83,11 +83,7 @@ public class GridManager : MonoBehaviour
         float colOffset = colSize * (float) 0.33;
         float fullFontSize = exampleGridRow.GetComponent<TextMeshProUGUI>().fontSize;
 
-        List<List<char>> renderArray = new List<List<char>>();
-        for (int row = 0; row < rowCount; row++){
-            renderArray.Add(new List<char>(gridArray[row]));
-        }
-
+        List<List<char>> renderArray = getGridArray();
 
         foreach ((int, int, char) item in previewBuffer){
             renderArray[item.Item1][item.Item2] = item.Item3;
@@ -218,6 +214,14 @@ public class GridManager : MonoBehaviour
 
     public List<(int, int, char)> getPbuffer(){
         return new List<(int, int, char)>(previewBuffer);
+    }
+
+    public List<List<char>> getGridArray(){
+        List<List<char>> arrayCopy = new List<List<char>>();
+        for (int row = 0; row < rowCount; row++){
+            arrayCopy.Add(new List<char>(gridArray[row]));
+        }
+        return arrayCopy;
     }
 
 }
