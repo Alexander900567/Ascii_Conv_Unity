@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -118,8 +119,6 @@ public class GridManager : MonoBehaviour
         gridSpaceOutline.anchoredPosition = new Vector2(colSize * gridPos.col + uiPanelTransform.rect.width, rowSize * gridPos.row);
     }
 
-
-
     public void writePbufferToArray(bool addToUndo=true){
         if (addToUndo){
             undoRedo.addUndoFromPbuffer();
@@ -128,6 +127,17 @@ public class GridManager : MonoBehaviour
             gridArray[item.Item1][item.Item2] = item.Item3;
         }
         emptyPreviewBuffer();
+    }
+
+    public void copyGridToClipboard(){
+        string gridString = "";
+        foreach(List<char> row in gridArray){
+            foreach(char element in row){
+                gridString += element;
+            }
+            gridString += "\n";
+        }
+        EditorGUIUtility.systemCopyBuffer = gridString;
     }
 
     public (int row, int col) getGridPos(bool invertRow=true){
