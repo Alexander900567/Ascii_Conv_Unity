@@ -13,6 +13,9 @@ public class Text : Tool
 
     public override void handleInput()
     {
+        if (globalOperations.controls.Grid.MainClick.triggered){
+            stopTimer();
+        }
         if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.IsPressed()){
             cursorGpos = gridManager.getGridPos();
         }
@@ -49,6 +52,10 @@ public class Text : Tool
         else if (Input.GetKeyDown(KeyCode.RightArrow)){
             cursorGpos.col = Mathf.Min(cursorGpos.col + 1, gridManager.getColCount() - 1);
         }
+        else if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)){
+            //probably implement a proper enter movement at some point
+            //for now just here to avoid new lines being written to the grid
+        }
         else if (Input.anyKeyDown && Input.inputString.Length > 0){
             //Debug.Log(Input.inputString);
             gridManager.addToPreviewBuffer(cursorGpos.row, cursorGpos.col, Input.inputString[0]);
@@ -71,6 +78,7 @@ public class Text : Tool
     }
 
     public override void onExit(){
+        stopTimer();
         textCursor.localScale = new Vector3(0, 0, 0);
         globalOperations.controls.Grid.Enable();
     }
@@ -94,5 +102,12 @@ public class Text : Tool
                 isTimerRinging = true;
             }
         }
+    }
+    private void stopTimer(){
+        if (gridManager.getPbufferLength() > 0){
+            gridManager.writePbufferToArray();
+        }
+        isTimerActive = false;
+        isTimerRinging = false;
     }
 }

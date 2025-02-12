@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -82,12 +83,7 @@ public class GridManager : MonoBehaviour
         float colOffset = colSize * (float) 0.33;
         float fullFontSize = exampleGridRow.GetComponent<TextMeshProUGUI>().fontSize;
 
-        List<List<char>> renderArray = new List<List<char>>();
-        for (int row = 0; row < rowCount; row++){
-            renderArray.Add(new List<char>(gridArray[row]));
-        }
-
-
+        List<List<char>> renderArray = getGridArray();
         foreach ((int, int, char) item in previewBuffer){
             renderArray[item.Item1][item.Item2] = item.Item3;
         }
@@ -118,8 +114,6 @@ public class GridManager : MonoBehaviour
         gridSpaceOutline.anchoredPosition = new Vector2(colSize * gridPos.col + uiPanelTransform.rect.width, rowSize * gridPos.row);
     }
 
-
-
     public void writePbufferToArray(bool addToUndo=true){
         if (addToUndo){
             undoRedo.addUndoFromPbuffer();
@@ -128,6 +122,17 @@ public class GridManager : MonoBehaviour
             gridArray[item.Item1][item.Item2] = item.Item3;
         }
         emptyPreviewBuffer();
+    }
+
+    public void copyGridToClipboard(){
+        string gridString = "";
+        foreach(List<char> row in gridArray){
+            foreach(char element in row){
+                gridString += element;
+            }
+            gridString += "\n";
+        }
+        EditorGUIUtility.systemCopyBuffer = gridString;
     }
 
     public (int row, int col) getGridPos(bool invertRow=true){
@@ -208,6 +213,14 @@ public class GridManager : MonoBehaviour
 
     public List<(int, int, char)> getPbuffer(){
         return new List<(int, int, char)>(previewBuffer);
+    }
+
+    public List<List<char>> getGridArray(){
+        List<List<char>> arrayCopy = new List<List<char>>();
+        for (int row = 0; row < rowCount; row++){
+            arrayCopy.Add(new List<char>(gridArray[row]));
+        }
+        return arrayCopy;
     }
 
 }
