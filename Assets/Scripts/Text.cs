@@ -49,6 +49,10 @@ public class Text : Tool
         else if (Input.GetKeyDown(KeyCode.RightArrow)){
             cursorGpos.col = Mathf.Min(cursorGpos.col + 1, gridManager.getColCount() - 1);
         }
+        else if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)){
+            //probably implement a proper enter movement at some point
+            //for now just here to avoid new lines being written to the grid
+        }
         else if (Input.anyKeyDown && Input.inputString.Length > 0){
             //Debug.Log(Input.inputString);
             gridManager.addToPreviewBuffer(cursorGpos.row, cursorGpos.col, Input.inputString[0]);
