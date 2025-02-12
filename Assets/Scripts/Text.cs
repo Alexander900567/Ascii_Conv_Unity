@@ -13,6 +13,9 @@ public class Text : Tool
 
     public override void handleInput()
     {
+        if (globalOperations.controls.Grid.MainClick.triggered){
+            stopTimer();
+        }
         if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.IsPressed()){
             cursorGpos = gridManager.getGridPos();
         }
@@ -75,6 +78,7 @@ public class Text : Tool
     }
 
     public override void onExit(){
+        stopTimer();
         textCursor.localScale = new Vector3(0, 0, 0);
         globalOperations.controls.Grid.Enable();
     }
@@ -98,5 +102,12 @@ public class Text : Tool
                 isTimerRinging = true;
             }
         }
+    }
+    private void stopTimer(){
+        if (gridManager.getPbufferLength() > 0){
+            gridManager.writePbufferToArray();
+        }
+        isTimerActive = false;
+        isTimerRinging = false;
     }
 }
