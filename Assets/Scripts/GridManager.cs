@@ -110,8 +110,8 @@ public class GridManager : MonoBehaviour
     }
     
     private void renderGridOutline(){
-        (int row, int col) gridPos = getGridPos(invertRow: false);
-        gridSpaceOutline.anchoredPosition = new Vector2(colSize * gridPos.col + getUiBarWidth(), rowSize * gridPos.row);
+        (int row, int col) gridPos = getGridPos();
+        gridSpaceOutline.GetComponent<HollowBoxAttach>().renderBox(gridPos, gridPos);
     }
 
     public void writePbufferToArray(bool addToUndo=true){

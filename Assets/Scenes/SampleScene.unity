@@ -655,7 +655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
-  undoRedo: {fileID: 0}
+  undoRedo: {fileID: 1561618751}
   textCursor: {fileID: 1102333683}
 --- !u!114 &301216683
 MonoBehaviour:
@@ -746,6 +746,7 @@ MonoBehaviour:
   gridManager: {fileID: 202442179}
   computeShader: {fileID: 7200000, guid: cc044d377ddeaec88b26b57197e0adc1, type: 3}
   chooseImageButton: {fileID: 1401916622}
+  outline: {fileID: 673269888117227066, guid: 37227d08d50862e9bb3777280c3f7660, type: 3}
 --- !u!1 &306834027
 GameObject:
   m_ObjectHideFlags: 0

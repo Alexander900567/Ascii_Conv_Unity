@@ -27,11 +27,7 @@ public class ImageConvertor : Tool
         }
         byte[] imageByteArray = File.ReadAllBytes(filePath);
         ImageConversion.LoadImage(image, imageByteArray, false);
-
-    
-
     }
-
 
 
 }
