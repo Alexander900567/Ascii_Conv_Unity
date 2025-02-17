@@ -4,9 +4,10 @@ using System.IO;
 
 public class ImageConvertor : Tool
 {
-    [SerializeField] ComputeShader computeShader;
-    [SerializeField] GameObject chooseImageButton;
-    Texture2D image;
+    [SerializeField] private ComputeShader computeShader;
+    [SerializeField] private GameObject chooseImageButton;
+    [SerializeField] private GameObject outline;
+    private Texture2D image;
 
 
 
