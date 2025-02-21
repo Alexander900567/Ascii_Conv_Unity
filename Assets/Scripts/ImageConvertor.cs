@@ -18,12 +18,12 @@ public class ImageConvertor : Tool
     private List<int> asciiMap;
     
     //state vars
-    //private bool imageUploaded;
-    private bool activeOutline = false;
+    private bool imageActive = false;
+    private bool outlineActive = false;
 
     public override void onUpdate(){
         base.onUpdate();
-        if (activeOutline){
+        if (outlineActive){
             outlineInstance.GetComponent<HollowBoxAttach>().renderBox(topLeft, botRight);
         }
     }
@@ -33,14 +33,14 @@ public class ImageConvertor : Tool
             clickedGrid = true;
             startGpos = gridManager.getGridPos();
 
-            if (!activeOutline){
+            if (!outlineActive){
                 outlineInstance = Instantiate(
                     outline,
                     new Vector3(0, 0, 0),
                     transform.rotation
                 );
                 outlineInstance.transform.SetParent(gridManager.canvasTransform);
-                activeOutline = true;
+                outlineActive = true;
                 setCorners(gridManager.getGridPos());
             }
         }
@@ -61,10 +61,10 @@ public class ImageConvertor : Tool
     public override void onExit(){
         chooseImageButton.SetActive(false);
         convertButton.SetActive(false);
-        if (activeOutline){
+        if (outlineActive){
             Destroy(outlineInstance);
         }
-        activeOutline = false;
+        outlineActive = false;
     }
 
     public void uploadImage(){
@@ -75,6 +75,7 @@ public class ImageConvertor : Tool
         image = new Texture2D(1, 1);
         byte[] imageByteArray = File.ReadAllBytes(filePath);
         ImageConversion.LoadImage(image, imageByteArray, false);
+        imageActive = true;
     }
 
     public void setCorners((int row, int col) newGpos){
@@ -89,18 +90,18 @@ public class ImageConvertor : Tool
     }
 
     public void performConversion(){
-        asciiMap = new List<int> {' ', '.', ':', '-', '=', '+' , '*', '#', '%', '@'};
+        if (!outlineActive || !imageActive){
+            return;
+        }
+        //asciiMap = new List<int> {' ', '.', ':', '-', '=', '+' , '*', '#', '%', '@'};
         //asciiMap = new List<int> {' ', '+', '@'};
+        asciiMap = new List<int> {' ', '.', ':', 'c', 'o', 'P', 'O', '?', '@'};
         int maxMapIndex = asciiMap.Count - 1;
         int heightCount = (botRight.row - topLeft.row) + 1;
         int widthCount = (botRight.col - topLeft.col) + 1;
         float luminacePerChar = (float)1.0 / (maxMapIndex + 1);
-        float hscaling =(float)(image.height / heightCount);
-        float wscaling =(float)(image.width / widthCount);
 
         RenderTexture imager = RenderTexture.GetTemporary(widthCount, heightCount);
-        //RenderTexture imager = new RenderTexture(widthCount, heightCount, 0);
-        //imager.Create();
         Graphics.Blit(image, imager); 
         Graphics.SetRenderTarget(imager);
         Texture2D downscaledTexture = new Texture2D(widthCount, heightCount);
@@ -112,10 +113,7 @@ public class ImageConvertor : Tool
 
         int row = botRight.row;
         int col = topLeft.col;
-        Debug.Log($"maxpi: {maxMapIndex}");
-        Debug.Log($"lumi: {luminacePerChar}");
         foreach(Color pixel in pixels){
-            Debug.Log($"grayscale:{pixel.grayscale} multnom:{(int)(pixel.grayscale / luminacePerChar)}");
             int index = Mathf.Min(maxMapIndex, (int)(pixel.grayscale / luminacePerChar)); 
             gridManager.addToPreviewBuffer(row, col, (char)asciiMap[index]);
             col += 1;
@@ -124,8 +122,6 @@ public class ImageConvertor : Tool
                 col = topLeft.col;
             }
         }
-//
-        Debug.Log("end");
         RenderTexture.ReleaseTemporary(imager);
 
         gridManager.writePbufferToArray();

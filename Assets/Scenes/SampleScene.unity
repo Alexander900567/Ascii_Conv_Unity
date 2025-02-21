@@ -881,7 +881,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
-  computeShader: {fileID: 7200000, guid: 14c84bfd24afa0baba1477890e3f67d1, type: 3}
   chooseImageButton: {fileID: 1401916622}
   convertButton: {fileID: 714812991}
   outline: {fileID: 673269888117227066, guid: 37227d08d50862e9bb3777280c3f7660, type: 3}
