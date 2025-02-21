@@ -1,27 +1,30 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System.Collections.Generic;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class ImageConvertor : Tool
 {
-    [SerializeField] private ComputeShader computeShader;
+    //normal vars
     [SerializeField] private GameObject chooseImageButton;
+    [SerializeField] private GameObject convertButton;
     [SerializeField] private GameObject outline;
     private GameObject outlineInstance;
-    private Texture2D image;
+    [SerializeField] private Texture2D image;
     private (int row, int col) topLeft;
     private (int row, int col) botRight;
+    private List<int> asciiMap;
+    
+    //state vars
     //private bool imageUploaded;
     private bool activeOutline = false;
-    private bool conversionUpdate = false;
 
     public override void onUpdate(){
         base.onUpdate();
         if (activeOutline){
             outlineInstance.GetComponent<HollowBoxAttach>().renderBox(topLeft, botRight);
-        }
-        if (conversionUpdate){
-            performConversion();
         }
     }
 
@@ -53,9 +56,11 @@ public class ImageConvertor : Tool
 
     public override void onEnter(){
         chooseImageButton.SetActive(true);
+        convertButton.SetActive(true);
     }
     public override void onExit(){
         chooseImageButton.SetActive(false);
+        convertButton.SetActive(false);
         if (activeOutline){
             Destroy(outlineInstance);
         }
@@ -63,7 +68,7 @@ public class ImageConvertor : Tool
     }
 
     public void uploadImage(){
-        string filePath = EditorUtility.OpenFilePanel("Choose an image", "~", "png");
+        string filePath = EditorUtility.OpenFilePanel("Choose an image", "~", "png,jpg");
         if (filePath == ""){
             return;
         }
@@ -84,6 +89,46 @@ public class ImageConvertor : Tool
     }
 
     public void performConversion(){
+        asciiMap = new List<int> {' ', '.', ':', '-', '=', '+' , '*', '#', '%', '@'};
+        //asciiMap = new List<int> {' ', '+', '@'};
+        int maxMapIndex = asciiMap.Count - 1;
+        int heightCount = (botRight.row - topLeft.row) + 1;
+        int widthCount = (botRight.col - topLeft.col) + 1;
+        float luminacePerChar = (float)1.0 / (maxMapIndex + 1);
+        float hscaling =(float)(image.height / heightCount);
+        float wscaling =(float)(image.width / widthCount);
 
+        RenderTexture imager = RenderTexture.GetTemporary(widthCount, heightCount);
+        //RenderTexture imager = new RenderTexture(widthCount, heightCount, 0);
+        //imager.Create();
+        Graphics.Blit(image, imager); 
+        Graphics.SetRenderTarget(imager);
+        Texture2D downscaledTexture = new Texture2D(widthCount, heightCount);
+        downscaledTexture.ReadPixels(
+            new Rect(0, 0, widthCount, heightCount),
+            0, 0, false 
+        );
+        Color[] pixels = downscaledTexture.GetPixels();
+
+        int row = botRight.row;
+        int col = topLeft.col;
+        Debug.Log($"maxpi: {maxMapIndex}");
+        Debug.Log($"lumi: {luminacePerChar}");
+        foreach(Color pixel in pixels){
+            Debug.Log($"grayscale:{pixel.grayscale} multnom:{(int)(pixel.grayscale / luminacePerChar)}");
+            int index = Mathf.Min(maxMapIndex, (int)(pixel.grayscale / luminacePerChar)); 
+            gridManager.addToPreviewBuffer(row, col, (char)asciiMap[index]);
+            col += 1;
+            if (col > botRight.col){
+                row -= 1;
+                col = topLeft.col;
+            }
+        }
+//
+        Debug.Log("end");
+        RenderTexture.ReleaseTemporary(imager);
+
+        gridManager.writePbufferToArray();
+        globalOperations.renderUpdate = true;
     }    
 }
