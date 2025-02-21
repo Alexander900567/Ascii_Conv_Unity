@@ -19,6 +19,7 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Circle Circle;
     [SerializeField] private RectangleSelector RectangleSelector;
     [SerializeField] private Eraser Eraser;
+    [SerializeField] private ImageConvertor ImageConvertor;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -75,6 +76,9 @@ public class Toolbox : MonoBehaviour
     }
     public void changeToEraser(){
         changeActiveTool(Eraser);
+    }
+    public void changeToImageConvertor(){
+        changeActiveTool(ImageConvertor);
     }
     public void setLetterListeningTrue(){
         isLetterListening = true;

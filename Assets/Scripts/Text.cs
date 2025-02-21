@@ -85,7 +85,7 @@ public class Text : Tool
 
     public void renderTextCursor(){
         textCursor.anchoredPosition = new Vector2(
-            gridManager.getColSize() * cursorGpos.col + gridManager.uiPanelTransform.rect.width, 
+            gridManager.getColSize() * cursorGpos.col + gridManager.getUiBarWidth(), 
             gridManager.getRowSize() * gridManager.invertRowPos(cursorGpos.row)
         );
     }
