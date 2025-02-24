@@ -135,7 +135,7 @@ public class Circle : Tool
         gridManager.addToPreviewBuffer((startGpos.row - rowNum), (startGpos.col + colNum), globalOperations.activeLetter);
         gridManager.addToPreviewBuffer((startGpos.row + rowNum), (startGpos.col - colNum), globalOperations.activeLetter);
         gridManager.addToPreviewBuffer((startGpos.row - rowNum), (startGpos.col - colNum), globalOperations.activeLetter);
-    }
+    };
     Action<int, int> drawLinePairs = (rowNum, colNum) => {
         (int row, int col) gpos = gridManager.getGridPos();
         Line.line(
@@ -150,7 +150,7 @@ public class Circle : Tool
             ((startGpos.row + rowNum),
             (startGpos.col - colNum)),
             false);
-    }
+    };
     public override void handleInput()
     {
         base.handleInput();
@@ -158,5 +158,4 @@ public class Circle : Tool
             isFilled = !isFilled;
         }
     }
-
 }
