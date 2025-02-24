@@ -6,35 +6,37 @@ public class Circle : Tool
 
     [SerializeField] private Line Line;
     private bool isFilled = false;
-
+    private bool isRegular = false;
     public override void draw(){
         (int row, int col) gpos = gridManager.getGridPos();
 
         gridManager.emptyPreviewBuffer();
-        
+
         int rowDif = gpos.row - startGpos.row; //row and col components of
         int colDif = gpos.col - startGpos.col; //difference between start and end
-        float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
-        //pythag: c = sqrt(a^2 + b^2)
-        //this is not yet usable due to the geometry of a grid in non-cardinal cases
-        //Note about precision: if not good enough, make these floats into doubles
-        int r;
-        if (rowDif != 0 && colDif != 0) { //non-cardinal case AKA trig time
-            int o = Math.Abs(colDif); //converts o to be positive to work with sin()
-            float angleTheta = (float)Math.Asin(o / diagonalR);
-            float h = (float)(o / diagonalR) / (float)Math.Sin(angleTheta); //hypotenuse
-            float r0 = diagonalR / h; //radius in terms of pixels
-            r = (int)Math.Floor(r0); //floor makes our radius usable
-        }
-        else if (rowDif == 0 || colDif == 0) {
-            r = (int)Math.Floor(diagonalR);
-        }
-        else {
-            r = 0;
-        }
-        int rowNum = 0;
-        int colNum = r;
-        int p = 1 - r;
+
+        if (isRegular){ //Math to make a circle
+            float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
+            //pythag: c = sqrt(a^2 + b^2)
+            //this is not yet usable due to the geometry of a grid in non-cardinal cases
+            //Note about precision: if not good enough, make these floats into doubles
+            int r;
+            if (rowDif != 0 && colDif != 0) { //non-cardinal case AKA trig time
+                int o = Math.Abs(colDif); //converts o to be positive to work with sin()
+                float angleTheta = (float)Math.Asin(o / diagonalR);
+                float h = (float)(o / diagonalR) / (float)Math.Sin(angleTheta); //hypotenuse
+                float r0 = diagonalR / h; //radius in terms of pixels
+                r = (int)Math.Floor(r0); //floor makes our radius usable
+            }
+            else if (rowDif == 0 || colDif == 0) {
+                r = (int)Math.Floor(diagonalR);
+            }
+            else {
+                r = 0;
+            }
+            int rowNum = 0;
+            int colNum = r;
+            int p = 1 - r;
 
         while (rowNum <= colNum) { // draws 8 sections "simulataneously"
             if (!isFilled) {
@@ -74,8 +76,79 @@ public class Circle : Tool
                 p += 2 * (rowNum - colNum) + 1;
             }
         }
+        else if(!isRegular){ //Math to make an ellipse
+            drawEllipse(drawQuadPixels); //Non fill ellipse
+        }
+        //TODO: Make if statement on outside
+        }
     }
+    private void drawEllipse(Action renderFunc) {
+        (int row, int col) gpos = gridManager.getGridPos();
 
+        int rowNum; //Used to keep track of drawing math
+        int colNum = colDif;
+
+        float rowDifSquared = rowDif * rowDif; //Used for math later :)
+        float colDifSquared = colDif * colDif;
+
+        float pRow = 0; //More drawing math
+        float pCol = 2 * rowDifSquared * colNum;
+
+        renderFunc();
+
+        float p = colDifSquared - (rowDifSquared * colDif) + (0.25 * rowDifSquared);
+
+        while (pRow <= pCol){ //Top and bottom
+            rowNum += 1;
+            pRow += 2.0 * colDifSquared;
+            if (p < 0.0){
+                p += colDifSquared + pRow;
+            }
+            else{
+                colNum -= 1;
+                pCol += 2.0 * rowDifSquared;
+                p += colDifSquared + pRow - pCol;
+            }
+            renderFunc();
+        }
+        //Left and right
+        p = (colDifSquared * ((rowNum + 0.5)(rowNum + 0.5))) + ((rowDifSquared) * (colNum - 1)(colNum - 1)) - (rowDifSquared * colDifSquared);
+        while (colNum >= 0){
+            colNum -= 1;
+            pCol += -2.0 * rowDifSquared;
+            if (p > 0.0){
+                p += rowDifSquared - pCol;
+            }
+            else{
+                rowNum += 1;
+                pRow += 2.0 * colDifSquared;
+                p += rowDifSquared - pCol + pRow;
+            }
+            renderFunc();
+        }
+    }
+    private void drawQuadPixels(int rowNum, int colNum){
+        (int row, int col) gpos = gridManager.getGridPos();
+        gridManager.addToPreviewBuffer((startGpos.row + rowNum), (startGpos.col + colNum), globalOperations.activeLetter);
+        gridManager.addToPreviewBuffer((startGpos.row - rowNum), (startGpos.col + colNum), globalOperations.activeLetter);
+        gridManager.addToPreviewBuffer((startGpos.row + rowNum), (startGpos.col - colNum), globalOperations.activeLetter);
+        gridManager.addToPreviewBuffer((startGpos.row - rowNum), (startGpos.col - colNum), globalOperations.activeLetter);
+    }
+    private void drawLinePairs(int rowNum, int colNum){
+        (int row, int col) gpos = gridManager.getGridPos();
+        Line.line(
+            (startGpos.row - rowNum), 
+            (startGpos.col + colNum),
+            (startGpos.row + rowNum),
+            (startGpos.col + colNum),
+            false);
+        Line.line(
+            (startGpos.row - rowNum), 
+            (startGpos.col - colNum),
+            (startGpos.row + rowNum),
+            (startGpos.col - colNum),
+            false);
+    }
     public override void handleInput()
     {
         base.handleInput();
