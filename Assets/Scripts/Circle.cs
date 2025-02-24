@@ -38,54 +38,53 @@ public class Circle : Tool
             int colNum = r;
             int p = 1 - r;
 
-        while (rowNum <= colNum) { // draws 8 sections "simulataneously"
-            if (!isFilled) {
-                gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col + colNum, globalOperations.activeLetter);
-                gridManager.addToPreviewBuffer(startGpos.row + colNum, startGpos.col + rowNum, globalOperations.activeLetter);
-                gridManager.addToPreviewBuffer(startGpos.row - colNum, startGpos.col + rowNum, globalOperations.activeLetter);
-                gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col + colNum, globalOperations.activeLetter);
-                gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col - colNum, globalOperations.activeLetter);
-                gridManager.addToPreviewBuffer(startGpos.row - colNum, startGpos.col - rowNum, globalOperations.activeLetter);
-                gridManager.addToPreviewBuffer(startGpos.row + colNum, startGpos.col - rowNum, globalOperations.activeLetter);
-                gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col - colNum, globalOperations.activeLetter);
-            }
-            else if (isFilled) {
-                Line.line(
-                (startGpos.row + rowNum, startGpos.col + colNum),
-                (startGpos.row - rowNum, startGpos.col + colNum),
-                false);
-                Line.line(
-                (startGpos.row + colNum, startGpos.col + rowNum),
-                (startGpos.row - colNum, startGpos.col + rowNum),
-                false);
-                Line.line(
-                (startGpos.row + rowNum, startGpos.col - colNum),
-                (startGpos.row - rowNum, startGpos.col - colNum),
-                false);
-                Line.line(
-                (startGpos.row + colNum, startGpos.col - rowNum),
-                (startGpos.row - colNum, startGpos.col - rowNum),
-                false);
-            }
-            rowNum += 1;
-            if (p < 0) {
-                p += 2 * rowNum + 1;
-            }
-            else {
-                colNum -= 1;
-                p += 2 * (rowNum - colNum) + 1;
+            while (rowNum <= colNum) { // draws 8 sections "simulataneously"
+                if (!isFilled) {
+                    gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col + colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(startGpos.row + colNum, startGpos.col + rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(startGpos.row - colNum, startGpos.col + rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col + colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col - colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(startGpos.row - colNum, startGpos.col - rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(startGpos.row + colNum, startGpos.col - rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col - colNum, globalOperations.activeLetter);
+                }
+                else if (isFilled) {
+                    Line.line(
+                    (startGpos.row + rowNum, startGpos.col + colNum),
+                    (startGpos.row - rowNum, startGpos.col + colNum),
+                    false);
+                    Line.line(
+                    (startGpos.row + colNum, startGpos.col + rowNum),
+                    (startGpos.row - colNum, startGpos.col + rowNum),
+                    false);
+                    Line.line(
+                    (startGpos.row + rowNum, startGpos.col - colNum),
+                    (startGpos.row - rowNum, startGpos.col - colNum),
+                    false);
+                    Line.line(
+                    (startGpos.row + colNum, startGpos.col - rowNum),
+                    (startGpos.row - colNum, startGpos.col - rowNum),
+                    false);
+                }
+                rowNum += 1;
+                if (p < 0) {
+                    p += 2 * rowNum + 1;
+                }
+                else {
+                    colNum -= 1;
+                    p += 2 * (rowNum - colNum) + 1;
+                }
             }
         }
         else if(!isRegular){ //Math to make an ellipse
-            drawEllipse(drawQuadPixels); //Non fill ellipse
-        }
-        //TODO: Make if statement on outside
+            drawEllipse(drawQuadPixels, rowDif, colDif); //Non fill ellipse
         }
     }
-    private void drawEllipse(Action renderFunc) {
+    private void drawEllipse(Action <int, int> renderFunc, int rowDif, int colDif) {
         (int row, int col) gpos = gridManager.getGridPos();
 
-        int rowNum; //Used to keep track of drawing math
+        int rowNum = 0; //Used to keep track of drawing math
         int colNum = colDif;
 
         float rowDifSquared = rowDif * rowDif; //Used for math later :)
@@ -94,59 +93,62 @@ public class Circle : Tool
         float pRow = 0; //More drawing math
         float pCol = 2 * rowDifSquared * colNum;
 
-        renderFunc();
+        renderFunc(rowNum, colNum);
 
-        float p = colDifSquared - (rowDifSquared * colDif) + (0.25 * rowDifSquared);
+        float p = colDifSquared - (rowDifSquared * colDif) + (0.25f * rowDifSquared);
 
         while (pRow <= pCol){ //Top and bottom
             rowNum += 1;
-            pRow += 2.0 * colDifSquared;
-            if (p < 0.0){
+            pRow += 2.0f * colDifSquared;
+            if (p < 0.0f){
                 p += colDifSquared + pRow;
             }
             else{
                 colNum -= 1;
-                pCol += 2.0 * rowDifSquared;
+                pCol += 2.0f * rowDifSquared;
                 p += colDifSquared + pRow - pCol;
             }
-            renderFunc();
+            renderFunc(rowNum, colNum);
         }
         //Left and right
-        p = (colDifSquared * ((rowNum + 0.5)(rowNum + 0.5))) + ((rowDifSquared) * (colNum - 1)(colNum - 1)) - (rowDifSquared * colDifSquared);
+        p = (colDifSquared * ((float)(rowNum + 0.5) * (float)(rowNum + 0.5))) +
+        ((rowDifSquared) * (float)(colNum - 1) * (float)(colNum - 1)) -
+        (rowDifSquared * colDifSquared);
+
         while (colNum >= 0){
             colNum -= 1;
-            pCol += -2.0 * rowDifSquared;
-            if (p > 0.0){
+            pCol += -2.0f * rowDifSquared;
+            if (p > 0.0f){
                 p += rowDifSquared - pCol;
             }
             else{
                 rowNum += 1;
-                pRow += 2.0 * colDifSquared;
+                pRow += 2.0f * colDifSquared;
                 p += rowDifSquared - pCol + pRow;
             }
-            renderFunc();
+            renderFunc(rowNum, colNum);
         }
     }
-    private void drawQuadPixels(int rowNum, int colNum){
+    Action<int, int> drawQuadPixels = (rowNum, colNum) => {
         (int row, int col) gpos = gridManager.getGridPos();
         gridManager.addToPreviewBuffer((startGpos.row + rowNum), (startGpos.col + colNum), globalOperations.activeLetter);
         gridManager.addToPreviewBuffer((startGpos.row - rowNum), (startGpos.col + colNum), globalOperations.activeLetter);
         gridManager.addToPreviewBuffer((startGpos.row + rowNum), (startGpos.col - colNum), globalOperations.activeLetter);
         gridManager.addToPreviewBuffer((startGpos.row - rowNum), (startGpos.col - colNum), globalOperations.activeLetter);
     }
-    private void drawLinePairs(int rowNum, int colNum){
+    Action<int, int> drawLinePairs = (rowNum, colNum) => {
         (int row, int col) gpos = gridManager.getGridPos();
         Line.line(
-            (startGpos.row - rowNum), 
-            (startGpos.col + colNum),
-            (startGpos.row + rowNum),
-            (startGpos.col + colNum),
+            ((startGpos.row - rowNum), 
+            (startGpos.col + colNum)),
+            ((startGpos.row + rowNum),
+            (startGpos.col + colNum)),
             false);
         Line.line(
-            (startGpos.row - rowNum), 
-            (startGpos.col - colNum),
-            (startGpos.row + rowNum),
-            (startGpos.col - colNum),
+            ((startGpos.row - rowNum), 
+            (startGpos.col - colNum)),
+            ((startGpos.row + rowNum),
+            (startGpos.col - colNum)),
             false);
     }
     public override void handleInput()
