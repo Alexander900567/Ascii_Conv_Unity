@@ -1,12 +1,49 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class Circle : Tool
 {
-
     [SerializeField] private Line Line;
     private bool isFilled = false;
     private bool isRegular = false;
+    private Action<int, int> drawQuadPixels;
+    private Action<int, int> drawLinePairs;
+
+    private void Awake(){
+        gridManager = FindFirstObjectByType<GridManager>();
+        globalOperations = FindFirstObjectByType<GlobalOperations>();
+        Line = FindFirstObjectByType<Line>();
+
+        if (gridManager == null || globalOperations == null || Line == null){
+            Debug.LogError("Circle is missing gridManager, globalOperations, or Line");
+            return;
+        }
+        startGpos = gridManager.getGridPos();
+
+        drawQuadPixels = (rowNum, colNum) => {
+            (int row, int col) gpos = gridManager.getGridPos();
+            gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col + colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col + colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col - colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col - colNum, globalOperations.activeLetter);
+        };
+        drawLinePairs = (rowNum, colNum) => {
+            (int row, int col) gpos = gridManager.getGridPos();
+            Line.line(
+                (startGpos.row - rowNum, 
+                startGpos.col + colNum),
+                (startGpos.row + rowNum,
+                startGpos.col + colNum),
+                false);
+            Line.line(
+                (startGpos.row - rowNum, 
+                startGpos.col - colNum),
+                (startGpos.row + rowNum,
+                startGpos.col - colNum),
+                false);
+        };
+    }
     public override void draw(){
         (int row, int col) gpos = gridManager.getGridPos();
 
@@ -78,7 +115,12 @@ public class Circle : Tool
             }
         }
         else if(!isRegular){ //Math to make an ellipse
-            drawEllipse(drawQuadPixels, rowDif, colDif); //Non fill ellipse
+            if (!isFilled){
+                drawEllipse(drawQuadPixels, rowDif, colDif); //Non fill ellipse
+            }
+            else if (isFilled){
+                drawEllipse(drawLinePairs, rowDif, colDif); //Filled ellipse
+            }
         }
     }
     private void drawEllipse(Action <int, int> renderFunc, int rowDif, int colDif) {
@@ -112,7 +154,7 @@ public class Circle : Tool
         }
         //Left and right
         p = (colDifSquared * ((float)(rowNum + 0.5) * (float)(rowNum + 0.5))) +
-        ((rowDifSquared) * (float)(colNum - 1) * (float)(colNum - 1)) -
+        (rowDifSquared * (colNum - 1) * (colNum - 1)) -
         (rowDifSquared * colDifSquared);
 
         while (colNum >= 0){
@@ -128,29 +170,7 @@ public class Circle : Tool
             }
             renderFunc(rowNum, colNum);
         }
-    }
-    Action<int, int> drawQuadPixels = (rowNum, colNum) => {
-        (int row, int col) gpos = gridManager.getGridPos();
-        gridManager.addToPreviewBuffer((startGpos.row + rowNum), (startGpos.col + colNum), globalOperations.activeLetter);
-        gridManager.addToPreviewBuffer((startGpos.row - rowNum), (startGpos.col + colNum), globalOperations.activeLetter);
-        gridManager.addToPreviewBuffer((startGpos.row + rowNum), (startGpos.col - colNum), globalOperations.activeLetter);
-        gridManager.addToPreviewBuffer((startGpos.row - rowNum), (startGpos.col - colNum), globalOperations.activeLetter);
-    };
-    Action<int, int> drawLinePairs = (rowNum, colNum) => {
-        (int row, int col) gpos = gridManager.getGridPos();
-        Line.line(
-            ((startGpos.row - rowNum), 
-            (startGpos.col + colNum)),
-            ((startGpos.row + rowNum),
-            (startGpos.col + colNum)),
-            false);
-        Line.line(
-            ((startGpos.row - rowNum), 
-            (startGpos.col - colNum)),
-            ((startGpos.row + rowNum),
-            (startGpos.col - colNum)),
-            false);
-    };
+    }    
     public override void handleInput()
     {
         base.handleInput();
