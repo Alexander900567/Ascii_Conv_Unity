@@ -11,15 +11,10 @@ public class Circle : Tool
     private Action<int, int> drawLinePairs;
 
     private void Awake(){
-        gridManager = FindFirstObjectByType<GridManager>();
-        globalOperations = FindFirstObjectByType<GlobalOperations>();
-        Line = FindFirstObjectByType<Line>();
-
         if (gridManager == null || globalOperations == null || Line == null){
             Debug.LogError("Circle is missing gridManager, globalOperations, or Line");
             return;
         }
-        startGpos = gridManager.getGridPos();
 
         drawQuadPixels = (rowNum, colNum) => {
             (int row, int col) gpos = gridManager.getGridPos();
@@ -115,11 +110,12 @@ public class Circle : Tool
             }
         }
         else if(!isRegular){ //Math to make an ellipse
+            //Debug.Log("in elippse if");
             if (!isFilled){
-                drawEllipse(drawQuadPixels, rowDif, colDif); //Non fill ellipse
+                drawEllipse(drawQuadPixels, Mathf.Abs(rowDif), Mathf.Abs(colDif)); //Non fill ellipse
             }
             else if (isFilled){
-                drawEllipse(drawLinePairs, rowDif, colDif); //Filled ellipse
+                drawEllipse(drawLinePairs, Mathf.Abs(rowDif), Mathf.Abs(colDif)); //Filled ellipse
             }
         }
     }
@@ -139,7 +135,13 @@ public class Circle : Tool
 
         float p = colDifSquared - (rowDifSquared * colDif) + (0.25f * rowDifSquared);
 
-        while (pRow <= pCol){ //Top and bottom
+        //Debug.Log("above first loop");
+        //Debug.Log($"rowDif: {rowDif}");
+        //Debug.Log($"colDif: {colDif}");
+        //Debug.Log($"p: {p}");
+        //int temp = 0;
+        while (pRow <= pCol){// && temp < 50){ //Top and bottom
+            //Debug.Log("pRow <= hit");
             rowNum += 1;
             pRow += 2.0f * colDifSquared;
             if (p < 0.0f){
@@ -147,17 +149,21 @@ public class Circle : Tool
             }
             else{
                 colNum -= 1;
-                pCol += 2.0f * rowDifSquared;
+                pCol += -2.0f * rowDifSquared;
                 p += colDifSquared + pRow - pCol;
             }
             renderFunc(rowNum, colNum);
+            //temp += 1;
         }
+        //Debug.Log($"temp: {temp}");
+        //Debug.Log($"{pRow} <= {pCol}");
         //Left and right
         p = (colDifSquared * ((float)(rowNum + 0.5) * (float)(rowNum + 0.5))) +
         (rowDifSquared * (colNum - 1) * (colNum - 1)) -
         (rowDifSquared * colDifSquared);
 
         while (colNum >= 0){
+            Debug.Log("colNum <= hit");
             colNum -= 1;
             pCol += -2.0f * rowDifSquared;
             if (p > 0.0f){
@@ -176,6 +182,9 @@ public class Circle : Tool
         base.handleInput();
         if (globalOperations.controls.Grid.FilledToggle.triggered){
             isFilled = !isFilled;
+        }
+        if (globalOperations.controls.Grid.RegularToggle.triggered){
+            isRegular = !isRegular;
         }
     }
 }
