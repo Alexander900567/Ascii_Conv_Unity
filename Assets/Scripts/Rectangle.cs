@@ -5,14 +5,13 @@ public class Rectangle : Tool
 {
     [SerializeField] private Line Line;
     private bool isFilled = false;
-    private bool isRegular = false;
 
     public override void draw()
     {
         gridManager.emptyPreviewBuffer();
         (int row, int col) gpos = gridManager.getGridPos();
 
-        if (isRegular){ //Math to make rectangle a square
+        if (globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Math to make rectangle a square
             int row_dif = gpos.row - startGpos.row;
             int col_dif = gpos.col - startGpos.col;
 
@@ -93,9 +92,13 @@ public class Rectangle : Tool
         base.handleInput();
         if (globalOperations.controls.Grid.FilledToggle.triggered){
             isFilled = !isFilled;
+            globalOperations.renderUpdate = true;
         }
-        else if (globalOperations.controls.Grid.RegularToggle.triggered){
-            isRegular = !isRegular;
+        else if(
+            globalOperations.controls.Grid.RegularToggle.triggered ||
+            globalOperations.controls.Grid.RegularToggle.WasReleasedThisFrame()
+        ){
+            globalOperations.renderUpdate = true;
         }
     }
 

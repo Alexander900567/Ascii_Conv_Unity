@@ -2,46 +2,41 @@ using UnityEngine;
 using System;
 
 public class Line : Tool
-
 {
-    private bool isRegular = false;
-
     public override void draw(){
-        if(!isRegular){
+        if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){
             line(startGpos, gridManager.getGridPos(), true);
         }
-        else if(isRegular){
+        else { //Regular (straight) line
             (int row, int col) endGridPos = gridManager.getGridPos();
 
-            if (isRegular){ //Math to make a straight line
-                int row_dif = endGridPos.row - startGpos.row;
-                int col_dif = endGridPos.col - startGpos.col;
+            int row_dif = endGridPos.row - startGpos.row;
+            int col_dif = endGridPos.col - startGpos.col;
 
-                if (Math.Abs(row_dif) != Math.Abs(col_dif)) { //If not already a square, then make square
-                    int smaller_dif;
-                    if (Math.Abs(row_dif) < Math.Abs(col_dif)){ //Determine shorter component
-                        smaller_dif = row_dif;
-                    }
-                    else{
-                        smaller_dif = col_dif;
-                    }
-                    smaller_dif = Math.Abs(smaller_dif); //The math can be optimized I bet
-                    if (col_dif > 0 && row_dif < 0){
-                        endGridPos.row = startGpos.row - smaller_dif;
-                        endGridPos.col = startGpos.col + smaller_dif;
-                    }
-                    else if (col_dif > 0 && row_dif > 0){ //Conforms longer side to be equal to smaller side
-                        endGridPos.row = startGpos.row + smaller_dif;
-                        endGridPos.col = startGpos.col + smaller_dif;
-                    }
-                    else if (col_dif < 0 && row_dif > 0){
-                        endGridPos.row = startGpos.row + smaller_dif;
-                        endGridPos.col = startGpos.col - smaller_dif;
-                    }
-                    else if (col_dif < 0 && row_dif < 0){
-                        endGridPos.row = startGpos.row - smaller_dif;
-                        endGridPos.col = startGpos.col - smaller_dif;
-                    }
+            if (Math.Abs(row_dif) != Math.Abs(col_dif)) { //If not already a square, then make square
+                int smaller_dif;
+                if (Math.Abs(row_dif) < Math.Abs(col_dif)){ //Determine shorter component
+                    smaller_dif = row_dif;
+                }
+                else{
+                    smaller_dif = col_dif;
+                }
+                smaller_dif = Math.Abs(smaller_dif); //The math can be optimized I bet
+                if (col_dif > 0 && row_dif < 0){
+                    endGridPos.row = startGpos.row - smaller_dif;
+                    endGridPos.col = startGpos.col + smaller_dif;
+                }
+                else if (col_dif > 0 && row_dif > 0){ //Conforms longer side to be equal to smaller side
+                    endGridPos.row = startGpos.row + smaller_dif;
+                    endGridPos.col = startGpos.col + smaller_dif;
+                }
+                else if (col_dif < 0 && row_dif > 0){
+                    endGridPos.row = startGpos.row + smaller_dif;
+                    endGridPos.col = startGpos.col - smaller_dif;
+                }
+                else if (col_dif < 0 && row_dif < 0){
+                    endGridPos.row = startGpos.row - smaller_dif;
+                    endGridPos.col = startGpos.col - smaller_dif;
                 }
             }
             line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
@@ -117,8 +112,11 @@ public class Line : Tool
 
     public override void handleInput(){
         base.handleInput();
-        if (globalOperations.controls.Grid.RegularToggle.triggered){
-            isRegular = !isRegular;
+        if (
+            globalOperations.controls.Grid.RegularToggle.triggered ||
+            globalOperations.controls.Grid.RegularToggle.WasReleasedThisFrame()
+        ){
+            globalOperations.renderUpdate = true;
         }
-    }    
+    }
 }
