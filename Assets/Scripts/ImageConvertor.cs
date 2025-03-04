@@ -1,0 +1,130 @@
+using UnityEngine;
+using UnityEditor;
+using System.IO;
+using System.Collections.Generic;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
+
+public class ImageConvertor : Tool
+{
+    //normal vars
+    [SerializeField] private GameObject chooseImageButton;
+    [SerializeField] private GameObject convertButton;
+    [SerializeField] private GameObject outline;
+    private GameObject outlineInstance;
+    [SerializeField] private Texture2D image;
+    private (int row, int col) topLeft;
+    private (int row, int col) botRight;
+    private List<int> asciiMap;
+    
+    //state vars
+    private bool imageActive = false;
+    private bool outlineActive = false;
+
+    public override void onUpdate(){
+        base.onUpdate();
+        if (outlineActive){
+            outlineInstance.GetComponent<HollowBoxAttach>().renderBox(topLeft, botRight);
+        }
+    }
+
+    public override void handleInput(){
+        if (isMouseOnGrid() && globalOperations.controls.Grid.MainClick.triggered){
+            clickedGrid = true;
+            startGpos = gridManager.getGridPos();
+
+            if (!outlineActive){
+                outlineInstance = Instantiate(
+                    outline,
+                    new Vector3(0, 0, 0),
+                    transform.rotation
+                );
+                outlineInstance.transform.SetParent(gridManager.canvasTransform);
+                outlineActive = true;
+                setCorners(gridManager.getGridPos());
+            }
+        }
+        else if (clickedGrid && globalOperations.controls.Grid.MainClick.IsPressed()){
+           setCorners(gridManager.getGridPos());
+        }
+
+        if (clickedGrid && globalOperations.controls.Grid.MainClick.WasReleasedThisFrame()){
+            clickedGrid = false;
+            startGpos = (-1, -1);
+        }
+    }
+
+    public override void onEnter(){
+        chooseImageButton.SetActive(true);
+        convertButton.SetActive(true);
+    }
+    public override void onExit(){
+        chooseImageButton.SetActive(false);
+        convertButton.SetActive(false);
+        if (outlineActive){
+            Destroy(outlineInstance);
+        }
+        outlineActive = false;
+    }
+
+    public void uploadImage(){
+        string filePath = EditorUtility.OpenFilePanel("Choose an image", "~", "png,jpg");
+        if (filePath == ""){
+            return;
+        }
+        image = new Texture2D(1, 1);
+        byte[] imageByteArray = File.ReadAllBytes(filePath);
+        ImageConversion.LoadImage(image, imageByteArray, false);
+        imageActive = true;
+    }
+
+    public void setCorners((int row, int col) newGpos){
+        topLeft = (
+            Mathf.Min(startGpos.row, newGpos.row),
+            Mathf.Min(startGpos.col, newGpos.col)
+        );
+        botRight = (
+            Mathf.Max(startGpos.row, newGpos.row),
+            Mathf.Max(startGpos.col, newGpos.col)
+        );
+    }
+
+    public void performConversion(){
+        if (!outlineActive || !imageActive){
+            return;
+        }
+        //asciiMap = new List<int> {' ', '.', ':', '-', '=', '+' , '*', '#', '%', '@'};
+        //asciiMap = new List<int> {' ', '+', '@'};
+        asciiMap = new List<int> {' ', '.', ':', 'c', 'o', 'P', 'O', '?', '@'};
+        int maxMapIndex = asciiMap.Count - 1;
+        int heightCount = (botRight.row - topLeft.row) + 1;
+        int widthCount = (botRight.col - topLeft.col) + 1;
+        float luminacePerChar = (float)1.0 / (maxMapIndex + 1);
+
+        RenderTexture imager = RenderTexture.GetTemporary(widthCount, heightCount);
+        Graphics.Blit(image, imager); 
+        Graphics.SetRenderTarget(imager);
+        Texture2D downscaledTexture = new Texture2D(widthCount, heightCount);
+        downscaledTexture.ReadPixels(
+            new Rect(0, 0, widthCount, heightCount),
+            0, 0, false 
+        );
+        Color[] pixels = downscaledTexture.GetPixels();
+
+        int row = botRight.row;
+        int col = topLeft.col;
+        foreach(Color pixel in pixels){
+            int index = Mathf.Min(maxMapIndex, (int)(pixel.grayscale / luminacePerChar)); 
+            gridManager.addToPreviewBuffer(row, col, (char)asciiMap[index]);
+            col += 1;
+            if (col > botRight.col){
+                row -= 1;
+                col = topLeft.col;
+            }
+        }
+        RenderTexture.ReleaseTemporary(imager);
+
+        gridManager.writePbufferToArray();
+        globalOperations.renderUpdate = true;
+    }    
+}

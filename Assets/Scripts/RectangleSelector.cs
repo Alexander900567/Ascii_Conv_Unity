@@ -54,14 +54,7 @@ public class RectangleSelector : Tool
     }
 
     public void renderRectangleSelector(){
-        selectorBoxInstance.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            gridManager.getColSize() * size.col,
-            gridManager.getRowSize() * size.row 
-        );
-        selectorBoxInstance.GetComponent<RectTransform>().anchoredPosition = new Vector2(
-            gridManager.uiPanelTransform.rect.width + topLeft.col * gridManager.getColSize(),
-            gridManager.invertRowPos(botRight.row) * gridManager.getRowSize()
-        );
+       selectorBoxInstance.GetComponent<HollowBoxAttach>().renderBox(topLeft, botRight); 
     }
 
     public void initializeSelectorBox(){
