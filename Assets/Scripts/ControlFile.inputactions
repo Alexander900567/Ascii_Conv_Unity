@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "CircleSwitch",
+                    "name": "EllipseSwitch",
                     "type": "Button",
                     "id": "36513a82-249c-47ac-a98a-c5ec9bb9ced6",
                     "expectedControlType": "",
@@ -157,7 +157,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CircleSwitch",
+                    "action": "EllipseSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

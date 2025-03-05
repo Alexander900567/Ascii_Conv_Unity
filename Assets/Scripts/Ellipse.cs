@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 
-public class Circle : Tool
+public class Ellipse : Tool
 {
     [SerializeField] private Line Line;
     private bool isFilled = false;
@@ -12,7 +12,7 @@ public class Circle : Tool
 
     private void Awake(){
         if (gridManager == null || globalOperations == null || Line == null){
-            Debug.LogError("Circle is missing gridManager, globalOperations, or Line");
+            Debug.LogError("Ellipse is missing gridManager, globalOperations, or Line");
             return;
         }
 
@@ -47,7 +47,7 @@ public class Circle : Tool
         int rowDif = gpos.row - startGpos.row; //row and col components of
         int colDif = gpos.col - startGpos.col; //difference between start and end
 
-        if (isRegular){ //Math to make a circle
+        if (isRegular || (!isRegular && rowDif == colDif)){ //Math to make a circle
             float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
             //pythag: c = sqrt(a^2 + b^2)
             //this is not yet usable due to the geometry of a grid in non-cardinal cases
@@ -111,6 +111,24 @@ public class Circle : Tool
         }
         else if(!isRegular){ //Math to make an ellipse
             //Debug.Log("in elippse if");
+            if (rowDif == 0 || colDif == 0){
+                if (rowDif == 0){
+                    Line.line(
+                    (gpos.row, startGpos.col + (-2 * (startGpos.col - gpos.col))),
+                    (startGpos.row, startGpos.col),
+                    true
+                    );
+                    return;
+                }
+                else if (colDif == 0){
+                    Line.line(
+                    (startGpos.row + (-2 * (startGpos.row - gpos.row)), startGpos.col),
+                    (startGpos.row, startGpos.col),
+                    true
+                    );
+                    return;                    
+                }
+            }
             if (!isFilled){
                 drawEllipse(drawQuadPixels, Mathf.Abs(rowDif), Mathf.Abs(colDif)); //Non fill ellipse
             }
