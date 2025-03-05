@@ -111,10 +111,15 @@ public class Ellipse : Tool
         }
         else if(!isRegular){ //Math to make an ellipse
             //Debug.Log("in elippse if");
-            if (rowDif == 0 || colDif == 0){
+            if (rowDif == 0 || colDif == 0){ //Line optimization
                 if (rowDif == 0){
                     Line.line(
-                    (gpos.row, startGpos.col + (-2 * (startGpos.col - gpos.col))),
+                    (gpos.row, startGpos.col + (startGpos.col - gpos.col)), //previously was +(-2* ())
+                    (startGpos.row, startGpos.col),
+                    true
+                    );
+                    Line.line(
+                    (gpos.row, startGpos.col - (startGpos.col - gpos.col)),
                     (startGpos.row, startGpos.col),
                     true
                     );
@@ -122,7 +127,12 @@ public class Ellipse : Tool
                 }
                 else if (colDif == 0){
                     Line.line(
-                    (startGpos.row + (-2 * (startGpos.row - gpos.row)), startGpos.col),
+                    (startGpos.row + (startGpos.row - gpos.row), startGpos.col),
+                    (startGpos.row, startGpos.col),
+                    true
+                    );
+                    Line.line(
+                    (startGpos.row - (startGpos.row - gpos.row), startGpos.col),
                     (startGpos.row, startGpos.col),
                     true
                     );

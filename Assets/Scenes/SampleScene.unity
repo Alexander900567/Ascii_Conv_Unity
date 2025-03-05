@@ -742,7 +742,7 @@ MonoBehaviour:
   Line: {fileID: 301216685}
   Rectangle: {fileID: 301216684}
   Text: {fileID: 301216682}
-  Circle: {fileID: 301216683}
+  Ellipse: {fileID: 301216683}
   RectangleSelector: {fileID: 301216681}
   Eraser: {fileID: 301216687}
   ImageConvertor: {fileID: 301216688}
@@ -2539,7 +2539,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Circle
+  m_text: 'Ellipse
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5234,7 +5236,7 @@ GameObject:
   - component: {fileID: 1977438781}
   - component: {fileID: 1977438780}
   m_Layer: 5
-  m_Name: CircleButton
+  m_Name: EllipseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5306,7 +5308,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 301216679}
         m_TargetAssemblyTypeName: Toolbox, Assembly-CSharp
-        m_MethodName: changeToCircle
+        m_MethodName: changeToEllipse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
