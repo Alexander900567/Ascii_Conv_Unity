@@ -110,30 +110,19 @@ public class Ellipse : Tool
             }
         }
         else if(!isRegular){ //Math to make an ellipse
-            //Debug.Log("in elippse if");
             if (rowDif == 0 || colDif == 0){ //Line optimization
                 if (rowDif == 0){
-                    Line.line(
-                    (gpos.row, startGpos.col + (startGpos.col - gpos.col)), //previously was +(-2* ())
-                    (startGpos.row, startGpos.col),
-                    true
-                    );
-                    Line.line(
-                    (gpos.row, startGpos.col - (startGpos.col - gpos.col)),
-                    (startGpos.row, startGpos.col),
+                    Line.line( //Line with length equal to flat ellipse
+                    (startGpos.row, startGpos.col - (gpos.col - startGpos.col)),
+                    (gpos.row, gpos.col),
                     true
                     );
                     return;
                 }
                 else if (colDif == 0){
-                    Line.line(
-                    (startGpos.row + (startGpos.row - gpos.row), startGpos.col),
-                    (startGpos.row, startGpos.col),
-                    true
-                    );
-                    Line.line(
-                    (startGpos.row - (startGpos.row - gpos.row), startGpos.col),
-                    (startGpos.row, startGpos.col),
+                    Line.line( //Line with length equal to flat ellipse
+                    (startGpos.row - (gpos.row - startGpos.row), startGpos.col),
+                    (gpos.row, gpos.col),
                     true
                     );
                     return;                    
@@ -163,13 +152,7 @@ public class Ellipse : Tool
 
         float p = colDifSquared - (rowDifSquared * colDif) + (0.25f * rowDifSquared);
 
-        //Debug.Log("above first loop");
-        //Debug.Log($"rowDif: {rowDif}");
-        //Debug.Log($"colDif: {colDif}");
-        //Debug.Log($"p: {p}");
-        //int temp = 0;
-        while (pRow <= pCol){// && temp < 50){ //Top and bottom
-            //Debug.Log("pRow <= hit");
+        while (pRow <= pCol){ //Top and bottom
             rowNum += 1;
             pRow += 2.0f * colDifSquared;
             if (p < 0.0f){
@@ -181,17 +164,13 @@ public class Ellipse : Tool
                 p += colDifSquared + pRow - pCol;
             }
             renderFunc(rowNum, colNum);
-            //temp += 1;
         }
-        //Debug.Log($"temp: {temp}");
-        //Debug.Log($"{pRow} <= {pCol}");
         //Left and right
         p = (colDifSquared * ((float)(rowNum + 0.5) * (float)(rowNum + 0.5))) +
         (rowDifSquared * (colNum - 1) * (colNum - 1)) -
         (rowDifSquared * colDifSquared);
 
         while (colNum >= 0){
-            Debug.Log("colNum <= hit");
             colNum -= 1;
             pCol += -2.0f * rowDifSquared;
             if (p > 0.0f){
