@@ -91,6 +91,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""BrushSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c9caee2-f566-479b-ad8c-5afe63b0ccf3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""FilledToggle"",
                     ""type"": ""Button"",
                     ""id"": ""40af3df3-5bf7-450f-a98f-fd1ff8e1a7c5"",
@@ -248,6 +257,17 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""PerformRedo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b1950046-ea3a-4b8b-9fc9-da8edaa4db1c"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BrushSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -263,6 +283,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_EllipseSwitch = m_Grid.FindAction("EllipseSwitch", throwIfNotFound: true);
         m_Grid_TextSwitch = m_Grid.FindAction("TextSwitch", throwIfNotFound: true);
         m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
+        m_Grid_BrushSwitch = m_Grid.FindAction("BrushSwitch", throwIfNotFound: true);
         m_Grid_FilledToggle = m_Grid.FindAction("FilledToggle", throwIfNotFound: true);
         m_Grid_RegularToggle = m_Grid.FindAction("RegularToggle", throwIfNotFound: true);
         m_Grid_PerformUndo = m_Grid.FindAction("PerformUndo", throwIfNotFound: true);
@@ -340,6 +361,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_EllipseSwitch;
     private readonly InputAction m_Grid_TextSwitch;
     private readonly InputAction m_Grid_EraserSwitch;
+    private readonly InputAction m_Grid_BrushSwitch;
     private readonly InputAction m_Grid_FilledToggle;
     private readonly InputAction m_Grid_RegularToggle;
     private readonly InputAction m_Grid_PerformUndo;
@@ -355,6 +377,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @EllipseSwitch => m_Wrapper.m_Grid_EllipseSwitch;
         public InputAction @TextSwitch => m_Wrapper.m_Grid_TextSwitch;
         public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
+        public InputAction @BrushSwitch => m_Wrapper.m_Grid_BrushSwitch;
         public InputAction @FilledToggle => m_Wrapper.m_Grid_FilledToggle;
         public InputAction @RegularToggle => m_Wrapper.m_Grid_RegularToggle;
         public InputAction @PerformUndo => m_Wrapper.m_Grid_PerformUndo;
@@ -389,6 +412,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @EraserSwitch.started += instance.OnEraserSwitch;
             @EraserSwitch.performed += instance.OnEraserSwitch;
             @EraserSwitch.canceled += instance.OnEraserSwitch;
+            @BrushSwitch.started += instance.OnBrushSwitch;
+            @BrushSwitch.performed += instance.OnBrushSwitch;
+            @BrushSwitch.canceled += instance.OnBrushSwitch;
             @FilledToggle.started += instance.OnFilledToggle;
             @FilledToggle.performed += instance.OnFilledToggle;
             @FilledToggle.canceled += instance.OnFilledToggle;
@@ -426,6 +452,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @EraserSwitch.started -= instance.OnEraserSwitch;
             @EraserSwitch.performed -= instance.OnEraserSwitch;
             @EraserSwitch.canceled -= instance.OnEraserSwitch;
+            @BrushSwitch.started -= instance.OnBrushSwitch;
+            @BrushSwitch.performed -= instance.OnBrushSwitch;
+            @BrushSwitch.canceled -= instance.OnBrushSwitch;
             @FilledToggle.started -= instance.OnFilledToggle;
             @FilledToggle.performed -= instance.OnFilledToggle;
             @FilledToggle.canceled -= instance.OnFilledToggle;
@@ -464,6 +493,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnEllipseSwitch(InputAction.CallbackContext context);
         void OnTextSwitch(InputAction.CallbackContext context);
         void OnEraserSwitch(InputAction.CallbackContext context);
+        void OnBrushSwitch(InputAction.CallbackContext context);
         void OnFilledToggle(InputAction.CallbackContext context);
         void OnRegularToggle(InputAction.CallbackContext context);
         void OnPerformUndo(InputAction.CallbackContext context);

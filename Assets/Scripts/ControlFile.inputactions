@@ -69,6 +69,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "BrushSwitch",
+                    "type": "Button",
+                    "id": "4c9caee2-f566-479b-ad8c-5afe63b0ccf3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "FilledToggle",
                     "type": "Button",
                     "id": "40af3df3-5bf7-450f-a98f-fd1ff8e1a7c5",
@@ -224,6 +233,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "PerformRedo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1950046-ea3a-4b8b-9fc9-da8edaa4db1c",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BrushSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
