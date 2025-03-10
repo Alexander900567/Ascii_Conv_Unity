@@ -10,20 +10,19 @@ public class GridManager : MonoBehaviour
 {
     public GlobalOperations global;
     public UndoRedo undoRedo;
-    public GameObject gridTextRow;
     public RectTransform canvasTransform;
-    public GameObject exampleGridRow;
     public RectTransform gridSpaceOutline;
     public RectTransform uiPanelTransform;
-    
-    private List<GameObject> gridTextRows = new List<GameObject>();
+    public RawImage gridImage;
+    public GameObject FontSourceObj;
+
+    private Texture2D workspaceTexture;
     private List<List<char>> gridArray = new List<List<char>>();
     private List<(int, int, char)> previewBuffer = new List<(int, int, char)>(); //row, col, input
     private float colSize;
     private float rowSize;
     [SerializeField] private int colCount;
     [SerializeField] private int rowCount;
-    private int fontSizeChanged;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,31 +37,9 @@ public class GridManager : MonoBehaviour
             }
         }
 
-
-        for (int row = 0; row < rowCount; row++){
-            gridTextRows.Insert(0, Instantiate(
-                gridTextRow, 
-                new Vector3(
-                    getUiBarWidth(), 
-                    row * rowSize, 
-                    0
-                ), 
-                transform.rotation
-            ));
-            gridTextRows[0].transform.SetParent(canvasTransform);
-            gridTextRows[0].GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - getUiBarWidth(), rowSize);
-            gridTextRows[0].name = "GridRow" + row.ToString();
-        } 
-
-
-        String autoSizeString = "";
-        for(int col = 0; col < colCount; col++){
-            autoSizeString += "N ";
-        }
-        exampleGridRow.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width - getUiBarWidth(), rowSize);
-        exampleGridRow.GetComponent<TextMeshProUGUI>().text = autoSizeString;
-        fontSizeChanged = 2;
-
+        int textureWidth = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
+        int textureHeight = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
+        createWorkspaceTexture(textureWidth, textureHeight);
 
         gridSpaceOutline.sizeDelta = new Vector2(colSize, rowSize);
     }
@@ -76,37 +53,40 @@ public class GridManager : MonoBehaviour
         }
         renderGridOutline();
     }
+
+    private void createWorkspaceTexture(int width, int height){
+        TextureFormat sourceFontFormat = FontSourceObj.GetComponent<FontSource>().fontTexture.format;
+        workspaceTexture = new Texture2D(width, height, sourceFontFormat, true);
+        workspaceTexture.Apply(false, true);
+    }
     
     private void renderGrid(){
-        String rowString = "";
-        float colPosition;
-        float colOffset = colSize * (float) 0.33;
-        float fullFontSize = exampleGridRow.GetComponent<TextMeshProUGUI>().fontSize;
+        //Debug.Log("new render");
 
+        //add preview buffer to a temp version of grid
         List<List<char>> renderArray = getGridArray();
         foreach ((int, int, char) item in previewBuffer){
             renderArray[item.Item1][item.Item2] = item.Item3;
         }
 
-        //fontSizeChanged needs to an int because it needs to skip the first frame 
-        //the text of the example row is set, as the fontSize hasn't updated yet
-        if (fontSizeChanged > 0){
-            if (fontSizeChanged == 1){
-                for (int row = 0; row < rowCount; row++){
-                    gridTextRows[row].GetComponent<TextMeshProUGUI>().fontSize = fullFontSize;
-                } 
-            }
-            fontSizeChanged -= 1;
-        }
 
+        FontSource fontSourceScript = FontSourceObj.GetComponent<FontSource>();
+        Texture2D fontSourceTexture = fontSourceScript.fontTexture;
+        int charTextureWidth = fontSourceScript.getCharWidth();
+        int charTextureHeight = fontSourceScript.getCharHeight();
         for (int row = 0; row < rowCount; row++){
             for (int col = 0; col < colCount; col++){
-                colPosition = (colSize * col) + colOffset;
-                rowString += "<pos=" + colPosition.ToString("0.00") + "px>" + renderArray[row][col];
+                (int, int) location = fontSourceScript.getLocationOfChar(renderArray[row][col]);
+                Graphics.CopyTexture(
+                    fontSourceTexture, 0, 0, 
+                    location.Item1, location.Item2, charTextureWidth, charTextureHeight, 
+                    workspaceTexture, 0, 0,
+                    (int)(col * charTextureWidth), (int)((rowCount - 1 - row) * charTextureHeight)
+                );
             }
-            gridTextRows[row].GetComponent<TextMeshProUGUI>().text = rowString;
-            rowString = "";
         } 
+
+        gridImage.texture = workspaceTexture;
     }
     
     private void renderGridOutline(){
