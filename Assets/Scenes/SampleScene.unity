@@ -619,7 +619,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 668440625}
-  - {fileID: 1461610000}
   - {fileID: 1045376654}
   - {fileID: 1176214708}
   - {fileID: 1262820516}
@@ -642,6 +641,7 @@ RectTransform:
   - {fileID: 714812992}
   - {fileID: 1102333683}
   - {fileID: 1980132159}
+  - {fileID: 1461610000}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -690,8 +690,8 @@ MonoBehaviour:
   uiPanelTransform: {fileID: 668440625}
   gridImage: {fileID: 1980132160}
   FontSourceObj: {fileID: 190232456}
-  colCount: 120
-  rowCount: 120
+  colCount: 60
+  rowCount: 40
 --- !u!4 &202442180
 Transform:
   m_ObjectHideFlags: 0
