@@ -16,10 +16,11 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Line Line;
     [SerializeField] private Rectangle Rectangle;
     [SerializeField] private Text Text;
-    [SerializeField] private Circle Circle;
+    [SerializeField] private Ellipse Ellipse;
     [SerializeField] private RectangleSelector RectangleSelector;
     [SerializeField] private Eraser Eraser;
     [SerializeField] private ImageConvertor ImageConvertor;
+    [SerializeField] private Brush Brush;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -68,8 +69,8 @@ public class Toolbox : MonoBehaviour
     public void changeToText(){
         changeActiveTool(Text);
     }
-    public void changeToCircle(){
-        changeActiveTool(Circle);
+    public void changeToEllipse(){
+        changeActiveTool(Ellipse);
     }
     public void changeToRectangleSelector(){
         changeActiveTool(RectangleSelector);
@@ -79,6 +80,9 @@ public class Toolbox : MonoBehaviour
     }
     public void changeToImageConvertor(){
         changeActiveTool(ImageConvertor);
+    }
+    public void changeToBrush(){
+        changeActiveTool(Brush);
     }
     public void setLetterListeningTrue(){
         isLetterListening = true;
@@ -100,11 +104,14 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.TextSwitch.triggered){
             changeToText();
         }
-        else if(global.controls.Grid.CircleSwitch.triggered){
-            changeToCircle();
+        else if(global.controls.Grid.EllipseSwitch.triggered){
+            changeToEllipse();
         }
         else if(global.controls.Grid.EraserSwitch.triggered){
             changeToEraser();
+        }
+        else if(global.controls.Grid.BrushSwitch.triggered){
+            changeToBrush();
         }
         /* Uncomment when keybind is added
         else if(global.controls.Grid.RectangleSelectorSwitch.triggered){
