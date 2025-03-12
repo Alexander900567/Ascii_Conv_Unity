@@ -93,9 +93,9 @@ public class ImageConvertor : Tool
         if (!outlineActive || !imageActive){
             return;
         }
-        //asciiMap = new List<int> {' ', '.', ':', '-', '=', '+' , '*', '#', '%', '@'};
+        asciiMap = new List<int> {' ', '.', ':', '-', '=', '+' , '*', '#', '%', '@'};
         //asciiMap = new List<int> {' ', '+', '@'};
-        asciiMap = new List<int> {' ', '.', ':', 'c', 'o', 'P', 'O', '?', '@'};
+        //asciiMap = new List<int> {' ', '.', ':', 'c', 'o', 'P', 'O', '?', '@'};
         int maxMapIndex = asciiMap.Count - 1;
         int heightCount = (botRight.row - topLeft.row) + 1;
         int widthCount = (botRight.col - topLeft.col) + 1;
