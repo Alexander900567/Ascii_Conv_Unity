@@ -3,6 +3,8 @@ using UnityEngine;
 public class Brush : Tool
 {
     [SerializeField] private Line Line;
+    [SerializeField] private GameObject MoreStrokeButton;
+    [SerializeField] private GameObject LessStrokeButton;
     private (int row, int col) prevGpos;
     private int strokeWidth = 1;
 
@@ -59,5 +61,18 @@ public class Brush : Tool
         if (strokeWidth - 1 >= 1){
             strokeWidth -= 1;
         }
+    }
+
+    public override void onEnter()
+    {
+        base.onEnter();
+        MoreStrokeButton.SetActive(true);       
+        LessStrokeButton.SetActive(true);
+    }
+    public override void onExit()
+    {
+        base.onExit();
+        MoreStrokeButton.SetActive(false);       
+        LessStrokeButton.SetActive(false);
     }
 }
