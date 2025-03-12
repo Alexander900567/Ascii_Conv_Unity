@@ -159,7 +159,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      undo_icon_0: 3034278198554078000
+      undo_icon_1: 3799312124113994991
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
