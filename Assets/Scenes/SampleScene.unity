@@ -690,8 +690,8 @@ MonoBehaviour:
   uiPanelTransform: {fileID: 668440625}
   gridImage: {fileID: 1980132160}
   FontSourceObj: {fileID: 190232456}
-  colCount: 60
-  rowCount: 40
+  colCount: 160
+  rowCount: 90
 --- !u!4 &202442180
 Transform:
   m_ObjectHideFlags: 0
