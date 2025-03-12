@@ -18,6 +18,7 @@ public class GridManager : MonoBehaviour
 
     private Texture2D workspaceTexture;
     private List<List<char>> gridArray = new List<List<char>>();
+    private List<List<char>> cachedGridArray = new List<List<char>>();
     private List<(int, int, char)> previewBuffer = new List<(int, int, char)>(); //row, col, input
     private float colSize;
     private float rowSize;
@@ -36,10 +37,17 @@ public class GridManager : MonoBehaviour
                 gridArray[row].Add(' ');
             }
         }
+        for (int row = 0; row < rowCount; row++){
+            cachedGridArray.Add(new List<char>());
+            for (int col = 0; col < colCount; col++){
+                cachedGridArray[row].Add('a');
+            }
+        }
 
         int textureWidth = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
         int textureHeight = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
         createWorkspaceTexture(textureWidth, textureHeight);
+        gridImage.texture = workspaceTexture;
 
         gridSpaceOutline.sizeDelta = new Vector2(colSize, rowSize);
     }
@@ -76,17 +84,18 @@ public class GridManager : MonoBehaviour
         int charTextureHeight = fontSourceScript.getCharHeight();
         for (int row = 0; row < rowCount; row++){
             for (int col = 0; col < colCount; col++){
-                (int, int) location = fontSourceScript.getLocationOfChar(renderArray[row][col]);
-                Graphics.CopyTexture(
-                    fontSourceTexture, 0, 0, 
-                    location.Item1, location.Item2, charTextureWidth, charTextureHeight, 
-                    workspaceTexture, 0, 0,
-                    (int)(col * charTextureWidth), (int)((rowCount - 1 - row) * charTextureHeight)
-                );
+                if(renderArray[row][col] != cachedGridArray[row][col]){
+                    (int, int) location = fontSourceScript.getLocationOfChar(renderArray[row][col]);
+                    Graphics.CopyTexture(
+                        fontSourceTexture, 0, 0, 
+                        location.Item1, location.Item2, charTextureWidth, charTextureHeight, 
+                        workspaceTexture, 0, 0,
+                        (int)(col * charTextureWidth), (int)((rowCount - 1 - row) * charTextureHeight)
+                    );
+                }
             }
         } 
-
-        gridImage.texture = workspaceTexture;
+        cachedGridArray = renderArray;
     }
     
     private void renderGridOutline(){
