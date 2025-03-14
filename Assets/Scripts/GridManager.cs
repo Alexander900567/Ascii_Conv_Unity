@@ -174,6 +174,50 @@ public class GridManager : MonoBehaviour
         gridArray[row][col] = input;
     }
 
+    public void reziseRowCount(int newCount){
+
+        if (newCount < rowCount){
+            for(int x = 0; x < rowCount - newCount; x++){
+                gridArray.RemoveAt(gridArray.Count - 1);
+            }
+        }
+        else if(newCount > rowCount){
+            List<char> emptyRow = new List<char>();
+            for (int x = 0; x < colCount; x++){
+                emptyRow.Add('a');    
+            }
+            for(int x = 0; x < newCount - rowCount; x++){
+                gridArray.Add(new List<char>(emptyRow));
+            }
+        }
+
+        rowSize =  (float) Screen.height / (float) newCount;
+        rowCount = newCount;
+        global.renderUpdate = true;
+    }
+
+    public void resizeColCount(int newCount){
+
+        if (newCount < colCount){
+            for(int x = 0; x < colCount - newCount; x++){
+                for(int ind = 0; ind < rowCount; ind++){
+                    gridArray[ind].RemoveAt(gridArray[ind].Count - 1);
+                }
+            }
+        }
+        else if(newCount > colCount){
+            for(int x = 0; x < newCount - colCount; x++){
+                for(int ind = 0; ind < rowCount; ind++){
+                    gridArray[ind].Add('a');
+                }
+            }
+        }
+
+        colSize = (float) (Screen.width - getUiBarWidth()) / (float) newCount;
+        colCount = newCount;
+        global.renderUpdate = true;
+    }
+
     //---getters---
 
     public int getColCount(){
