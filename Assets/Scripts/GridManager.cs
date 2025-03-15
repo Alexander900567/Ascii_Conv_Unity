@@ -34,7 +34,7 @@ public class GridManager : MonoBehaviour
         for (int row = 0; row < rowCount; row++){
             gridArray.Add(new List<char>());
             for (int col = 0; col < colCount; col++){
-                gridArray[row].Add(' ');
+                gridArray[row].Add('a');
             }
         }
         for (int row = 0; row < rowCount; row++){
@@ -47,7 +47,6 @@ public class GridManager : MonoBehaviour
         int textureWidth = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
         int textureHeight = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
         createWorkspaceTexture(textureWidth, textureHeight);
-        gridImage.texture = workspaceTexture;
 
         gridSpaceOutline.sizeDelta = new Vector2(colSize, rowSize);
     }
@@ -66,6 +65,7 @@ public class GridManager : MonoBehaviour
         TextureFormat sourceFontFormat = FontSourceObj.GetComponent<FontSource>().fontTexture.format;
         workspaceTexture = new Texture2D(width, height, sourceFontFormat, true);
         workspaceTexture.Apply(false, true);
+        gridImage.texture = workspaceTexture;
     }
     
     private void renderGrid(){
@@ -174,48 +174,75 @@ public class GridManager : MonoBehaviour
         gridArray[row][col] = input;
     }
 
-    public void reziseRowCount(int newCount){
+    public void resizeGrid(int newRow, int newCol){
 
-        if (newCount < rowCount){
-            for(int x = 0; x < rowCount - newCount; x++){
-                gridArray.RemoveAt(gridArray.Count - 1);
+        resizeRowCount(newRow);
+        resizeColCount(newCol);
+
+        int textureWidth = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
+        int textureHeight = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
+        createWorkspaceTexture(textureWidth, textureHeight);
+        constructCachedArray();
+        
+        void resizeRowCount(int newCount){
+
+            if (newCount < rowCount){
+                for(int x = 0; x < rowCount - newCount; x++){
+                    gridArray.RemoveAt(gridArray.Count - 1);
+                }
             }
-        }
-        else if(newCount > rowCount){
-            List<char> emptyRow = new List<char>();
-            for (int x = 0; x < colCount; x++){
-                emptyRow.Add('a');    
+            else if(newCount > rowCount){
+                List<char> emptyRow = new List<char>();
+                for (int x = 0; x < colCount; x++){
+                    emptyRow.Add(' ');    
+                }
+                for(int x = 0; x < newCount - rowCount; x++){
+                    gridArray.Add(new List<char>(emptyRow));
+                }
             }
-            for(int x = 0; x < newCount - rowCount; x++){
-                gridArray.Add(new List<char>(emptyRow));
-            }
+
+            rowSize =  (float) Screen.height / (float) newCount;
+            rowCount = newCount;
+            global.renderUpdate = true;
         }
 
-        rowSize =  (float) Screen.height / (float) newCount;
-        rowCount = newCount;
-        global.renderUpdate = true;
+        void resizeColCount(int newCount){
+
+            if (newCount < colCount){
+                for(int x = 0; x < colCount - newCount; x++){
+                    for(int row = 0; row < rowCount; row+=1){
+                        gridArray[row].RemoveAt(gridArray[row].Count - 1);
+                    }
+                }
+            }
+            else if(newCount > colCount){
+                for(int x = 0; x < newCount - colCount; x+=1){
+                    for(int row = 0; row < rowCount; row+=1){
+                        gridArray[row].Add(' ');
+                    }
+                }
+            }
+
+            colSize = (float) (Screen.width - getUiBarWidth()) / (float) newCount;
+            colCount = newCount;
+            global.renderUpdate = true;
+        }
     }
 
-    public void resizeColCount(int newCount){
 
-        if (newCount < colCount){
-            for(int x = 0; x < colCount - newCount; x++){
-                for(int ind = 0; ind < rowCount; ind++){
-                    gridArray[ind].RemoveAt(gridArray[ind].Count - 1);
+    public void constructCachedArray(){
+        cachedGridArray = new List<List<char>>();
+        for (int row = 0; row < rowCount; row++){
+            cachedGridArray.Add(new List<char>());
+            for (int col = 0; col < colCount; col++){
+                if (gridArray[row][col] != 'a'){
+                    cachedGridArray[row].Add('a');
+                }
+                else{
+                    cachedGridArray[row].Add(' ');
                 }
             }
         }
-        else if(newCount > colCount){
-            for(int x = 0; x < newCount - colCount; x++){
-                for(int ind = 0; ind < rowCount; ind++){
-                    gridArray[ind].Add('a');
-                }
-            }
-        }
-
-        colSize = (float) (Screen.width - getUiBarWidth()) / (float) newCount;
-        colCount = newCount;
-        global.renderUpdate = true;
     }
 
     //---getters---
