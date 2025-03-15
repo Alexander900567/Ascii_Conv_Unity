@@ -78,7 +78,8 @@ public class SaveLoad : MonoBehaviour
 
         int rowNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
         int colNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
-        //TODO: Set up changing row/col count
+
+        gridManager.resizeGrid(rowNum, colNum);
 
         string saveString = file.ReadToEnd();
         file.Close();
