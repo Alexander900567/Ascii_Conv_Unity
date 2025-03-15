@@ -34,15 +34,11 @@ public class GridManager : MonoBehaviour
         for (int row = 0; row < rowCount; row++){
             gridArray.Add(new List<char>());
             for (int col = 0; col < colCount; col++){
-                gridArray[row].Add('a');
+                gridArray[row].Add(' ');
             }
         }
-        for (int row = 0; row < rowCount; row++){
-            cachedGridArray.Add(new List<char>());
-            for (int col = 0; col < colCount; col++){
-                cachedGridArray[row].Add('a');
-            }
-        }
+
+        constructCachedArray();
 
         int textureWidth = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
         int textureHeight = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
