@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
     private List<(int, int, char)> previewBuffer = new List<(int, int, char)>(); //row, col, input
     private float colSize;
     private float rowSize;
+    [SerializeField] private GameObject changeGridSizePopUp;
     [SerializeField] private int colCount;
     [SerializeField] private int rowCount;
 
@@ -37,17 +38,9 @@ public class GridManager : MonoBehaviour
                 gridArray[row].Add(' ');
             }
         }
-        for (int row = 0; row < rowCount; row++){
-            cachedGridArray.Add(new List<char>());
-            for (int col = 0; col < colCount; col++){
-                cachedGridArray[row].Add('a');
-            }
-        }
 
-        int textureWidth = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
-        int textureHeight = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
-        createWorkspaceTexture(textureWidth, textureHeight);
-        gridImage.texture = workspaceTexture;
+        constructCachedArray();
+        createWorkspaceTexture();
 
         gridSpaceOutline.sizeDelta = new Vector2(colSize, rowSize);
     }
@@ -62,10 +55,14 @@ public class GridManager : MonoBehaviour
         renderGridOutline();
     }
 
-    private void createWorkspaceTexture(int width, int height){
+    private void createWorkspaceTexture(){
+        int width = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
+        int height = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
         TextureFormat sourceFontFormat = FontSourceObj.GetComponent<FontSource>().fontTexture.format;
+
         workspaceTexture = new Texture2D(width, height, sourceFontFormat, true);
         workspaceTexture.Apply(false, true);
+        gridImage.texture = workspaceTexture;
     }
     
     private void renderGrid(){
@@ -172,6 +169,79 @@ public class GridManager : MonoBehaviour
         else if (col >= colCount || col < 0){ return; }
 
         gridArray[row][col] = input;
+    }
+
+    public void openChangeGridSize(){
+        global.openPopUp(changeGridSizePopUp);
+    }
+
+    public void resizeGrid(int newRow, int newCol){
+
+        resizeRowCount(newRow);
+        resizeColCount(newCol);
+
+        createWorkspaceTexture();
+        constructCachedArray();
+        
+        void resizeRowCount(int newCount){
+
+            if (newCount < rowCount){
+                for(int x = 0; x < rowCount - newCount; x++){
+                    gridArray.RemoveAt(gridArray.Count - 1);
+                }
+            }
+            else if(newCount > rowCount){
+                List<char> emptyRow = new List<char>();
+                for (int x = 0; x < colCount; x++){
+                    emptyRow.Add(' ');    
+                }
+                for(int x = 0; x < newCount - rowCount; x++){
+                    gridArray.Add(new List<char>(emptyRow));
+                }
+            }
+
+            rowSize =  (float) Screen.height / (float) newCount;
+            rowCount = newCount;
+            global.renderUpdate = true;
+        }
+
+        void resizeColCount(int newCount){
+
+            if (newCount < colCount){
+                for(int x = 0; x < colCount - newCount; x++){
+                    for(int row = 0; row < rowCount; row+=1){
+                        gridArray[row].RemoveAt(gridArray[row].Count - 1);
+                    }
+                }
+            }
+            else if(newCount > colCount){
+                for(int x = 0; x < newCount - colCount; x+=1){
+                    for(int row = 0; row < rowCount; row+=1){
+                        gridArray[row].Add(' ');
+                    }
+                }
+            }
+
+            colSize = (float) (Screen.width - getUiBarWidth()) / (float) newCount;
+            colCount = newCount;
+            global.renderUpdate = true;
+        }
+    }
+
+
+    public void constructCachedArray(){
+        cachedGridArray = new List<List<char>>();
+        for (int row = 0; row < rowCount; row++){
+            cachedGridArray.Add(new List<char>());
+            for (int col = 0; col < colCount; col++){
+                if (gridArray[row][col] != 'a'){
+                    cachedGridArray[row].Add('a');
+                }
+                else{
+                    cachedGridArray[row].Add(' ');
+                }
+            }
+        }
     }
 
     //---getters---
