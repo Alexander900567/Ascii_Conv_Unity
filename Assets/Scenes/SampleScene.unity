@@ -6698,7 +6698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1989735571074805530, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
       propertyPath: m_Name
-      value: DropdownButtonSet
+      value: ProjectDropdown
       objectReference: {fileID: 0}
     - target: {fileID: 2264702820483053791, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
       propertyPath: m_Pivot.x
@@ -6785,12 +6785,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8707593233976669412, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 93.263
+      objectReference: {fileID: 0}
+    - target: {fileID: 8707593233976669412, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 2.5066
+      objectReference: {fileID: 0}
+    - target: {fileID: 8707593233976669412, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 46.633
+      value: 46.632
       objectReference: {fileID: 0}
     - target: {fileID: 8707593233976669412, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -110.6
+      value: -32.92
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
