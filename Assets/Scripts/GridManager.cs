@@ -40,10 +40,7 @@ public class GridManager : MonoBehaviour
         }
 
         constructCachedArray();
-
-        int textureWidth = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
-        int textureHeight = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
-        createWorkspaceTexture(textureWidth, textureHeight);
+        createWorkspaceTexture();
 
         gridSpaceOutline.sizeDelta = new Vector2(colSize, rowSize);
     }
@@ -58,8 +55,11 @@ public class GridManager : MonoBehaviour
         renderGridOutline();
     }
 
-    private void createWorkspaceTexture(int width, int height){
+    private void createWorkspaceTexture(){
+        int width = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
+        int height = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
         TextureFormat sourceFontFormat = FontSourceObj.GetComponent<FontSource>().fontTexture.format;
+
         workspaceTexture = new Texture2D(width, height, sourceFontFormat, true);
         workspaceTexture.Apply(false, true);
         gridImage.texture = workspaceTexture;
@@ -180,9 +180,7 @@ public class GridManager : MonoBehaviour
         resizeRowCount(newRow);
         resizeColCount(newCol);
 
-        int textureWidth = FontSourceObj.GetComponent<FontSource>().getCharWidth() * colCount;
-        int textureHeight = FontSourceObj.GetComponent<FontSource>().getCharHeight() * rowCount;
-        createWorkspaceTexture(textureWidth, textureHeight);
+        createWorkspaceTexture();
         constructCachedArray();
         
         void resizeRowCount(int newCount){

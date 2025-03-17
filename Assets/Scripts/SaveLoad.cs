@@ -91,5 +91,6 @@ public class SaveLoad : MonoBehaviour
             }
         }
         globalOp.renderUpdate = true;
+        gridManager.constructCachedArray();
     }
 }
