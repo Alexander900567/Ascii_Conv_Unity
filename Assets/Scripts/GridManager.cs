@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
     private List<(int, int, char)> previewBuffer = new List<(int, int, char)>(); //row, col, input
     private float colSize;
     private float rowSize;
+    [SerializeField] private GameObject changeGridSizePopUp;
     [SerializeField] private int colCount;
     [SerializeField] private int rowCount;
 
@@ -168,6 +169,10 @@ public class GridManager : MonoBehaviour
         else if (col >= colCount || col < 0){ return; }
 
         gridArray[row][col] = input;
+    }
+
+    public void openChangeGridSize(){
+        global.openPopUp(changeGridSizePopUp);
     }
 
     public void resizeGrid(int newRow, int newCol){
