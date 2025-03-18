@@ -130,6 +130,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PerformStrokeIncrease",
+                    "type": "Button",
+                    "id": "28c2d682-4809-4254-8ca1-c5a55b2b8ab3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PerformStrokeDecrease",
+                    "type": "Button",
+                    "id": "dfc6abe4-3908-4737-8219-daafa81b6531",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PerformStrokeBigIncrease",
+                    "type": "Button",
+                    "id": "bf17f5b1-2ac2-4f29-8d60-f64d314d05e1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PerformStrokeBigDecrease",
+                    "type": "Button",
+                    "id": "adb54370-c25a-4924-9d92-c343140f4bf0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -330,6 +366,94 @@
                     "action": "LetterSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e29a04f7-58b0-424b-8558-6c20f49afc48",
+                    "path": "<Keyboard>/rightBracket",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformStrokeIncrease",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "60db8f87-f04a-45c7-a8f7-f24180ef7797",
+                    "path": "<Keyboard>/leftBracket",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformStrokeDecrease",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "27be0b2b-0787-454d-9e6b-423f6abf4747",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformStrokeBigIncrease",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "8b33ae90-728e-4f31-ae26-591c2fac23eb",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformStrokeBigIncrease",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "67d1f937-c2bc-4cb4-9e6d-7a3417efacc3",
+                    "path": "<Keyboard>/rightBracket",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformStrokeBigIncrease",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "62bc04fb-535f-4a55-a42d-fff662c34c9f",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformStrokeBigDecrease",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "c10a7194-6588-413b-85cb-24e7039bcce2",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformStrokeBigDecrease",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "523b3ec6-15bf-46ee-b8d4-d4de917a39c3",
+                    "path": "<Keyboard>/leftBracket",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformStrokeBigDecrease",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

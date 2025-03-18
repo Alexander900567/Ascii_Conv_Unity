@@ -119,6 +119,18 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.LetterSwitch.triggered){
             setLetterListeningTrue();
         }
+        else if(global.controls.Grid.PerformStrokeIncrease.triggered){
+            Brush.increaseStrokeWidth(1); //Change to a global stroke width change whenever it is implemented
+        }
+        else if(global.controls.Grid.PerformStrokeDecrease.triggered){
+            Brush.decreaseStrokeWidth(1);
+        }
+        else if(global.controls.Grid.PerformStrokeBigIncrease.triggered){
+            Brush.increaseStrokeWidth(5); 
+        }
+        else if(global.controls.Grid.PerformStrokeBigDecrease.triggered){
+            Brush.increaseStrokeWidth(5);
+        }
         
         void readInActiveLetter(){
             if(Input.inputString.Length > 0){

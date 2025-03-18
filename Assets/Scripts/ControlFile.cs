@@ -152,6 +152,42 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformStrokeIncrease"",
+                    ""type"": ""Button"",
+                    ""id"": ""28c2d682-4809-4254-8ca1-c5a55b2b8ab3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformStrokeDecrease"",
+                    ""type"": ""Button"",
+                    ""id"": ""dfc6abe4-3908-4737-8219-daafa81b6531"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformStrokeBigIncrease"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf17f5b1-2ac2-4f29-8d60-f64d314d05e1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformStrokeBigDecrease"",
+                    ""type"": ""Button"",
+                    ""id"": ""adb54370-c25a-4924-9d92-c343140f4bf0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -352,6 +388,94 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""LetterSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e29a04f7-58b0-424b-8558-6c20f49afc48"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeIncrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""60db8f87-f04a-45c7-a8f7-f24180ef7797"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeDecrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""27be0b2b-0787-454d-9e6b-423f6abf4747"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigIncrease"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""8b33ae90-728e-4f31-ae26-591c2fac23eb"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigIncrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""67d1f937-c2bc-4cb4-9e6d-7a3417efacc3"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigIncrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""62bc04fb-535f-4a55-a42d-fff662c34c9f"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigDecrease"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""c10a7194-6588-413b-85cb-24e7039bcce2"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigDecrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""523b3ec6-15bf-46ee-b8d4-d4de917a39c3"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigDecrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -374,6 +498,10 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_RegularToggle = m_Grid.FindAction("RegularToggle", throwIfNotFound: true);
         m_Grid_PerformUndo = m_Grid.FindAction("PerformUndo", throwIfNotFound: true);
         m_Grid_PerformRedo = m_Grid.FindAction("PerformRedo", throwIfNotFound: true);
+        m_Grid_PerformStrokeIncrease = m_Grid.FindAction("PerformStrokeIncrease", throwIfNotFound: true);
+        m_Grid_PerformStrokeDecrease = m_Grid.FindAction("PerformStrokeDecrease", throwIfNotFound: true);
+        m_Grid_PerformStrokeBigIncrease = m_Grid.FindAction("PerformStrokeBigIncrease", throwIfNotFound: true);
+        m_Grid_PerformStrokeBigDecrease = m_Grid.FindAction("PerformStrokeBigDecrease", throwIfNotFound: true);
     }
 
     ~@ControlFile()
@@ -454,6 +582,10 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_RegularToggle;
     private readonly InputAction m_Grid_PerformUndo;
     private readonly InputAction m_Grid_PerformRedo;
+    private readonly InputAction m_Grid_PerformStrokeIncrease;
+    private readonly InputAction m_Grid_PerformStrokeDecrease;
+    private readonly InputAction m_Grid_PerformStrokeBigIncrease;
+    private readonly InputAction m_Grid_PerformStrokeBigDecrease;
     public struct GridActions
     {
         private @ControlFile m_Wrapper;
@@ -472,6 +604,10 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @RegularToggle => m_Wrapper.m_Grid_RegularToggle;
         public InputAction @PerformUndo => m_Wrapper.m_Grid_PerformUndo;
         public InputAction @PerformRedo => m_Wrapper.m_Grid_PerformRedo;
+        public InputAction @PerformStrokeIncrease => m_Wrapper.m_Grid_PerformStrokeIncrease;
+        public InputAction @PerformStrokeDecrease => m_Wrapper.m_Grid_PerformStrokeDecrease;
+        public InputAction @PerformStrokeBigIncrease => m_Wrapper.m_Grid_PerformStrokeBigIncrease;
+        public InputAction @PerformStrokeBigDecrease => m_Wrapper.m_Grid_PerformStrokeBigDecrease;
         public InputActionMap Get() { return m_Wrapper.m_Grid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -523,6 +659,18 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @PerformRedo.started += instance.OnPerformRedo;
             @PerformRedo.performed += instance.OnPerformRedo;
             @PerformRedo.canceled += instance.OnPerformRedo;
+            @PerformStrokeIncrease.started += instance.OnPerformStrokeIncrease;
+            @PerformStrokeIncrease.performed += instance.OnPerformStrokeIncrease;
+            @PerformStrokeIncrease.canceled += instance.OnPerformStrokeIncrease;
+            @PerformStrokeDecrease.started += instance.OnPerformStrokeDecrease;
+            @PerformStrokeDecrease.performed += instance.OnPerformStrokeDecrease;
+            @PerformStrokeDecrease.canceled += instance.OnPerformStrokeDecrease;
+            @PerformStrokeBigIncrease.started += instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigIncrease.performed += instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigIncrease.canceled += instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigDecrease.started += instance.OnPerformStrokeBigDecrease;
+            @PerformStrokeBigDecrease.performed += instance.OnPerformStrokeBigDecrease;
+            @PerformStrokeBigDecrease.canceled += instance.OnPerformStrokeBigDecrease;
         }
 
         private void UnregisterCallbacks(IGridActions instance)
@@ -569,6 +717,18 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @PerformRedo.started -= instance.OnPerformRedo;
             @PerformRedo.performed -= instance.OnPerformRedo;
             @PerformRedo.canceled -= instance.OnPerformRedo;
+            @PerformStrokeIncrease.started -= instance.OnPerformStrokeIncrease;
+            @PerformStrokeIncrease.performed -= instance.OnPerformStrokeIncrease;
+            @PerformStrokeIncrease.canceled -= instance.OnPerformStrokeIncrease;
+            @PerformStrokeDecrease.started -= instance.OnPerformStrokeDecrease;
+            @PerformStrokeDecrease.performed -= instance.OnPerformStrokeDecrease;
+            @PerformStrokeDecrease.canceled -= instance.OnPerformStrokeDecrease;
+            @PerformStrokeBigIncrease.started -= instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigIncrease.performed -= instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigIncrease.canceled -= instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigDecrease.started -= instance.OnPerformStrokeBigDecrease;
+            @PerformStrokeBigDecrease.performed -= instance.OnPerformStrokeBigDecrease;
+            @PerformStrokeBigDecrease.canceled -= instance.OnPerformStrokeBigDecrease;
         }
 
         public void RemoveCallbacks(IGridActions instance)
@@ -602,5 +762,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnRegularToggle(InputAction.CallbackContext context);
         void OnPerformUndo(InputAction.CallbackContext context);
         void OnPerformRedo(InputAction.CallbackContext context);
+        void OnPerformStrokeIncrease(InputAction.CallbackContext context);
+        void OnPerformStrokeDecrease(InputAction.CallbackContext context);
+        void OnPerformStrokeBigIncrease(InputAction.CallbackContext context);
+        void OnPerformStrokeBigDecrease(InputAction.CallbackContext context);
     }
 }

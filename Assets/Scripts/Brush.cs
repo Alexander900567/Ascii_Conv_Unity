@@ -52,14 +52,14 @@ public class Brush : Tool
             }
         }
     }
-    public void increaseStrokeWidth(){
-        if (strokeWidth + 1 <= 100){
-            strokeWidth += 1;
+    public void increaseStrokeWidth(int increase){
+        if (strokeWidth + increase <= 100){
+            strokeWidth += increase;
         }
     }
-    public void decreaseStrokeWidth(){
-        if (strokeWidth - 1 >= 1){
-            strokeWidth -= 1;
+    public void decreaseStrokeWidth(int decrease){
+        if (strokeWidth - decrease >= 1){
+            strokeWidth -= decrease;
         }
     }
 
