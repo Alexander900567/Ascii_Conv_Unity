@@ -24,6 +24,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "EraserSwitch",
+                    "type": "Button",
+                    "id": "08a42d42-d6e8-4a1a-9e89-500010ebf4fe",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BrushSwitch",
+                    "type": "Button",
+                    "id": "4c9caee2-f566-479b-ad8c-5afe63b0ccf3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LineSwitch",
                     "type": "Button",
                     "id": "1d86327a-61a1-4e62-a557-a06a2d84193e",
@@ -60,18 +78,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EraserSwitch",
+                    "name": "RectangleSelectorSwitch",
                     "type": "Button",
-                    "id": "08a42d42-d6e8-4a1a-9e89-500010ebf4fe",
+                    "id": "6fd135bf-1c80-4823-91f6-1cd8838b40dd",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "BrushSwitch",
+                    "name": "LetterSwitch",
                     "type": "Button",
-                    "id": "4c9caee2-f566-479b-ad8c-5afe63b0ccf3",
+                    "id": "2f612845-2863-4be6-9b23-121aa79814d8",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -290,6 +308,28 @@
                     "action": "PerformRedo",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ffeb5127-4e44-4b53-959d-d8bb191aacc2",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RectangleSelectorSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "12b07b0e-acd1-4a44-bc50-77aee70fd1f9",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LetterSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

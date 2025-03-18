@@ -113,16 +113,12 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.BrushSwitch.triggered){
             changeToBrush();
         }
-        /* Uncomment when keybind is added
         else if(global.controls.Grid.RectangleSelectorSwitch.triggered){
             changeToRectangleSelector();
         }
-        */
-        /* Uncomment when the keybind is added
         else if(global.controls.Grid.LetterSwitch.triggered){
             setLetterListeningTrue();
         }
-        */
         
         void readInActiveLetter(){
             if(Input.inputString.Length > 0){
