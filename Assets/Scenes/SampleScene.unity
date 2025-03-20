@@ -783,6 +783,7 @@ MonoBehaviour:
   Eraser: {fileID: 301216687}
   ImageConvertor: {fileID: 301216688}
   Brush: {fileID: 301216689}
+  SaveLoad: {fileID: 0}
 --- !u!4 &301216680
 Transform:
   m_ObjectHideFlags: 0
@@ -5182,7 +5183,7 @@ GameObject:
   - component: {fileID: 1722589419}
   - component: {fileID: 1722589418}
   m_Layer: 5
-  m_Name: SelcetorButton
+  m_Name: SelectorButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

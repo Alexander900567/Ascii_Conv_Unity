@@ -21,6 +21,7 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Eraser Eraser;
     [SerializeField] private ImageConvertor ImageConvertor;
     [SerializeField] private Brush Brush;
+    [SerializeField] private SaveLoad SaveLoad;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -116,8 +117,23 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.RectangleSelectorSwitch.triggered){
             changeToRectangleSelector();
         }
+        else if(global.controls.Grid.ConverterSwitch.triggered){
+            changeToImageConvertor();
+        }
         else if(global.controls.Grid.LetterSwitch.triggered){
             setLetterListeningTrue();
+        }
+        else if(global.controls.Grid.PerformCopy.triggered){
+            gridManager.copyGridToClipboard();
+            Debug.Log("Copy Clicked"); 
+        }
+        else if(global.controls.Grid.PerformSave.triggered){
+            SaveLoad.saveGridArray();
+            Debug.Log("Save Clicked");
+        }
+        else if(global.controls.Grid.PerformLoad.triggered){
+            SaveLoad.loadGridArray();
+            Debug.Log("Load Clicked");
         }
         else if(global.controls.Grid.PerformStrokeIncrease.triggered){
             Brush.increaseStrokeWidth(1); //Change to a global stroke width change whenever it is implemented

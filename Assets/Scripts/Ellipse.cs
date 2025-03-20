@@ -16,16 +16,16 @@ public class Ellipse : Tool
             return;
         }
 
-        drawQuadPixels = (rowNum, colNum) => {
+        drawQuadPixels = (rowNum, colNum) => { //Called if ellipse is not filled
             (int row, int col) gpos = gridManager.getGridPos();
-            gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col + colNum, globalOperations.activeLetter);
-            gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col + colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col + colNum, globalOperations.activeLetter); //Draws 4 quadrants "simultaneously"
+            gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col + colNum, globalOperations.activeLetter); //i.e. the perimeter
             gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col - colNum, globalOperations.activeLetter);
             gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col - colNum, globalOperations.activeLetter);
         };
-        drawLinePairs = (rowNum, colNum) => {
+        drawLinePairs = (rowNum, colNum) => { //Called if ellipse is filled
             (int row, int col) gpos = gridManager.getGridPos();
-            Line.line(
+            Line.line( //Draws lines to make the ellipse filled
                 (startGpos.row - rowNum, 
                 startGpos.col + colNum),
                 (startGpos.row + rowNum,
@@ -39,7 +39,7 @@ public class Ellipse : Tool
                 false);
         };
     }
-    public override void draw(){
+    public override void draw(){ //Controls logic to draw circle, ellipse, filled or not filled
         (int row, int col) gpos = gridManager.getGridPos();
 
         gridManager.emptyPreviewBuffer();
@@ -60,7 +60,7 @@ public class Ellipse : Tool
                 float r0 = diagonalR / h; //radius in terms of pixels
                 r = (int)Math.Floor(r0); //floor makes our radius usable
             }
-            else if (rowDif == 0 || colDif == 0) {
+            else if (rowDif == 0 || colDif == 0) { //cardinal cases
                 r = (int)Math.Floor(diagonalR);
             }
             else {
@@ -81,7 +81,7 @@ public class Ellipse : Tool
                     gridManager.addToPreviewBuffer(startGpos.row + colNum, startGpos.col - rowNum, globalOperations.activeLetter);
                     gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col - colNum, globalOperations.activeLetter);
                 }
-                else if (isFilled) {
+                else if (isFilled) { //much like the filled ellipse, we use lines to fill within the circle
                     Line.line(
                     (startGpos.row + rowNum, startGpos.col + colNum),
                     (startGpos.row - rowNum, startGpos.col + colNum),
@@ -129,7 +129,7 @@ public class Ellipse : Tool
                 }
             }
             if (!isFilled){
-                drawEllipse(drawQuadPixels, Mathf.Abs(rowDif), Mathf.Abs(colDif)); //Non fill ellipse
+                drawEllipse(drawQuadPixels, Mathf.Abs(rowDif), Mathf.Abs(colDif)); //Non filled ellipse
             }
             else if (isFilled){
                 drawEllipse(drawLinePairs, Mathf.Abs(rowDif), Mathf.Abs(colDif)); //Filled ellipse

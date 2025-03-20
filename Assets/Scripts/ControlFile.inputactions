@@ -87,6 +87,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ConverterSwitch",
+                    "type": "Button",
+                    "id": "53859ee8-97b5-4c80-bdbe-cc0b016941df",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LetterSwitch",
                     "type": "Button",
                     "id": "2f612845-2863-4be6-9b23-121aa79814d8",
@@ -126,6 +135,33 @@
                     "name": "PerformRedo",
                     "type": "Button",
                     "id": "cf1b426c-7cfb-481d-8ba3-455c5a7dcb1f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PerformCopy",
+                    "type": "Button",
+                    "id": "82f8b9f8-14fe-4fb1-9745-b362960d33d9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PerformSave",
+                    "type": "Button",
+                    "id": "23b3146b-040b-4dc7-8229-6768ab246ab0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PerformLoad",
+                    "type": "Button",
+                    "id": "63cb3a9f-fcd9-44d2-913a-e30149e1ef41",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -452,6 +488,116 @@
                     "processors": "",
                     "groups": "",
                     "action": "PerformStrokeBigDecrease",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "57ed96a3-0aed-42a3-b781-629d635b4b37",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ConverterSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "528c7844-24e2-4478-bf4e-e5097c62efaf",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformSave",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "e50d22a6-060d-48c7-aa8d-a5ec37bc51b0",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformSave",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "7c1b1550-a61a-415e-8e2f-daf9bd4f6965",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformSave",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "93868485-9e74-4751-b258-39feae0eb247",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformLoad",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "6a8a221d-d30a-4249-8621-c5a8a5106341",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformLoad",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "dcbe8087-864e-49f5-9c3f-4d3dba1344ae",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformLoad",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "4f1d8e0b-efde-4b38-b48e-8d6c732ec87a",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformCopy",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "d04c9c1b-1966-4428-b43d-8d8182fbece0",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformCopy",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "85fa509f-e9e2-4f59-b782-1305cfdb8b2d",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PerformCopy",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

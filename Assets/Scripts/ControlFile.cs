@@ -109,6 +109,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""ConverterSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""53859ee8-97b5-4c80-bdbe-cc0b016941df"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""LetterSwitch"",
                     ""type"": ""Button"",
                     ""id"": ""2f612845-2863-4be6-9b23-121aa79814d8"",
@@ -148,6 +157,33 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""name"": ""PerformRedo"",
                     ""type"": ""Button"",
                     ""id"": ""cf1b426c-7cfb-481d-8ba3-455c5a7dcb1f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformCopy"",
+                    ""type"": ""Button"",
+                    ""id"": ""82f8b9f8-14fe-4fb1-9745-b362960d33d9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformSave"",
+                    ""type"": ""Button"",
+                    ""id"": ""23b3146b-040b-4dc7-8229-6768ab246ab0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformLoad"",
+                    ""type"": ""Button"",
+                    ""id"": ""63cb3a9f-fcd9-44d2-913a-e30149e1ef41"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -476,6 +512,116 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""PerformStrokeBigDecrease"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57ed96a3-0aed-42a3-b781-629d635b4b37"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ConverterSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""528c7844-24e2-4478-bf4e-e5097c62efaf"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformSave"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""e50d22a6-060d-48c7-aa8d-a5ec37bc51b0"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformSave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""7c1b1550-a61a-415e-8e2f-daf9bd4f6965"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformSave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""93868485-9e74-4751-b258-39feae0eb247"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformLoad"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""6a8a221d-d30a-4249-8621-c5a8a5106341"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformLoad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""dcbe8087-864e-49f5-9c3f-4d3dba1344ae"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformLoad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""4f1d8e0b-efde-4b38-b48e-8d6c732ec87a"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformCopy"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""d04c9c1b-1966-4428-b43d-8d8182fbece0"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformCopy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""85fa509f-e9e2-4f59-b782-1305cfdb8b2d"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformCopy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -493,11 +639,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_EllipseSwitch = m_Grid.FindAction("EllipseSwitch", throwIfNotFound: true);
         m_Grid_TextSwitch = m_Grid.FindAction("TextSwitch", throwIfNotFound: true);
         m_Grid_RectangleSelectorSwitch = m_Grid.FindAction("RectangleSelectorSwitch", throwIfNotFound: true);
+        m_Grid_ConverterSwitch = m_Grid.FindAction("ConverterSwitch", throwIfNotFound: true);
         m_Grid_LetterSwitch = m_Grid.FindAction("LetterSwitch", throwIfNotFound: true);
         m_Grid_FilledToggle = m_Grid.FindAction("FilledToggle", throwIfNotFound: true);
         m_Grid_RegularToggle = m_Grid.FindAction("RegularToggle", throwIfNotFound: true);
         m_Grid_PerformUndo = m_Grid.FindAction("PerformUndo", throwIfNotFound: true);
         m_Grid_PerformRedo = m_Grid.FindAction("PerformRedo", throwIfNotFound: true);
+        m_Grid_PerformCopy = m_Grid.FindAction("PerformCopy", throwIfNotFound: true);
+        m_Grid_PerformSave = m_Grid.FindAction("PerformSave", throwIfNotFound: true);
+        m_Grid_PerformLoad = m_Grid.FindAction("PerformLoad", throwIfNotFound: true);
         m_Grid_PerformStrokeIncrease = m_Grid.FindAction("PerformStrokeIncrease", throwIfNotFound: true);
         m_Grid_PerformStrokeDecrease = m_Grid.FindAction("PerformStrokeDecrease", throwIfNotFound: true);
         m_Grid_PerformStrokeBigIncrease = m_Grid.FindAction("PerformStrokeBigIncrease", throwIfNotFound: true);
@@ -577,11 +727,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_EllipseSwitch;
     private readonly InputAction m_Grid_TextSwitch;
     private readonly InputAction m_Grid_RectangleSelectorSwitch;
+    private readonly InputAction m_Grid_ConverterSwitch;
     private readonly InputAction m_Grid_LetterSwitch;
     private readonly InputAction m_Grid_FilledToggle;
     private readonly InputAction m_Grid_RegularToggle;
     private readonly InputAction m_Grid_PerformUndo;
     private readonly InputAction m_Grid_PerformRedo;
+    private readonly InputAction m_Grid_PerformCopy;
+    private readonly InputAction m_Grid_PerformSave;
+    private readonly InputAction m_Grid_PerformLoad;
     private readonly InputAction m_Grid_PerformStrokeIncrease;
     private readonly InputAction m_Grid_PerformStrokeDecrease;
     private readonly InputAction m_Grid_PerformStrokeBigIncrease;
@@ -599,11 +753,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @EllipseSwitch => m_Wrapper.m_Grid_EllipseSwitch;
         public InputAction @TextSwitch => m_Wrapper.m_Grid_TextSwitch;
         public InputAction @RectangleSelectorSwitch => m_Wrapper.m_Grid_RectangleSelectorSwitch;
+        public InputAction @ConverterSwitch => m_Wrapper.m_Grid_ConverterSwitch;
         public InputAction @LetterSwitch => m_Wrapper.m_Grid_LetterSwitch;
         public InputAction @FilledToggle => m_Wrapper.m_Grid_FilledToggle;
         public InputAction @RegularToggle => m_Wrapper.m_Grid_RegularToggle;
         public InputAction @PerformUndo => m_Wrapper.m_Grid_PerformUndo;
         public InputAction @PerformRedo => m_Wrapper.m_Grid_PerformRedo;
+        public InputAction @PerformCopy => m_Wrapper.m_Grid_PerformCopy;
+        public InputAction @PerformSave => m_Wrapper.m_Grid_PerformSave;
+        public InputAction @PerformLoad => m_Wrapper.m_Grid_PerformLoad;
         public InputAction @PerformStrokeIncrease => m_Wrapper.m_Grid_PerformStrokeIncrease;
         public InputAction @PerformStrokeDecrease => m_Wrapper.m_Grid_PerformStrokeDecrease;
         public InputAction @PerformStrokeBigIncrease => m_Wrapper.m_Grid_PerformStrokeBigIncrease;
@@ -644,6 +802,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @RectangleSelectorSwitch.started += instance.OnRectangleSelectorSwitch;
             @RectangleSelectorSwitch.performed += instance.OnRectangleSelectorSwitch;
             @RectangleSelectorSwitch.canceled += instance.OnRectangleSelectorSwitch;
+            @ConverterSwitch.started += instance.OnConverterSwitch;
+            @ConverterSwitch.performed += instance.OnConverterSwitch;
+            @ConverterSwitch.canceled += instance.OnConverterSwitch;
             @LetterSwitch.started += instance.OnLetterSwitch;
             @LetterSwitch.performed += instance.OnLetterSwitch;
             @LetterSwitch.canceled += instance.OnLetterSwitch;
@@ -659,6 +820,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @PerformRedo.started += instance.OnPerformRedo;
             @PerformRedo.performed += instance.OnPerformRedo;
             @PerformRedo.canceled += instance.OnPerformRedo;
+            @PerformCopy.started += instance.OnPerformCopy;
+            @PerformCopy.performed += instance.OnPerformCopy;
+            @PerformCopy.canceled += instance.OnPerformCopy;
+            @PerformSave.started += instance.OnPerformSave;
+            @PerformSave.performed += instance.OnPerformSave;
+            @PerformSave.canceled += instance.OnPerformSave;
+            @PerformLoad.started += instance.OnPerformLoad;
+            @PerformLoad.performed += instance.OnPerformLoad;
+            @PerformLoad.canceled += instance.OnPerformLoad;
             @PerformStrokeIncrease.started += instance.OnPerformStrokeIncrease;
             @PerformStrokeIncrease.performed += instance.OnPerformStrokeIncrease;
             @PerformStrokeIncrease.canceled += instance.OnPerformStrokeIncrease;
@@ -702,6 +872,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @RectangleSelectorSwitch.started -= instance.OnRectangleSelectorSwitch;
             @RectangleSelectorSwitch.performed -= instance.OnRectangleSelectorSwitch;
             @RectangleSelectorSwitch.canceled -= instance.OnRectangleSelectorSwitch;
+            @ConverterSwitch.started -= instance.OnConverterSwitch;
+            @ConverterSwitch.performed -= instance.OnConverterSwitch;
+            @ConverterSwitch.canceled -= instance.OnConverterSwitch;
             @LetterSwitch.started -= instance.OnLetterSwitch;
             @LetterSwitch.performed -= instance.OnLetterSwitch;
             @LetterSwitch.canceled -= instance.OnLetterSwitch;
@@ -717,6 +890,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @PerformRedo.started -= instance.OnPerformRedo;
             @PerformRedo.performed -= instance.OnPerformRedo;
             @PerformRedo.canceled -= instance.OnPerformRedo;
+            @PerformCopy.started -= instance.OnPerformCopy;
+            @PerformCopy.performed -= instance.OnPerformCopy;
+            @PerformCopy.canceled -= instance.OnPerformCopy;
+            @PerformSave.started -= instance.OnPerformSave;
+            @PerformSave.performed -= instance.OnPerformSave;
+            @PerformSave.canceled -= instance.OnPerformSave;
+            @PerformLoad.started -= instance.OnPerformLoad;
+            @PerformLoad.performed -= instance.OnPerformLoad;
+            @PerformLoad.canceled -= instance.OnPerformLoad;
             @PerformStrokeIncrease.started -= instance.OnPerformStrokeIncrease;
             @PerformStrokeIncrease.performed -= instance.OnPerformStrokeIncrease;
             @PerformStrokeIncrease.canceled -= instance.OnPerformStrokeIncrease;
@@ -757,11 +939,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnEllipseSwitch(InputAction.CallbackContext context);
         void OnTextSwitch(InputAction.CallbackContext context);
         void OnRectangleSelectorSwitch(InputAction.CallbackContext context);
+        void OnConverterSwitch(InputAction.CallbackContext context);
         void OnLetterSwitch(InputAction.CallbackContext context);
         void OnFilledToggle(InputAction.CallbackContext context);
         void OnRegularToggle(InputAction.CallbackContext context);
         void OnPerformUndo(InputAction.CallbackContext context);
         void OnPerformRedo(InputAction.CallbackContext context);
+        void OnPerformCopy(InputAction.CallbackContext context);
+        void OnPerformSave(InputAction.CallbackContext context);
+        void OnPerformLoad(InputAction.CallbackContext context);
         void OnPerformStrokeIncrease(InputAction.CallbackContext context);
         void OnPerformStrokeDecrease(InputAction.CallbackContext context);
         void OnPerformStrokeBigIncrease(InputAction.CallbackContext context);
