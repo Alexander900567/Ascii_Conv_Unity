@@ -11,6 +11,8 @@ public class ImageConvertor : Tool
     [SerializeField] private GameObject chooseImageButton;
     [SerializeField] private GameObject convertButton;
     [SerializeField] private GameObject outline;
+    [SerializeField] private SaveLoad saveLoad;
+    [SerializeField] private GameObject videoPopUp;
     private GameObject outlineInstance;
     [SerializeField] private Texture2D image;
     private (int row, int col) topLeft;
@@ -153,7 +155,11 @@ public class ImageConvertor : Tool
         globalOperations.renderUpdate = true;
     }
 
-    public void convertVideo(){
+    public void displayVideoPopUp(){
+        globalOperations.openPopUp(videoPopUp);
+    }
+
+    public void convertVideo(int frameRate){
         string filePath = EditorUtility.OpenFolderPanel("Choose a directory of images", "~", "");
         if (filePath == ""){
             return;
@@ -163,9 +169,7 @@ public class ImageConvertor : Tool
         FileInfo[] fileList = dirObj.GetFiles();
 
         foreach(FileInfo file in fileList){
-            Debug.Log(file.Directory);
-            Debug.Log(file.DirectoryName);
-            Debug.Log(file.Name);
+            Debug.Log(file.FullName);
         }
 
 
