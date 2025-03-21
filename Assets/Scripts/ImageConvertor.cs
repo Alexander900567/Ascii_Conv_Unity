@@ -164,12 +164,31 @@ public class ImageConvertor : Tool
         if (filePath == ""){
             return;
         }
-        
+
         DirectoryInfo dirObj = new DirectoryInfo(filePath);
         FileInfo[] fileList = dirObj.GetFiles();
 
+        string[] saveFileNameArray = {filePath, "video.txt"};
+        StreamWriter saveFile = File.CreateText(Path.Combine(saveFileNameArray));
+        saveFile.WriteLine($"rowCount:{gridManager.getRowCount()}");
+        saveFile.WriteLine($"colCount:{gridManager.getColCount()}");
+        saveFile.WriteLine($"frameRate:{frameRate}");
+
+        topLeft = (row: 0, col: 0);
+        botRight = (row: gridManager.getRowCount() - 1, col: gridManager.getColCount() - 1);
+        
+
         foreach(FileInfo file in fileList){
-            Debug.Log(file.FullName);
+            string fileExtension = file.Name.Split('.')[^1];
+
+            if(fileExtension != "png" && fileExtension != "jpg" && fileExtension != "jpeg"){
+                continue;
+            }
+
+            filePathToTexture(file.FullName);
+
+            
+
         }
 
 
