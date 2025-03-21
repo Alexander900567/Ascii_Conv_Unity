@@ -586,8 +586,8 @@ MonoBehaviour:
   gridImage: {fileID: 1980132160}
   FontSourceObj: {fileID: 190232456}
   changeGridSizePopUp: {fileID: 7882655950039400507, guid: 0e30e5b16fbd4d0ceb2402284f52eb90, type: 3}
-  colCount: 10
-  rowCount: 10
+  colCount: 60
+  rowCount: 40
 --- !u!4 &202442180
 Transform:
   m_ObjectHideFlags: 0

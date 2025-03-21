@@ -28,6 +28,10 @@ public class GridSizePopUp : MonoBehaviour
         int newRow = System.Int32.Parse(rowInput.text);
         int newCol = System.Int32.Parse(colInput.text);
 
+        if (newCol <= 0 || newRow <= 0){
+            return;
+        }
+
         gridManager.resizeGrid(newRow, newCol);
         global.closePopUp();
     }
