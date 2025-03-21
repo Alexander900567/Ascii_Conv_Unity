@@ -67,15 +67,19 @@ public class ImageConvertor : Tool
         outlineActive = false;
     }
 
+    private void filePathToTexture(string filePath){
+        image = new Texture2D(1, 1);
+        byte[] imageByteArray = File.ReadAllBytes(filePath);
+        ImageConversion.LoadImage(image, imageByteArray, false);
+        imageActive = true;
+    }
+
     public void uploadImage(){
         string filePath = EditorUtility.OpenFilePanel("Choose an image", "~", "png,jpg");
         if (filePath == ""){
             return;
         }
-        image = new Texture2D(1, 1);
-        byte[] imageByteArray = File.ReadAllBytes(filePath);
-        ImageConversion.LoadImage(image, imageByteArray, false);
-        imageActive = true;
+        filePathToTexture(filePath);
     }
 
     public void setCorners((int row, int col) newGpos){
@@ -89,10 +93,7 @@ public class ImageConvertor : Tool
         );
     }
 
-    public void performConversion(){
-        if (!outlineActive || !imageActive){
-            return;
-        }
+    private List<List<char>> performConversion(){
         asciiMap = new List<int> {' ', '.', ':', '-', '=', '+' , '*', '#', '%', '@'};
         //asciiMap = new List<int> {' ', '+', '@'};
         //asciiMap = new List<int> {' ', '.', ':', 'c', 'o', 'P', 'O', '?', '@'};
@@ -111,20 +112,68 @@ public class ImageConvertor : Tool
         );
         Color[] pixels = downscaledTexture.GetPixels();
 
-        int row = botRight.row;
+        List<List<char>> outputList = new List<List<char>>();
+        outputList.Add(new List<char>());
+
         int col = topLeft.col;
         foreach(Color pixel in pixels){
             int index = Mathf.Min(maxMapIndex, (int)(pixel.grayscale / luminacePerChar)); 
-            gridManager.addToPreviewBuffer(row, col, (char)asciiMap[index]);
+            outputList[0].Add((char)asciiMap[index]);
             col += 1;
             if (col > botRight.col){
-                row -= 1;
+                outputList.Insert(0, new List<char>());
                 col = topLeft.col;
             }
         }
         RenderTexture.ReleaseTemporary(imager);
 
+        return outputList;
+    }    
+
+    public void imageToGridArray(){
+        if (!outlineActive || !imageActive){
+            return;
+        }
+
+        List<List<char>> outputList = performConversion();
+
+        int row = topLeft.row;
+        int col = topLeft.col;
+        foreach(List<char> charRow in outputList){
+            foreach(char character in charRow){
+                gridManager.addToPreviewBuffer(row, col, character);
+                col += 1;
+                if (col > botRight.col){
+                    row += 1;
+                    col = topLeft.col;
+                }
+            }
+        }
         gridManager.writePbufferToArray();
         globalOperations.renderUpdate = true;
-    }    
+    }
+
+    public void convertVideo(){
+        string filePath = EditorUtility.OpenFolderPanel("Choose a directory of images", "~", "");
+        if (filePath == ""){
+            return;
+        }
+        
+        DirectoryInfo dirObj = new DirectoryInfo(filePath);
+        FileInfo[] fileList = dirObj.GetFiles();
+
+        foreach(FileInfo file in fileList){
+            Debug.Log(file.Directory);
+            Debug.Log(file.DirectoryName);
+            Debug.Log(file.Name);
+        }
+
+
+        //filePathToTexture(filePath);
+
+    }
+
+    public void playVideo(){
+
+    }
 }

@@ -586,8 +586,8 @@ MonoBehaviour:
   gridImage: {fileID: 1980132160}
   FontSourceObj: {fileID: 190232456}
   changeGridSizePopUp: {fileID: 7882655950039400507, guid: 0e30e5b16fbd4d0ceb2402284f52eb90, type: 3}
-  colCount: 60
-  rowCount: 40
+  colCount: 120
+  rowCount: 80
 --- !u!4 &202442180
 Transform:
   m_ObjectHideFlags: 0
@@ -1871,7 +1871,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 301216688}
         m_TargetAssemblyTypeName: ImageConvertor, Assembly-CSharp
-        m_MethodName: performConversion
+        m_MethodName: imageToGridArray
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
