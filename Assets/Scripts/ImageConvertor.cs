@@ -129,6 +129,10 @@ public class ImageConvertor : Tool
         }
         RenderTexture.ReleaseTemporary(imager);
 
+        if(outputList[0].Count < 1){
+            outputList.RemoveAt(0);
+        }
+
         return outputList;
     }    
 
@@ -180,7 +184,6 @@ public class ImageConvertor : Tool
 
         foreach(FileInfo file in fileList){
             string fileExtension = file.Name.Split('.')[^1];
-
             if(fileExtension != "png" && fileExtension != "jpg" && fileExtension != "jpeg"){
                 continue;
             }
@@ -189,9 +192,9 @@ public class ImageConvertor : Tool
             List<List<char>> outputList = performConversion();
 
             saveFile.WriteLine("-----");
-
             string compString = saveLoad.compressGrid(outputList);
             foreach(string row in compString.Split("\n")){
+                Debug.Log(row);
                 saveFile.WriteLine(row);
             }
         }
