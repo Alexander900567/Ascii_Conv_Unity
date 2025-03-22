@@ -10,15 +10,17 @@ public class VideoPopUpScipt : MonoBehaviour
     [SerializeField] private TMP_InputField frameRateInput;
     private ImageConvertor imageConvertor;
     private GlobalOperations global;
+    private Toolbox toolbox;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start(){
         imageConvertor = GameObject.Find("Toolbox").GetComponent<ImageConvertor>();
         global = GameObject.Find("GlobalOperations").GetComponent<GlobalOperations>();
+        toolbox = GameObject.Find("Toolbox").GetComponent<Toolbox>();
 
         cancelButton.onClick.AddListener(global.closePopUp);
         convertButton.onClick.AddListener(onConvert);
-        playButton.onClick.AddListener(imageConvertor.playVideo);
+        playButton.onClick.AddListener(onPlay);
     }
 
     public void onConvert(){
@@ -29,6 +31,11 @@ public class VideoPopUpScipt : MonoBehaviour
         }
 
         imageConvertor.convertVideo(frameRate);
+    }
+
+    public void onPlay(){
+        toolbox.changeToImageConvertor();
+        imageConvertor.playVideo();
     }
 
 }

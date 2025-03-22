@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine.Rendering;
@@ -19,15 +20,25 @@ public class ImageConvertor : Tool
     private (int row, int col) botRight;
     private List<int> asciiMap;
     
-    //state vars
     private bool imageActive = false;
     private bool outlineActive = false;
+
+    //video variables
+    private bool videoPlaying = false;
+    private string[] frameArray;
+    private int frameNum;
+    private int totalFrames;
+    private double secBetweenFrames;
+    private DateTime lastFrameTime;
 
     public override void onUpdate(){
         base.onUpdate();
         if (outlineActive){
             outlineInstance.GetComponent<HollowBoxAttach>().renderBox(topLeft, botRight);
         }
+        if (videoPlaying){
+            handlePlayingVideo();
+        } 
     }
 
     public override void handleInput(){
@@ -194,7 +205,6 @@ public class ImageConvertor : Tool
             saveFile.WriteLine("-----");
             string compString = saveLoad.compressGrid(outputList);
             foreach(string row in compString.Split("\n")){
-                Debug.Log(row);
                 saveFile.WriteLine(row);
             }
         }
@@ -202,6 +212,53 @@ public class ImageConvertor : Tool
     }
 
     public void playVideo(){
+        string filePath = EditorUtility.OpenFilePanel("Choose an converted video text file", "~", "txt");
+        if (filePath == ""){
+            return;
+        }
 
+        globalOperations.closePopUp();
+
+        StreamReader file = new StreamReader(filePath);
+
+        int rowNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
+        int colNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
+        int frameRate = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
+        secBetweenFrames = 1.0 / (double)frameRate;
+        string t = file.ReadLine();
+
+        gridManager.resizeGrid(rowNum, colNum);
+        gridManager.constructCachedArray();
+
+        string saveString = file.ReadToEnd();
+        file.Close();
+        frameArray = saveString.Split("-----\n");
+        lastFrameTime = DateTime.Now;
+        frameNum = 0;
+        totalFrames = frameArray.Length;
+        videoPlaying = true;
+    }
+
+    private void handlePlayingVideo(){
+        DateTime currentTime = DateTime.Now;
+        if ((currentTime - lastFrameTime).TotalSeconds < secBetweenFrames){
+            return;
+        }
+        lastFrameTime = currentTime;
+
+        string frame = frameArray[frameNum];
+
+        List<List<char>> newGrid = saveLoad.decompressSaveStringToGrid(frame);
+        for (int row = 0; row < gridManager.getRowCount(); row++){
+            for (int col = 0; col < gridManager.getColCount(); col++){
+                gridManager.addToGridArray(row, col, newGrid[row][col]);
+            }
+        }
+
+        globalOperations.renderUpdate = true;
+        frameNum += 1;
+        if(frameNum >= totalFrames){
+            videoPlaying = false;
+        }
     }
 }
