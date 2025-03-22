@@ -186,14 +186,16 @@ public class ImageConvertor : Tool
             }
 
             filePathToTexture(file.FullName);
+            List<List<char>> outputList = performConversion();
 
-            
+            saveFile.WriteLine("-----");
 
+            string compString = saveLoad.compressGrid(outputList);
+            foreach(string row in compString.Split("\n")){
+                saveFile.WriteLine(row);
+            }
         }
-
-
-        //filePathToTexture(filePath);
-
+        saveFile.Close();
     }
 
     public void playVideo(){
