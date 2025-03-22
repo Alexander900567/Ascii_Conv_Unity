@@ -32,6 +32,7 @@ public class SaveLoad : MonoBehaviour
             compString += $"{sameCount}{currChar}\n";
         }
 
+        compString = compString.Remove(compString.Length - 1, 1);
         return compString;
     }
 
