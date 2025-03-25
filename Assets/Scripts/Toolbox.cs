@@ -93,8 +93,23 @@ public class Toolbox : MonoBehaviour
         if(isLetterListening){
             readInActiveLetter();
         }
+        else if(global.controls.Grid.PerformCopy.triggered){ //These are at the beginning because they have modifiers
+            gridManager.copyGridToClipboard();
+        }
+        else if(global.controls.Grid.PerformSave.triggered){
+            SaveLoad.saveGridArray();
+        }
+        else if(global.controls.Grid.PerformLoad.triggered){
+            SaveLoad.loadGridArray();
+        }
         else if(global.controls.Grid.PenSwitch.triggered){
             changeToPencil();
+        }
+        else if(global.controls.Grid.EraserSwitch.triggered){
+            changeToEraser();
+        }
+        else if(global.controls.Grid.BrushSwitch.triggered){
+            changeToBrush();
         }
         else if(global.controls.Grid.LineSwitch.triggered){
             changeToLine();
@@ -105,17 +120,11 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.TextSwitch.triggered){
             changeToText();
         }
-        else if(global.controls.Grid.EllipseSwitch.triggered){
-            changeToEllipse();
-        }
-        else if(global.controls.Grid.EraserSwitch.triggered){
-            changeToEraser();
-        }
-        else if(global.controls.Grid.BrushSwitch.triggered){
-            changeToBrush();
-        }
         else if(global.controls.Grid.RectangleSelectorSwitch.triggered){
             changeToRectangleSelector();
+        }
+        else if(global.controls.Grid.EllipseSwitch.triggered){
+            changeToEllipse();
         }
         else if(global.controls.Grid.ConverterSwitch.triggered){
             changeToImageConvertor();
@@ -123,29 +132,17 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.LetterSwitch.triggered){
             setLetterListeningTrue();
         }
-        else if(global.controls.Grid.PerformCopy.triggered){
-            gridManager.copyGridToClipboard();
-            Debug.Log("Copy Clicked"); 
+        else if(global.controls.Grid.PerformStrokeBigIncrease.triggered){ //Same with these abt modifiers
+            Brush.increaseStrokeWidth(5); 
         }
-        else if(global.controls.Grid.PerformSave.triggered){
-            SaveLoad.saveGridArray();
-            Debug.Log("Save Clicked");
-        }
-        else if(global.controls.Grid.PerformLoad.triggered){
-            SaveLoad.loadGridArray();
-            Debug.Log("Load Clicked");
+        else if(global.controls.Grid.PerformStrokeBigDecrease.triggered){
+            Brush.decreaseStrokeWidth(5);
         }
         else if(global.controls.Grid.PerformStrokeIncrease.triggered){
             Brush.increaseStrokeWidth(1); //Change to a global stroke width change whenever it is implemented
         }
         else if(global.controls.Grid.PerformStrokeDecrease.triggered){
             Brush.decreaseStrokeWidth(1);
-        }
-        else if(global.controls.Grid.PerformStrokeBigIncrease.triggered){
-            Brush.increaseStrokeWidth(5); 
-        }
-        else if(global.controls.Grid.PerformStrokeBigDecrease.triggered){
-            Brush.increaseStrokeWidth(5);
         }
         
         void readInActiveLetter(){

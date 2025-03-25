@@ -783,7 +783,7 @@ MonoBehaviour:
   Eraser: {fileID: 301216687}
   ImageConvertor: {fileID: 301216688}
   Brush: {fileID: 301216689}
-  SaveLoad: {fileID: 0}
+  SaveLoad: {fileID: 1431813953}
 --- !u!4 &301216680
 Transform:
   m_ObjectHideFlags: 0
