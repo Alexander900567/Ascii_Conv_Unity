@@ -21,6 +21,7 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Eraser Eraser;
     [SerializeField] private ImageConvertor ImageConvertor;
     [SerializeField] private Brush Brush;
+    [SerializeField] private SaveLoad SaveLoad;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -92,8 +93,23 @@ public class Toolbox : MonoBehaviour
         if(isLetterListening){
             readInActiveLetter();
         }
+        else if(global.controls.Grid.PerformCopy.triggered){ //These are at the beginning because they have modifiers
+            gridManager.copyGridToClipboard();
+        }
+        else if(global.controls.Grid.PerformSave.triggered){
+            SaveLoad.saveGridArray();
+        }
+        else if(global.controls.Grid.PerformLoad.triggered){
+            SaveLoad.loadGridArray();
+        }
         else if(global.controls.Grid.PenSwitch.triggered){
             changeToPencil();
+        }
+        else if(global.controls.Grid.EraserSwitch.triggered){
+            changeToEraser();
+        }
+        else if(global.controls.Grid.BrushSwitch.triggered){
+            changeToBrush();
         }
         else if(global.controls.Grid.LineSwitch.triggered){
             changeToLine();
@@ -104,25 +120,30 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.TextSwitch.triggered){
             changeToText();
         }
-        else if(global.controls.Grid.EllipseSwitch.triggered){
-            changeToEllipse();
-        }
-        else if(global.controls.Grid.EraserSwitch.triggered){
-            changeToEraser();
-        }
-        else if(global.controls.Grid.BrushSwitch.triggered){
-            changeToBrush();
-        }
-        /* Uncomment when keybind is added
         else if(global.controls.Grid.RectangleSelectorSwitch.triggered){
             changeToRectangleSelector();
         }
-        */
-        /* Uncomment when the keybind is added
+        else if(global.controls.Grid.EllipseSwitch.triggered){
+            changeToEllipse();
+        }
+        else if(global.controls.Grid.ConverterSwitch.triggered){
+            changeToImageConvertor();
+        }
         else if(global.controls.Grid.LetterSwitch.triggered){
             setLetterListeningTrue();
         }
-        */
+        else if(global.controls.Grid.PerformStrokeBigIncrease.triggered){ //Same with these abt modifiers
+            Brush.increaseStrokeWidth(5); 
+        }
+        else if(global.controls.Grid.PerformStrokeBigDecrease.triggered){
+            Brush.decreaseStrokeWidth(5);
+        }
+        else if(global.controls.Grid.PerformStrokeIncrease.triggered){
+            Brush.increaseStrokeWidth(1); //Change to a global stroke width change whenever it is implemented
+        }
+        else if(global.controls.Grid.PerformStrokeDecrease.triggered){
+            Brush.decreaseStrokeWidth(1);
+        }
         
         void readInActiveLetter(){
             if(Input.inputString.Length > 0){

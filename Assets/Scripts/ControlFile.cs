@@ -46,6 +46,24 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""EraserSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""08a42d42-d6e8-4a1a-9e89-500010ebf4fe"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BrushSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c9caee2-f566-479b-ad8c-5afe63b0ccf3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""LineSwitch"",
                     ""type"": ""Button"",
                     ""id"": ""1d86327a-61a1-4e62-a557-a06a2d84193e"",
@@ -82,18 +100,27 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""EraserSwitch"",
+                    ""name"": ""RectangleSelectorSwitch"",
                     ""type"": ""Button"",
-                    ""id"": ""08a42d42-d6e8-4a1a-9e89-500010ebf4fe"",
+                    ""id"": ""6fd135bf-1c80-4823-91f6-1cd8838b40dd"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""BrushSwitch"",
+                    ""name"": ""ConverterSwitch"",
                     ""type"": ""Button"",
-                    ""id"": ""4c9caee2-f566-479b-ad8c-5afe63b0ccf3"",
+                    ""id"": ""53859ee8-97b5-4c80-bdbe-cc0b016941df"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LetterSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f612845-2863-4be6-9b23-121aa79814d8"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -130,6 +157,69 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""name"": ""PerformRedo"",
                     ""type"": ""Button"",
                     ""id"": ""cf1b426c-7cfb-481d-8ba3-455c5a7dcb1f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformCopy"",
+                    ""type"": ""Button"",
+                    ""id"": ""82f8b9f8-14fe-4fb1-9745-b362960d33d9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformSave"",
+                    ""type"": ""Button"",
+                    ""id"": ""23b3146b-040b-4dc7-8229-6768ab246ab0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformLoad"",
+                    ""type"": ""Button"",
+                    ""id"": ""63cb3a9f-fcd9-44d2-913a-e30149e1ef41"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformStrokeIncrease"",
+                    ""type"": ""Button"",
+                    ""id"": ""28c2d682-4809-4254-8ca1-c5a55b2b8ab3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformStrokeDecrease"",
+                    ""type"": ""Button"",
+                    ""id"": ""dfc6abe4-3908-4737-8219-daafa81b6531"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformStrokeBigIncrease"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf17f5b1-2ac2-4f29-8d60-f64d314d05e1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PerformStrokeBigDecrease"",
+                    ""type"": ""Button"",
+                    ""id"": ""adb54370-c25a-4924-9d92-c343140f4bf0"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -238,28 +328,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7afbf044-a977-4c54-9172-346b4291f55d"",
-                    ""path"": ""<Keyboard>/z"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""PerformUndo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""16a3caf0-889d-422d-87d5-1531d7684a8e"",
-                    ""path"": ""<Keyboard>/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""PerformRedo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""b1950046-ea3a-4b8b-9fc9-da8edaa4db1c"",
                     ""path"": ""<Keyboard>/b"",
                     ""interactions"": """",
@@ -268,6 +336,292 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""BrushSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""f6962353-9b56-4871-8565-89dcca0d15d8"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformUndo"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""5b0df2c8-bd88-4794-b2aa-3f8514ab35d0"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformUndo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""901b655f-3923-4653-967d-8a8ffac8a407"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformUndo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""f743220f-62ee-4d84-aaca-3b173ed24591"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformRedo"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""e1e688d3-8ea4-485c-8f4a-7e86fa26bb9a"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformRedo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""17e65625-959c-4367-862f-8766118d6a37"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformRedo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ffeb5127-4e44-4b53-959d-d8bb191aacc2"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RectangleSelectorSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""12b07b0e-acd1-4a44-bc50-77aee70fd1f9"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LetterSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e29a04f7-58b0-424b-8558-6c20f49afc48"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeIncrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""60db8f87-f04a-45c7-a8f7-f24180ef7797"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeDecrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""27be0b2b-0787-454d-9e6b-423f6abf4747"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigIncrease"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""8b33ae90-728e-4f31-ae26-591c2fac23eb"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigIncrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""67d1f937-c2bc-4cb4-9e6d-7a3417efacc3"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigIncrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""62bc04fb-535f-4a55-a42d-fff662c34c9f"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigDecrease"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""c10a7194-6588-413b-85cb-24e7039bcce2"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigDecrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""523b3ec6-15bf-46ee-b8d4-d4de917a39c3"",
+                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformStrokeBigDecrease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57ed96a3-0aed-42a3-b781-629d635b4b37"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ConverterSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""528c7844-24e2-4478-bf4e-e5097c62efaf"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformSave"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""e50d22a6-060d-48c7-aa8d-a5ec37bc51b0"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformSave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""7c1b1550-a61a-415e-8e2f-daf9bd4f6965"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformSave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""93868485-9e74-4751-b258-39feae0eb247"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformLoad"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""6a8a221d-d30a-4249-8621-c5a8a5106341"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformLoad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""dcbe8087-864e-49f5-9c3f-4d3dba1344ae"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformLoad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""4f1d8e0b-efde-4b38-b48e-8d6c732ec87a"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformCopy"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""d04c9c1b-1966-4428-b43d-8d8182fbece0"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformCopy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""85fa509f-e9e2-4f59-b782-1305cfdb8b2d"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PerformCopy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -278,16 +632,26 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid = asset.FindActionMap("Grid", throwIfNotFound: true);
         m_Grid_MainClick = m_Grid.FindAction("MainClick", throwIfNotFound: true);
         m_Grid_PenSwitch = m_Grid.FindAction("PenSwitch", throwIfNotFound: true);
+        m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
+        m_Grid_BrushSwitch = m_Grid.FindAction("BrushSwitch", throwIfNotFound: true);
         m_Grid_LineSwitch = m_Grid.FindAction("LineSwitch", throwIfNotFound: true);
         m_Grid_RectangleSwitch = m_Grid.FindAction("RectangleSwitch", throwIfNotFound: true);
         m_Grid_EllipseSwitch = m_Grid.FindAction("EllipseSwitch", throwIfNotFound: true);
         m_Grid_TextSwitch = m_Grid.FindAction("TextSwitch", throwIfNotFound: true);
-        m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
-        m_Grid_BrushSwitch = m_Grid.FindAction("BrushSwitch", throwIfNotFound: true);
+        m_Grid_RectangleSelectorSwitch = m_Grid.FindAction("RectangleSelectorSwitch", throwIfNotFound: true);
+        m_Grid_ConverterSwitch = m_Grid.FindAction("ConverterSwitch", throwIfNotFound: true);
+        m_Grid_LetterSwitch = m_Grid.FindAction("LetterSwitch", throwIfNotFound: true);
         m_Grid_FilledToggle = m_Grid.FindAction("FilledToggle", throwIfNotFound: true);
         m_Grid_RegularToggle = m_Grid.FindAction("RegularToggle", throwIfNotFound: true);
         m_Grid_PerformUndo = m_Grid.FindAction("PerformUndo", throwIfNotFound: true);
         m_Grid_PerformRedo = m_Grid.FindAction("PerformRedo", throwIfNotFound: true);
+        m_Grid_PerformCopy = m_Grid.FindAction("PerformCopy", throwIfNotFound: true);
+        m_Grid_PerformSave = m_Grid.FindAction("PerformSave", throwIfNotFound: true);
+        m_Grid_PerformLoad = m_Grid.FindAction("PerformLoad", throwIfNotFound: true);
+        m_Grid_PerformStrokeIncrease = m_Grid.FindAction("PerformStrokeIncrease", throwIfNotFound: true);
+        m_Grid_PerformStrokeDecrease = m_Grid.FindAction("PerformStrokeDecrease", throwIfNotFound: true);
+        m_Grid_PerformStrokeBigIncrease = m_Grid.FindAction("PerformStrokeBigIncrease", throwIfNotFound: true);
+        m_Grid_PerformStrokeBigDecrease = m_Grid.FindAction("PerformStrokeBigDecrease", throwIfNotFound: true);
     }
 
     ~@ControlFile()
@@ -356,32 +720,52 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private List<IGridActions> m_GridActionsCallbackInterfaces = new List<IGridActions>();
     private readonly InputAction m_Grid_MainClick;
     private readonly InputAction m_Grid_PenSwitch;
+    private readonly InputAction m_Grid_EraserSwitch;
+    private readonly InputAction m_Grid_BrushSwitch;
     private readonly InputAction m_Grid_LineSwitch;
     private readonly InputAction m_Grid_RectangleSwitch;
     private readonly InputAction m_Grid_EllipseSwitch;
     private readonly InputAction m_Grid_TextSwitch;
-    private readonly InputAction m_Grid_EraserSwitch;
-    private readonly InputAction m_Grid_BrushSwitch;
+    private readonly InputAction m_Grid_RectangleSelectorSwitch;
+    private readonly InputAction m_Grid_ConverterSwitch;
+    private readonly InputAction m_Grid_LetterSwitch;
     private readonly InputAction m_Grid_FilledToggle;
     private readonly InputAction m_Grid_RegularToggle;
     private readonly InputAction m_Grid_PerformUndo;
     private readonly InputAction m_Grid_PerformRedo;
+    private readonly InputAction m_Grid_PerformCopy;
+    private readonly InputAction m_Grid_PerformSave;
+    private readonly InputAction m_Grid_PerformLoad;
+    private readonly InputAction m_Grid_PerformStrokeIncrease;
+    private readonly InputAction m_Grid_PerformStrokeDecrease;
+    private readonly InputAction m_Grid_PerformStrokeBigIncrease;
+    private readonly InputAction m_Grid_PerformStrokeBigDecrease;
     public struct GridActions
     {
         private @ControlFile m_Wrapper;
         public GridActions(@ControlFile wrapper) { m_Wrapper = wrapper; }
         public InputAction @MainClick => m_Wrapper.m_Grid_MainClick;
         public InputAction @PenSwitch => m_Wrapper.m_Grid_PenSwitch;
+        public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
+        public InputAction @BrushSwitch => m_Wrapper.m_Grid_BrushSwitch;
         public InputAction @LineSwitch => m_Wrapper.m_Grid_LineSwitch;
         public InputAction @RectangleSwitch => m_Wrapper.m_Grid_RectangleSwitch;
         public InputAction @EllipseSwitch => m_Wrapper.m_Grid_EllipseSwitch;
         public InputAction @TextSwitch => m_Wrapper.m_Grid_TextSwitch;
-        public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
-        public InputAction @BrushSwitch => m_Wrapper.m_Grid_BrushSwitch;
+        public InputAction @RectangleSelectorSwitch => m_Wrapper.m_Grid_RectangleSelectorSwitch;
+        public InputAction @ConverterSwitch => m_Wrapper.m_Grid_ConverterSwitch;
+        public InputAction @LetterSwitch => m_Wrapper.m_Grid_LetterSwitch;
         public InputAction @FilledToggle => m_Wrapper.m_Grid_FilledToggle;
         public InputAction @RegularToggle => m_Wrapper.m_Grid_RegularToggle;
         public InputAction @PerformUndo => m_Wrapper.m_Grid_PerformUndo;
         public InputAction @PerformRedo => m_Wrapper.m_Grid_PerformRedo;
+        public InputAction @PerformCopy => m_Wrapper.m_Grid_PerformCopy;
+        public InputAction @PerformSave => m_Wrapper.m_Grid_PerformSave;
+        public InputAction @PerformLoad => m_Wrapper.m_Grid_PerformLoad;
+        public InputAction @PerformStrokeIncrease => m_Wrapper.m_Grid_PerformStrokeIncrease;
+        public InputAction @PerformStrokeDecrease => m_Wrapper.m_Grid_PerformStrokeDecrease;
+        public InputAction @PerformStrokeBigIncrease => m_Wrapper.m_Grid_PerformStrokeBigIncrease;
+        public InputAction @PerformStrokeBigDecrease => m_Wrapper.m_Grid_PerformStrokeBigDecrease;
         public InputActionMap Get() { return m_Wrapper.m_Grid; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -397,6 +781,12 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @PenSwitch.started += instance.OnPenSwitch;
             @PenSwitch.performed += instance.OnPenSwitch;
             @PenSwitch.canceled += instance.OnPenSwitch;
+            @EraserSwitch.started += instance.OnEraserSwitch;
+            @EraserSwitch.performed += instance.OnEraserSwitch;
+            @EraserSwitch.canceled += instance.OnEraserSwitch;
+            @BrushSwitch.started += instance.OnBrushSwitch;
+            @BrushSwitch.performed += instance.OnBrushSwitch;
+            @BrushSwitch.canceled += instance.OnBrushSwitch;
             @LineSwitch.started += instance.OnLineSwitch;
             @LineSwitch.performed += instance.OnLineSwitch;
             @LineSwitch.canceled += instance.OnLineSwitch;
@@ -409,12 +799,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @TextSwitch.started += instance.OnTextSwitch;
             @TextSwitch.performed += instance.OnTextSwitch;
             @TextSwitch.canceled += instance.OnTextSwitch;
-            @EraserSwitch.started += instance.OnEraserSwitch;
-            @EraserSwitch.performed += instance.OnEraserSwitch;
-            @EraserSwitch.canceled += instance.OnEraserSwitch;
-            @BrushSwitch.started += instance.OnBrushSwitch;
-            @BrushSwitch.performed += instance.OnBrushSwitch;
-            @BrushSwitch.canceled += instance.OnBrushSwitch;
+            @RectangleSelectorSwitch.started += instance.OnRectangleSelectorSwitch;
+            @RectangleSelectorSwitch.performed += instance.OnRectangleSelectorSwitch;
+            @RectangleSelectorSwitch.canceled += instance.OnRectangleSelectorSwitch;
+            @ConverterSwitch.started += instance.OnConverterSwitch;
+            @ConverterSwitch.performed += instance.OnConverterSwitch;
+            @ConverterSwitch.canceled += instance.OnConverterSwitch;
+            @LetterSwitch.started += instance.OnLetterSwitch;
+            @LetterSwitch.performed += instance.OnLetterSwitch;
+            @LetterSwitch.canceled += instance.OnLetterSwitch;
             @FilledToggle.started += instance.OnFilledToggle;
             @FilledToggle.performed += instance.OnFilledToggle;
             @FilledToggle.canceled += instance.OnFilledToggle;
@@ -427,6 +820,27 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @PerformRedo.started += instance.OnPerformRedo;
             @PerformRedo.performed += instance.OnPerformRedo;
             @PerformRedo.canceled += instance.OnPerformRedo;
+            @PerformCopy.started += instance.OnPerformCopy;
+            @PerformCopy.performed += instance.OnPerformCopy;
+            @PerformCopy.canceled += instance.OnPerformCopy;
+            @PerformSave.started += instance.OnPerformSave;
+            @PerformSave.performed += instance.OnPerformSave;
+            @PerformSave.canceled += instance.OnPerformSave;
+            @PerformLoad.started += instance.OnPerformLoad;
+            @PerformLoad.performed += instance.OnPerformLoad;
+            @PerformLoad.canceled += instance.OnPerformLoad;
+            @PerformStrokeIncrease.started += instance.OnPerformStrokeIncrease;
+            @PerformStrokeIncrease.performed += instance.OnPerformStrokeIncrease;
+            @PerformStrokeIncrease.canceled += instance.OnPerformStrokeIncrease;
+            @PerformStrokeDecrease.started += instance.OnPerformStrokeDecrease;
+            @PerformStrokeDecrease.performed += instance.OnPerformStrokeDecrease;
+            @PerformStrokeDecrease.canceled += instance.OnPerformStrokeDecrease;
+            @PerformStrokeBigIncrease.started += instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigIncrease.performed += instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigIncrease.canceled += instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigDecrease.started += instance.OnPerformStrokeBigDecrease;
+            @PerformStrokeBigDecrease.performed += instance.OnPerformStrokeBigDecrease;
+            @PerformStrokeBigDecrease.canceled += instance.OnPerformStrokeBigDecrease;
         }
 
         private void UnregisterCallbacks(IGridActions instance)
@@ -437,6 +851,12 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @PenSwitch.started -= instance.OnPenSwitch;
             @PenSwitch.performed -= instance.OnPenSwitch;
             @PenSwitch.canceled -= instance.OnPenSwitch;
+            @EraserSwitch.started -= instance.OnEraserSwitch;
+            @EraserSwitch.performed -= instance.OnEraserSwitch;
+            @EraserSwitch.canceled -= instance.OnEraserSwitch;
+            @BrushSwitch.started -= instance.OnBrushSwitch;
+            @BrushSwitch.performed -= instance.OnBrushSwitch;
+            @BrushSwitch.canceled -= instance.OnBrushSwitch;
             @LineSwitch.started -= instance.OnLineSwitch;
             @LineSwitch.performed -= instance.OnLineSwitch;
             @LineSwitch.canceled -= instance.OnLineSwitch;
@@ -449,12 +869,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @TextSwitch.started -= instance.OnTextSwitch;
             @TextSwitch.performed -= instance.OnTextSwitch;
             @TextSwitch.canceled -= instance.OnTextSwitch;
-            @EraserSwitch.started -= instance.OnEraserSwitch;
-            @EraserSwitch.performed -= instance.OnEraserSwitch;
-            @EraserSwitch.canceled -= instance.OnEraserSwitch;
-            @BrushSwitch.started -= instance.OnBrushSwitch;
-            @BrushSwitch.performed -= instance.OnBrushSwitch;
-            @BrushSwitch.canceled -= instance.OnBrushSwitch;
+            @RectangleSelectorSwitch.started -= instance.OnRectangleSelectorSwitch;
+            @RectangleSelectorSwitch.performed -= instance.OnRectangleSelectorSwitch;
+            @RectangleSelectorSwitch.canceled -= instance.OnRectangleSelectorSwitch;
+            @ConverterSwitch.started -= instance.OnConverterSwitch;
+            @ConverterSwitch.performed -= instance.OnConverterSwitch;
+            @ConverterSwitch.canceled -= instance.OnConverterSwitch;
+            @LetterSwitch.started -= instance.OnLetterSwitch;
+            @LetterSwitch.performed -= instance.OnLetterSwitch;
+            @LetterSwitch.canceled -= instance.OnLetterSwitch;
             @FilledToggle.started -= instance.OnFilledToggle;
             @FilledToggle.performed -= instance.OnFilledToggle;
             @FilledToggle.canceled -= instance.OnFilledToggle;
@@ -467,6 +890,27 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @PerformRedo.started -= instance.OnPerformRedo;
             @PerformRedo.performed -= instance.OnPerformRedo;
             @PerformRedo.canceled -= instance.OnPerformRedo;
+            @PerformCopy.started -= instance.OnPerformCopy;
+            @PerformCopy.performed -= instance.OnPerformCopy;
+            @PerformCopy.canceled -= instance.OnPerformCopy;
+            @PerformSave.started -= instance.OnPerformSave;
+            @PerformSave.performed -= instance.OnPerformSave;
+            @PerformSave.canceled -= instance.OnPerformSave;
+            @PerformLoad.started -= instance.OnPerformLoad;
+            @PerformLoad.performed -= instance.OnPerformLoad;
+            @PerformLoad.canceled -= instance.OnPerformLoad;
+            @PerformStrokeIncrease.started -= instance.OnPerformStrokeIncrease;
+            @PerformStrokeIncrease.performed -= instance.OnPerformStrokeIncrease;
+            @PerformStrokeIncrease.canceled -= instance.OnPerformStrokeIncrease;
+            @PerformStrokeDecrease.started -= instance.OnPerformStrokeDecrease;
+            @PerformStrokeDecrease.performed -= instance.OnPerformStrokeDecrease;
+            @PerformStrokeDecrease.canceled -= instance.OnPerformStrokeDecrease;
+            @PerformStrokeBigIncrease.started -= instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigIncrease.performed -= instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigIncrease.canceled -= instance.OnPerformStrokeBigIncrease;
+            @PerformStrokeBigDecrease.started -= instance.OnPerformStrokeBigDecrease;
+            @PerformStrokeBigDecrease.performed -= instance.OnPerformStrokeBigDecrease;
+            @PerformStrokeBigDecrease.canceled -= instance.OnPerformStrokeBigDecrease;
         }
 
         public void RemoveCallbacks(IGridActions instance)
@@ -488,15 +932,25 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     {
         void OnMainClick(InputAction.CallbackContext context);
         void OnPenSwitch(InputAction.CallbackContext context);
+        void OnEraserSwitch(InputAction.CallbackContext context);
+        void OnBrushSwitch(InputAction.CallbackContext context);
         void OnLineSwitch(InputAction.CallbackContext context);
         void OnRectangleSwitch(InputAction.CallbackContext context);
         void OnEllipseSwitch(InputAction.CallbackContext context);
         void OnTextSwitch(InputAction.CallbackContext context);
-        void OnEraserSwitch(InputAction.CallbackContext context);
-        void OnBrushSwitch(InputAction.CallbackContext context);
+        void OnRectangleSelectorSwitch(InputAction.CallbackContext context);
+        void OnConverterSwitch(InputAction.CallbackContext context);
+        void OnLetterSwitch(InputAction.CallbackContext context);
         void OnFilledToggle(InputAction.CallbackContext context);
         void OnRegularToggle(InputAction.CallbackContext context);
         void OnPerformUndo(InputAction.CallbackContext context);
         void OnPerformRedo(InputAction.CallbackContext context);
+        void OnPerformCopy(InputAction.CallbackContext context);
+        void OnPerformSave(InputAction.CallbackContext context);
+        void OnPerformLoad(InputAction.CallbackContext context);
+        void OnPerformStrokeIncrease(InputAction.CallbackContext context);
+        void OnPerformStrokeDecrease(InputAction.CallbackContext context);
+        void OnPerformStrokeBigIncrease(InputAction.CallbackContext context);
+        void OnPerformStrokeBigDecrease(InputAction.CallbackContext context);
     }
 }

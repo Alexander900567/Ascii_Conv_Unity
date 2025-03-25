@@ -13,7 +13,7 @@ public class Line : Tool
             int row_dif = endGridPos.row - startGpos.row;
             int col_dif = endGridPos.col - startGpos.col;
 
-            if (Math.Abs(row_dif) != Math.Abs(col_dif)) { //If not already a square, then make square
+            if (Math.Abs(row_dif) != Math.Abs(col_dif)) { //If not already a regular, then make regular
                 int smaller_dif;
                 if (Math.Abs(row_dif) < Math.Abs(col_dif)){ //Determine shorter component
                     smaller_dif = row_dif;
