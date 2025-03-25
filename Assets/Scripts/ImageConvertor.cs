@@ -12,8 +12,6 @@ public class ImageConvertor : Tool
     [SerializeField] private GameObject chooseImageButton;
     [SerializeField] private GameObject convertButton;
     [SerializeField] private GameObject outline;
-    [SerializeField] private SaveLoad saveLoad;
-    [SerializeField] private GameObject videoPopUp;
     private GameObject outlineInstance;
     [SerializeField] private Texture2D image;
     private (int row, int col) topLeft;
@@ -23,22 +21,12 @@ public class ImageConvertor : Tool
     private bool imageActive = false;
     private bool outlineActive = false;
 
-    //video variables
-    private bool videoPlaying = false;
-    private string[] frameArray;
-    private int frameNum;
-    private int totalFrames;
-    private double secBetweenFrames;
-    private DateTime lastFrameTime;
 
     public override void onUpdate(){
         base.onUpdate();
         if (outlineActive){
             outlineInstance.GetComponent<HollowBoxAttach>().renderBox(topLeft, botRight);
         }
-        if (videoPlaying){
-            handlePlayingVideo();
-        } 
     }
 
     public override void handleInput(){
@@ -80,7 +68,7 @@ public class ImageConvertor : Tool
         outlineActive = false;
     }
 
-    private void filePathToTexture(string filePath){
+    public void filePathToTexture(string filePath){
         image = new Texture2D(1, 1);
         byte[] imageByteArray = File.ReadAllBytes(filePath);
         ImageConversion.LoadImage(image, imageByteArray, false);
@@ -104,9 +92,14 @@ public class ImageConvertor : Tool
             Mathf.Max(startGpos.row, newGpos.row),
             Mathf.Max(startGpos.col, newGpos.col)
         );
+    
+    }
+    public void setCornersManual((int row, int col) topL, (int row, int col) botR){
+        topLeft = topL;
+        botRight = botR;
     }
 
-    private List<List<char>> performConversion(){
+    public List<List<char>> performConversion(){
         asciiMap = new List<int> {' ', '.', ':', '-', '=', '+' , '*', '#', '%', '@'};
         //asciiMap = new List<int> {' ', '+', '@'};
         //asciiMap = new List<int> {' ', '.', ':', 'c', 'o', 'P', 'O', '?', '@'};
@@ -168,97 +161,5 @@ public class ImageConvertor : Tool
         }
         gridManager.writePbufferToArray();
         globalOperations.renderUpdate = true;
-    }
-
-    public void displayVideoPopUp(){
-        globalOperations.openPopUp(videoPopUp);
-    }
-
-    public void convertVideo(int frameRate){
-        string filePath = EditorUtility.OpenFolderPanel("Choose a directory of images", "~", "");
-        if (filePath == ""){
-            return;
-        }
-
-        DirectoryInfo dirObj = new DirectoryInfo(filePath);
-        FileInfo[] fileList = dirObj.GetFiles();
-
-        string[] saveFileNameArray = {filePath, "video.txt"};
-        StreamWriter saveFile = File.CreateText(Path.Combine(saveFileNameArray));
-        saveFile.WriteLine($"rowCount:{gridManager.getRowCount()}");
-        saveFile.WriteLine($"colCount:{gridManager.getColCount()}");
-        saveFile.WriteLine($"frameRate:{frameRate}");
-
-        topLeft = (row: 0, col: 0);
-        botRight = (row: gridManager.getRowCount() - 1, col: gridManager.getColCount() - 1);
-        
-
-        foreach(FileInfo file in fileList){
-            string fileExtension = file.Name.Split('.')[^1];
-            if(fileExtension != "png" && fileExtension != "jpg" && fileExtension != "jpeg"){
-                continue;
-            }
-
-            filePathToTexture(file.FullName);
-            List<List<char>> outputList = performConversion();
-
-            saveFile.WriteLine("-----");
-            string compString = saveLoad.compressGrid(outputList);
-            foreach(string row in compString.Split("\n")){
-                saveFile.WriteLine(row);
-            }
-        }
-        saveFile.Close();
-    }
-
-    public void playVideo(){
-        string filePath = EditorUtility.OpenFilePanel("Choose an converted video text file", "~", "txt");
-        if (filePath == ""){
-            return;
-        }
-
-        globalOperations.closePopUp();
-
-        StreamReader file = new StreamReader(filePath);
-
-        int rowNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
-        int colNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
-        int frameRate = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
-        secBetweenFrames = 1.0 / (double)frameRate;
-        string t = file.ReadLine();
-
-        gridManager.resizeGrid(rowNum, colNum);
-        gridManager.constructCachedArray();
-
-        string saveString = file.ReadToEnd();
-        file.Close();
-        frameArray = saveString.Split("-----\n");
-        lastFrameTime = DateTime.Now;
-        frameNum = 0;
-        totalFrames = frameArray.Length;
-        videoPlaying = true;
-    }
-
-    private void handlePlayingVideo(){
-        DateTime currentTime = DateTime.Now;
-        if ((currentTime - lastFrameTime).TotalSeconds < secBetweenFrames){
-            return;
-        }
-        lastFrameTime = currentTime;
-
-        string frame = frameArray[frameNum];
-
-        List<List<char>> newGrid = saveLoad.decompressSaveStringToGrid(frame);
-        for (int row = 0; row < gridManager.getRowCount(); row++){
-            for (int col = 0; col < gridManager.getColCount(); col++){
-                gridManager.addToGridArray(row, col, newGrid[row][col]);
-            }
-        }
-
-        globalOperations.renderUpdate = true;
-        frameNum += 1;
-        if(frameNum >= totalFrames){
-            videoPlaying = false;
-        }
     }
 }
