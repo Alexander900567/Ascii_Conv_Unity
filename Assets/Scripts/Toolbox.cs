@@ -22,6 +22,7 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private ImageConvertor ImageConvertor;
     [SerializeField] private Brush Brush;
     [SerializeField] private SaveLoad SaveLoad;
+    [SerializeField] private Bucket Bucket;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -84,6 +85,9 @@ public class Toolbox : MonoBehaviour
     }
     public void changeToBrush(){
         changeActiveTool(Brush);
+    }
+    public void changeToBucket(){
+        changeActiveTool(Bucket);
     }
     public void setLetterListeningTrue(){
         isLetterListening = true;

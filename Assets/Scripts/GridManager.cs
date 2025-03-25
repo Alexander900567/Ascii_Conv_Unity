@@ -263,6 +263,9 @@ public class GridManager : MonoBehaviour
     }
 
     public char getGarrSpace(int row, int col){
+        if (row >= getRowCount() || col >= getColCount() || row < 0 || col < 0){
+            return '\0';
+        }
         return gridArray[row][col];
     }
 
