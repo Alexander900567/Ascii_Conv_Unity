@@ -59,35 +59,55 @@ public class Toolbox : MonoBehaviour
     }
 
     //-----button functions-----
-    public void changeToPencil(){
-        changeActiveTool(Pencil);
+    public void changeToPencil(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(Pencil);
+        }
     }
-    public void changeToLine(){
-        changeActiveTool(Line);
+    public void changeToLine(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(Line);
+        }
     }
-    public void changeToRectangle(){
-        changeActiveTool(Rectangle);
+    public void changeToRectangle(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(Rectangle);
+        }
     }
-    public void changeToText(){
-        changeActiveTool(Text);
+    public void changeToText(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(Text);
+        }
     }
-    public void changeToEllipse(){
-        changeActiveTool(Ellipse);
+    public void changeToEllipse(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(Ellipse);
+        }
     }
-    public void changeToRectangleSelector(){
-        changeActiveTool(RectangleSelector);
+    public void changeToRectangleSelector(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(RectangleSelector);
+        }
     }
-    public void changeToEraser(){
-        changeActiveTool(Eraser);
+    public void changeToEraser(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(Eraser);
+        }
     }
-    public void changeToImageConvertor(){
-        changeActiveTool(ImageConvertor);
+    public void changeToImageConvertor(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(ImageConvertor);
+        }
     }
-    public void changeToBrush(){
-        changeActiveTool(Brush);
+    public void changeToBrush(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(Brush);
+        }
     }
-    public void changeToBucket(){
-        changeActiveTool(Bucket);
+    public void changeToBucket(bool toggleStatus){
+        if (toggleStatus){
+            changeActiveTool(Bucket);
+        }
     }
     public void setLetterListeningTrue(){
         isLetterListening = true;
@@ -107,31 +127,31 @@ public class Toolbox : MonoBehaviour
             SaveLoad.loadGridArray();
         }
         else if(global.controls.Grid.PenSwitch.triggered){
-            changeToPencil();
+            changeToPencil(true);
         }
         else if(global.controls.Grid.EraserSwitch.triggered){
-            changeToEraser();
+            changeToEraser(true);
         }
         else if(global.controls.Grid.BrushSwitch.triggered){
-            changeToBrush();
+            changeToBrush(true);
         }
         else if(global.controls.Grid.LineSwitch.triggered){
-            changeToLine();
+            changeToLine(true);
         }
         else if(global.controls.Grid.RectangleSwitch.triggered){
-            changeToRectangle();
+            changeToRectangle(true);
         }
         else if(global.controls.Grid.TextSwitch.triggered){
-            changeToText();
+            changeToText(true);
         }
         else if(global.controls.Grid.RectangleSelectorSwitch.triggered){
-            changeToRectangleSelector();
+            changeToRectangleSelector(true);
         }
         else if(global.controls.Grid.EllipseSwitch.triggered){
-            changeToEllipse();
+            changeToEllipse(true);
         }
         else if(global.controls.Grid.ConverterSwitch.triggered){
-            changeToImageConvertor();
+            changeToImageConvertor(true);
         }
         else if(global.controls.Grid.LetterSwitch.triggered){
             setLetterListeningTrue();
