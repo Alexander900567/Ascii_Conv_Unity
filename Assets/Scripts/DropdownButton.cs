@@ -6,14 +6,17 @@ using TMPro;
 public class DropdownButton : MonoBehaviour
 {
 
+    private GlobalOperations global;
     private List<Transform> buttonList;    
     private Transform backPanel;
-    private TextMeshProUGUI dropdownTextComponent;
     private bool active;
+    private int releaseCount;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
+        global = GameObject.Find("GlobalOperations").GetComponent<GlobalOperations>();
         buttonList = new List<Transform>();
+        releaseCount = 0;
 
         foreach(Transform child in gameObject.transform){
             //record buttons
@@ -25,14 +28,20 @@ public class DropdownButton : MonoBehaviour
             else if(child.name == "BackPanel"){
                 backPanel = child;
             }
-            //rectord dropdownText
-            else if(child.name == "DropdownText"){
-                dropdownTextComponent = child.GetComponent<TextMeshProUGUI>();
-                dropdownTextComponent.text += " \u2193";
-            }
         }
-
     }
+
+    void Update(){
+        if (active && global.controls.Grid.MainClick.WasReleasedThisFrame()){
+            releaseCount += 1;
+        }
+        else if(releaseCount >= 2){
+            releaseCount = 0;
+            hideDropdown();
+        }
+    }
+
+
 
     public void showDropdown(){
         changeDropdownStatus(true);
@@ -50,12 +59,5 @@ public class DropdownButton : MonoBehaviour
             button.gameObject.SetActive(visible);
         }
 
-        dropdownTextComponent.text = dropdownTextComponent.text.Substring(0, dropdownTextComponent.text.Length - 2);
-        if (visible){
-            dropdownTextComponent.text += " \u2191";
-        }
-        else{
-            dropdownTextComponent.text += " \u2193";
-        }
     }
 }
