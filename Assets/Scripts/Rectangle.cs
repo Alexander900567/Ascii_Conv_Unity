@@ -4,15 +4,12 @@ using System;
 public class Rectangle : Tool
 {
     [SerializeField] private Line Line;
+    [SerializeField] private Brush Brush;
     private bool isFilled = false;
-
-    public override void draw()
-    {
-        gridManager.emptyPreviewBuffer();
-        (int row, int col) gpos = gridManager.getGridPos();
-
-        if (globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Math to make rectangle a square
-            int row_dif = gpos.row - startGpos.row;
+    private int strokeWidth = 1;
+    private void DrawRectangle((int row, int col) gpos) {
+        if (globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Checks if user wants a square
+            int row_dif = gpos.row - startGpos.row; //For math to make rectangle a square
             int col_dif = gpos.col - startGpos.col;
 
             if (Math.Abs(row_dif) != Math.Abs(col_dif)) { //If not already a square, then make square
@@ -23,7 +20,7 @@ public class Rectangle : Tool
                 else{
                     smaller_dif = col_dif;
                 }
-                smaller_dif = Math.Abs(smaller_dif); //The math can be optimized I bet
+                smaller_dif = Math.Abs(smaller_dif); //The logic can be optimized I bet
                 if (col_dif > 0 && row_dif < 0){
                     gpos.row = startGpos.row - smaller_dif;
                     gpos.col = startGpos.col + smaller_dif;
@@ -85,6 +82,19 @@ public class Rectangle : Tool
                     false
                 );
             }   
+        }        
+    }
+    public override void draw()
+    {
+        gridManager.emptyPreviewBuffer();
+        (int row, int col) gpos = gridManager.getGridPos();
+        strokeWidth = Brush.getStrokeWidth();
+
+        for (int i = 0; i <= strokeWidth - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
+            gpos.col += i;
+            gpos.row += i;
+            
+            DrawRectangle(gpos);
         }
     }
 
