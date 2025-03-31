@@ -10,7 +10,7 @@ public class Ellipse : Tool
     private Action<int, int> drawQuadPixels;
     private Action<int, int> drawLinePairs;
 
-    private void Awake(){
+    private void Awake(){ //this may be able to go away
         if (gridManager == null || globalOperations == null || Line == null){
             Debug.LogError("Ellipse is missing gridManager, globalOperations, or Line");
             return;
@@ -54,11 +54,19 @@ public class Ellipse : Tool
             //Note about precision: if not good enough, make these floats into doubles
             int r;
             if (rowDif != 0 && colDif != 0) { //non-cardinal case AKA trig time
+                if (isRegular){
                 int o = Math.Abs(colDif); //converts o to be positive to work with sin()
                 float angleTheta = (float)Math.Asin(o / diagonalR);
                 float h = (float)(o / diagonalR) / (float)Math.Sin(angleTheta); //hypotenuse
                 float r0 = diagonalR / h; //radius in terms of pixels
                 r = (int)Math.Floor(r0); //floor makes our radius usable
+                }
+                else if (!isRegular){
+                    r = colDif; //since they are the same, it could be rowDif as well
+                }
+                else{
+                    r = 0;
+                }
             }
             else if (rowDif == 0 || colDif == 0) { //cardinal cases
                 r = (int)Math.Floor(diagonalR);

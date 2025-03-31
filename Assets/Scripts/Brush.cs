@@ -49,16 +49,4 @@ public class Brush : Tool
             }
         }
     }
-/*     public override void onEnter()
-    {
-        base.onEnter();
-        MoreStrokeButton.SetActive(true);       
-        LessStrokeButton.SetActive(true);
-    }
-    public override void onExit()
-    {
-        base.onExit();
-        MoreStrokeButton.SetActive(false);       
-        LessStrokeButton.SetActive(false);
-    } */
 }
