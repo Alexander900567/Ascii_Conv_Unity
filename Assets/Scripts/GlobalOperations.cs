@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GlobalOperations : MonoBehaviour
@@ -6,12 +7,19 @@ public class GlobalOperations : MonoBehaviour
     public char activeLetter;
     public ControlFile controls;
     private GameObject currentPopUp = null;
+    public Dictionary<string, dynamic> prefDict;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         renderUpdate = true; 
+        prefDict = new Dictionary<string, dynamic>(){
+            {"trim cliboard input", false}, 
+            {"default row count", 80},
+            {"default column count", 120},
+            {"defualt picture filepath", "~/"},
+        };
     }
 
     void Awake(){
