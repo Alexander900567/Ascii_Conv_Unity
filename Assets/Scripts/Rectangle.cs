@@ -6,7 +6,7 @@ public class Rectangle : Tool
     [SerializeField] private Line Line;
     [SerializeField] private Brush Brush;
     private bool isFilled = false;
-    private int strokeWidth = 3;
+    private int strokeWidth = 1;
     private void DrawRectangle((int row, int col) beginGpos, (int row, int col) gpos) {
         if (globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Checks if user wants a square
             int row_dif = gpos.row - beginGpos.row; //For math to make rectangle a square
@@ -89,11 +89,7 @@ public class Rectangle : Tool
         gridManager.emptyPreviewBuffer();
         (int row, int col) beginGpos = startGpos; //initialize both corners
         (int row, int col) gpos = gridManager.getGridPos();
-        if (Brush != null) {
-            strokeWidth = Brush.GetStrokeWidth();
-        } else {
-            Debug.LogError("Brush is null in Start!");
-        }
+        strokeWidth = Toolbox.GetStrokeWidth();
 
         for (int i = 0; i <= strokeWidth - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
             if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
