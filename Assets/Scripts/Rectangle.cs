@@ -84,12 +84,16 @@ public class Rectangle : Tool
             }   
         }        
     }
-    public override void draw() //control for drawing rectangles
+    public override void draw() //control for drawing rectangles with any strokeWidth
     {
         gridManager.emptyPreviewBuffer();
         (int row, int col) beginGpos = startGpos; //initialize both corners
         (int row, int col) gpos = gridManager.getGridPos();
-        //strokeWidth = Brush.GetStrokeWidth(); and below should be same
+        if (Brush != null) {
+            strokeWidth = Brush.GetStrokeWidth();
+        } else {
+            Debug.LogError("Brush is null in Start!");
+        }
 
         for (int i = 0; i <= strokeWidth - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
             if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
