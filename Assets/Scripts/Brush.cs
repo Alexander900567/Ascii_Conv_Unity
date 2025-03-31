@@ -54,7 +54,7 @@ public class Brush : Tool
             }
         }
     }
-    public int getStrokeWidth() {
+    public int GetStrokeWidth() {
         return strokeWidth;
     }
     public void increaseStrokeWidth(int increase){ //These are called by keybinds and buttons and soon by input fields
