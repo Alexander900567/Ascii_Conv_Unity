@@ -6,7 +6,6 @@ public class Rectangle : Tool
     [SerializeField] private Line Line;
     [SerializeField] private Brush Brush;
     private bool isFilled = false;
-    private int strokeWidth = 1;
     private void DrawRectangle((int row, int col) beginGpos, (int row, int col) gpos) {
         if (globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Checks if user wants a square
             int row_dif = gpos.row - beginGpos.row; //For math to make rectangle a square
@@ -19,6 +18,9 @@ public class Rectangle : Tool
                 }
                 else{
                     smaller_dif = col_dif;
+                }
+                if (smaller_dif == 0){ //Cardinal lines are not drawn
+                    return;
                 }
                 smaller_dif = Math.Abs(smaller_dif); //The logic can be optimized I bet
                 if (col_dif > 0 && row_dif < 0){
@@ -89,9 +91,8 @@ public class Rectangle : Tool
         gridManager.emptyPreviewBuffer();
         (int row, int col) beginGpos = startGpos; //initialize both corners
         (int row, int col) gpos = gridManager.getGridPos();
-        strokeWidth = Toolbox.GetStrokeWidth();
 
-        for (int i = 0; i <= strokeWidth - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
+        for (int i = 0; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
             if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
             beginGpos.col += i;
             beginGpos.row += i;

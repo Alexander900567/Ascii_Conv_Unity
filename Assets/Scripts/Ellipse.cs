@@ -2,13 +2,22 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 
-public class Ellipse : Tool //TODO: Remove references to gpos with get and replace
+public class Ellipse : Tool
 {
     [SerializeField] private Line Line;
     private bool isFilled = false;
-    private bool isRegular = false;
+    private (int row, int col) beginGpos;
     private Action<int, int> drawQuadPixels;
     private Action<int, int> drawLinePairs;
+
+    private void setBeginGpos((int row, int col) newBeginGpos){
+        beginGpos.row = newBeginGpos.row;
+        beginGpos.col = newBeginGpos.col;
+    }
+
+    private (int row, int col) getBeginGpos(){
+        return beginGpos;
+    }
 
     private void Awake(){ 
         if (gridManager == null || globalOperations == null || Line == null){ //this may be able to go away
@@ -17,25 +26,25 @@ public class Ellipse : Tool //TODO: Remove references to gpos with get and repla
         }
 
         drawQuadPixels = (rowNum, colNum) => { //Called if ellipse is not filled
-            (int row, int col) gpos = gridManager.getGridPos();
-            gridManager.addToPreviewBuffer(beginGpos.row + rowNum, beginGpos.col + colNum, globalOperations.activeLetter); //Draws 4 quadrants "simultaneously"
-            gridManager.addToPreviewBuffer(beginGpos.row - rowNum, beginGpos.col + colNum, globalOperations.activeLetter); //i.e. the perimeter
-            gridManager.addToPreviewBuffer(beginGpos.row + rowNum, beginGpos.col - colNum, globalOperations.activeLetter);
-            gridManager.addToPreviewBuffer(beginGpos.row - rowNum, beginGpos.col - colNum, globalOperations.activeLetter);
+            (int row, int col) beginGposLocal = getBeginGpos();
+            gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter); //Draws 4 quadrants "simultaneously"
+            gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter); //i.e. the perimeter
+            gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
         };
         drawLinePairs = (rowNum, colNum) => { //Called if ellipse is filled
-            (int row, int col) gpos = gridManager.getGridPos();
+            (int row, int col) beginGposLocal = getBeginGpos();
             Line.line( //Draws lines to make the ellipse filled
-                (beginGpos.row - rowNum, 
-                beginGpos.col + colNum),
-                (beginGpos.row + rowNum,
-                beginGpos.col + colNum),
+                (beginGposLocal.row - rowNum, 
+                beginGposLocal.col + colNum),
+                (beginGposLocal.row + rowNum,
+                beginGposLocal.col + colNum),
                 false);
             Line.line(
-                (beginGpos.row - rowNum, 
-                beginGpos.col - colNum),
-                (beginGpos.row + rowNum,
-                beginGpos.col - colNum),
+                (beginGposLocal.row - rowNum, 
+                beginGposLocal.col - colNum),
+                (beginGposLocal.row + rowNum,
+                beginGposLocal.col - colNum),
                 false);
         };
     }
@@ -44,22 +53,23 @@ public class Ellipse : Tool //TODO: Remove references to gpos with get and repla
         int rowDif = gpos.row - beginGpos.row; //row and col components of
         int colDif = gpos.col - beginGpos.col; //difference between start and end
 
-        if (isRegular || (!isRegular && rowDif == colDif)){ //Math to make a circle
+        if (globalOperations.controls.Grid.RegularToggle.IsPressed() ||
+        (!globalOperations.controls.Grid.RegularToggle.IsPressed() && rowDif == colDif)){ //Math to make a circle
             float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
             //pythag: c = sqrt(a^2 + b^2)
             //this is not yet usable due to the geometry of a grid in non-cardinal cases
             //Note about precision: if not good enough, make these floats into doubles
             int r;
             if (rowDif != 0 && colDif != 0) { //non-cardinal case AKA trig time
-                if (isRegular){
+                if (globalOperations.controls.Grid.RegularToggle.IsPressed()){
                 int o = Math.Abs(colDif); //converts o to be positive to work with sin()
                 float angleTheta = (float)Math.Asin(o / diagonalR);
                 float h = (float)(o / diagonalR) / (float)Math.Sin(angleTheta); //hypotenuse
                 float r0 = diagonalR / h; //radius in terms of pixels
                 r = (int)Math.Floor(r0); //floor makes our radius usable
                 }
-                else if (!isRegular){
-                    r = colDif; //since they are the same, it could be rowDif as well
+                else if (!globalOperations.controls.Grid.RegularToggle.IsPressed()){
+                    r = Math.Abs(colDif); //since they are the same, it could be rowDif as well, abs() makes it positive
                 }
                 else{
                     r = 0;
@@ -114,7 +124,7 @@ public class Ellipse : Tool //TODO: Remove references to gpos with get and repla
                 }
             }
         }
-        else if(!isRegular){ //Math to make an ellipse
+        else if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Math to make an ellipse
             if (rowDif == 0 || colDif == 0){ //Line optimization
                 if (rowDif == 0){
                     Line.line( //Line with length equal to flat ellipse
@@ -142,7 +152,6 @@ public class Ellipse : Tool //TODO: Remove references to gpos with get and repla
         }
     }
     private void drawEllipse(Action <int, int> renderFunc, int rowDif, int colDif) {
-        (int row, int col) gpos = gridManager.getGridPos();
 
         int rowNum = 0; //Used to keep track of drawing math
         int colNum = colDif;
@@ -189,40 +198,40 @@ public class Ellipse : Tool //TODO: Remove references to gpos with get and repla
             renderFunc(rowNum, colNum);
         }
     }
-        public override void draw(){
-            gridManager.emptyPreviewBuffer();
-            (int row, int col) beginGpos = startGpos;
-            (int row, int col) gpos = gridManager.getGridPos();
-            ellipseLogic((int row, int col) beginGpos, (int row, int col) gpos);
-            strokeWidth = Toolbox.GetStrokeWidth();
+    public override void draw(){
+        gridManager.emptyPreviewBuffer();
+        setBeginGpos(startGpos);
+        (int row, int col) gpos = gridManager.getGridPos();
 
-            for (int i = 0; i <= strokeWidth - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
-                if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
-                beginGpos.col += i;
-                beginGpos.row += i;
-                gpos.col -= i;
-                gpos.row -= i;
-                }
-                else if (i % 2 != 0){ //In odd, it goes out
-                beginGpos.col -= i;
-                beginGpos.row -= i;
-                gpos.col += i;
-                gpos.row += i;
-                }
-                else {
-                    Debug.Log("Error: Invalid strokeWidth. How did you do that?");
-                }
-                ellipseLogic(beginGpos, gpos);
+        for (int i = 0; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
+            if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
+            beginGpos.col += i;
+            beginGpos.row += i;
+            gpos.col -= i;
+            gpos.row -= i;
+            }
+            else if (i % 2 != 0){ //In odd, it goes out
+            beginGpos.col -= i;
+            beginGpos.row -= i;
+            gpos.col += i;
+            gpos.row += i;
+            }
+            else {
+                Debug.Log("Error: Invalid strokeWidth. How did you do that?");
+            }
+            ellipseLogic(beginGpos, gpos);
         }  
-        public override void handleInput()
-        {
-            base.handleInput();
-            if (globalOperations.controls.Grid.FilledToggle.triggered){
-                isFilled = !isFilled;
-            }
-            if (globalOperations.controls.Grid.RegularToggle.triggered){
-                isRegular = !isRegular;
-            }
+    }
+    public override void handleInput(){
+        base.handleInput();
+        if (globalOperations.controls.Grid.FilledToggle.triggered){
+            isFilled = !isFilled;
+        }    
+        else if(
+            globalOperations.controls.Grid.RegularToggle.triggered ||
+            globalOperations.controls.Grid.RegularToggle.WasReleasedThisFrame()
+        ){
+            globalOperations.renderUpdate = true;
         }
     }
 }

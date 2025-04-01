@@ -5,7 +5,7 @@ public class Brush : Tool
     [SerializeField] private Line Line;
     private (int row, int col) prevGpos;
 
-    public override void draw(){
+    public override void draw(){ //Render brush draw if the brush was moved
         (int row, int col) gpos = gridManager.getGridPos();
 
         if (gpos != prevGpos){
@@ -48,5 +48,14 @@ public class Brush : Tool
                 p += 2 * (rowNum - colNum) + 1;
             }
         }
+    }
+
+    public override void onEnter()
+    {
+        base.onEnter();
+    }
+    public override void onExit()
+    {
+        base.onExit();
     }
 }
