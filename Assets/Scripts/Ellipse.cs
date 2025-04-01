@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 
-public class Ellipse : Tool
+public class Ellipse : Tool //TODO: Remove references to gpos with get and replace
 {
     [SerializeField] private Line Line;
     private bool isFilled = false;
@@ -10,42 +10,39 @@ public class Ellipse : Tool
     private Action<int, int> drawQuadPixels;
     private Action<int, int> drawLinePairs;
 
-    private void Awake(){ //this may be able to go away
-        if (gridManager == null || globalOperations == null || Line == null){
+    private void Awake(){ 
+        if (gridManager == null || globalOperations == null || Line == null){ //this may be able to go away
             Debug.LogError("Ellipse is missing gridManager, globalOperations, or Line");
             return;
         }
 
         drawQuadPixels = (rowNum, colNum) => { //Called if ellipse is not filled
             (int row, int col) gpos = gridManager.getGridPos();
-            gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col + colNum, globalOperations.activeLetter); //Draws 4 quadrants "simultaneously"
-            gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col + colNum, globalOperations.activeLetter); //i.e. the perimeter
-            gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col - colNum, globalOperations.activeLetter);
-            gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col - colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(beginGpos.row + rowNum, beginGpos.col + colNum, globalOperations.activeLetter); //Draws 4 quadrants "simultaneously"
+            gridManager.addToPreviewBuffer(beginGpos.row - rowNum, beginGpos.col + colNum, globalOperations.activeLetter); //i.e. the perimeter
+            gridManager.addToPreviewBuffer(beginGpos.row + rowNum, beginGpos.col - colNum, globalOperations.activeLetter);
+            gridManager.addToPreviewBuffer(beginGpos.row - rowNum, beginGpos.col - colNum, globalOperations.activeLetter);
         };
         drawLinePairs = (rowNum, colNum) => { //Called if ellipse is filled
             (int row, int col) gpos = gridManager.getGridPos();
             Line.line( //Draws lines to make the ellipse filled
-                (startGpos.row - rowNum, 
-                startGpos.col + colNum),
-                (startGpos.row + rowNum,
-                startGpos.col + colNum),
+                (beginGpos.row - rowNum, 
+                beginGpos.col + colNum),
+                (beginGpos.row + rowNum,
+                beginGpos.col + colNum),
                 false);
             Line.line(
-                (startGpos.row - rowNum, 
-                startGpos.col - colNum),
-                (startGpos.row + rowNum,
-                startGpos.col - colNum),
+                (beginGpos.row - rowNum, 
+                beginGpos.col - colNum),
+                (beginGpos.row + rowNum,
+                beginGpos.col - colNum),
                 false);
         };
     }
-    public override void draw(){ //Controls logic to draw circle, ellipse, filled or not filled
-        (int row, int col) gpos = gridManager.getGridPos();
+    private void ellipseLogic((int row, int col) beginGpos, (int row, int col) gpos){ //Controls logic to draw circle, ellipse, filled or not filled
 
-        gridManager.emptyPreviewBuffer();
-
-        int rowDif = gpos.row - startGpos.row; //row and col components of
-        int colDif = gpos.col - startGpos.col; //difference between start and end
+        int rowDif = gpos.row - beginGpos.row; //row and col components of
+        int colDif = gpos.col - beginGpos.col; //difference between start and end
 
         if (isRegular || (!isRegular && rowDif == colDif)){ //Math to make a circle
             float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
@@ -80,31 +77,31 @@ public class Ellipse : Tool
 
             while (rowNum <= colNum) { // draws 8 sections "simulataneously"
                 if (!isFilled) {
-                    gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col + colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(startGpos.row + colNum, startGpos.col + rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(startGpos.row - colNum, startGpos.col + rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col + colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(startGpos.row - rowNum, startGpos.col - colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(startGpos.row - colNum, startGpos.col - rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(startGpos.row + colNum, startGpos.col - rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(startGpos.row + rowNum, startGpos.col - colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGpos.row + rowNum, beginGpos.col + colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGpos.row + colNum, beginGpos.col + rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGpos.row - colNum, beginGpos.col + rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGpos.row - rowNum, beginGpos.col + colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGpos.row - rowNum, beginGpos.col - colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGpos.row - colNum, beginGpos.col - rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGpos.row + colNum, beginGpos.col - rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGpos.row + rowNum, beginGpos.col - colNum, globalOperations.activeLetter);
                 }
                 else if (isFilled) { //much like the filled ellipse, we use lines to fill within the circle
                     Line.line(
-                    (startGpos.row + rowNum, startGpos.col + colNum),
-                    (startGpos.row - rowNum, startGpos.col + colNum),
+                    (beginGpos.row + rowNum, beginGpos.col + colNum),
+                    (beginGpos.row - rowNum, beginGpos.col + colNum),
                     false);
                     Line.line(
-                    (startGpos.row + colNum, startGpos.col + rowNum),
-                    (startGpos.row - colNum, startGpos.col + rowNum),
+                    (beginGpos.row + colNum, beginGpos.col + rowNum),
+                    (beginGpos.row - colNum, beginGpos.col + rowNum),
                     false);
                     Line.line(
-                    (startGpos.row + rowNum, startGpos.col - colNum),
-                    (startGpos.row - rowNum, startGpos.col - colNum),
+                    (beginGpos.row + rowNum, beginGpos.col - colNum),
+                    (beginGpos.row - rowNum, beginGpos.col - colNum),
                     false);
                     Line.line(
-                    (startGpos.row + colNum, startGpos.col - rowNum),
-                    (startGpos.row - colNum, startGpos.col - rowNum),
+                    (beginGpos.row + colNum, beginGpos.col - rowNum),
+                    (beginGpos.row - colNum, beginGpos.col - rowNum),
                     false);
                 }
                 rowNum += 1;
@@ -121,7 +118,7 @@ public class Ellipse : Tool
             if (rowDif == 0 || colDif == 0){ //Line optimization
                 if (rowDif == 0){
                     Line.line( //Line with length equal to flat ellipse
-                    (startGpos.row, startGpos.col - (gpos.col - startGpos.col)),
+                    (beginGpos.row, beginGpos.col - (gpos.col - beginGpos.col)),
                     (gpos.row, gpos.col),
                     true
                     );
@@ -129,7 +126,7 @@ public class Ellipse : Tool
                 }
                 else if (colDif == 0){
                     Line.line( //Line with length equal to flat ellipse
-                    (startGpos.row - (gpos.row - startGpos.row), startGpos.col),
+                    (beginGpos.row - (gpos.row - beginGpos.row), beginGpos.col),
                     (gpos.row, gpos.col),
                     true
                     );
@@ -191,15 +188,41 @@ public class Ellipse : Tool
             }
             renderFunc(rowNum, colNum);
         }
-    }    
-    public override void handleInput()
-    {
-        base.handleInput();
-        if (globalOperations.controls.Grid.FilledToggle.triggered){
-            isFilled = !isFilled;
-        }
-        if (globalOperations.controls.Grid.RegularToggle.triggered){
-            isRegular = !isRegular;
+    }
+        public override void draw(){
+            gridManager.emptyPreviewBuffer();
+            (int row, int col) beginGpos = startGpos;
+            (int row, int col) gpos = gridManager.getGridPos();
+            ellipseLogic((int row, int col) beginGpos, (int row, int col) gpos);
+            strokeWidth = Toolbox.GetStrokeWidth();
+
+            for (int i = 0; i <= strokeWidth - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
+                if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
+                beginGpos.col += i;
+                beginGpos.row += i;
+                gpos.col -= i;
+                gpos.row -= i;
+                }
+                else if (i % 2 != 0){ //In odd, it goes out
+                beginGpos.col -= i;
+                beginGpos.row -= i;
+                gpos.col += i;
+                gpos.row += i;
+                }
+                else {
+                    Debug.Log("Error: Invalid strokeWidth. How did you do that?");
+                }
+                ellipseLogic(beginGpos, gpos);
+        }  
+        public override void handleInput()
+        {
+            base.handleInput();
+            if (globalOperations.controls.Grid.FilledToggle.triggered){
+                isFilled = !isFilled;
+            }
+            if (globalOperations.controls.Grid.RegularToggle.triggered){
+                isRegular = !isRegular;
+            }
         }
     }
 }
