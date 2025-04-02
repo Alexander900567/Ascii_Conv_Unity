@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 
 public class Ellipse : Tool
 {
@@ -18,6 +19,52 @@ public class Ellipse : Tool
     private (int row, int col) getBeginGpos(){
         return beginGpos;
     }
+    private void drawCircle(int r){
+            (int row, int col) beginGposLocal = getBeginGpos();
+
+            int rowNum = 0;
+            int colNum = r;
+            int p = 1 - r;
+
+            while (rowNum <= colNum) { // draws 8 sections "simulataneously"
+                if (!isFilled) {
+                    gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
+                }
+                else if (isFilled) { //much like the filled ellipse, we use lines to fill within the circle
+                    Line.line(
+                    (beginGposLocal.row + rowNum, beginGposLocal.col + colNum),
+                    (beginGposLocal.row - rowNum, beginGposLocal.col + colNum),
+                    false);
+                    Line.line(
+                    (beginGposLocal.row + colNum, beginGposLocal.col + rowNum),
+                    (beginGposLocal.row - colNum, beginGposLocal.col + rowNum),
+                    false);
+                    Line.line(
+                    (beginGposLocal.row + rowNum, beginGposLocal.col - colNum),
+                    (beginGposLocal.row - rowNum, beginGposLocal.col - colNum),
+                    false);
+                    Line.line(
+                    (beginGposLocal.row + colNum, beginGposLocal.col - rowNum),
+                    (beginGposLocal.row - colNum, beginGposLocal.col - rowNum),
+                    false);
+                }
+                rowNum += 1;
+                if (p < 0) {
+                    p += 2 * rowNum + 1;
+                }
+                else {
+                    colNum -= 1;
+                    p += 2 * (rowNum - colNum) + 1;
+                }
+            }
+        }
 
     private void Awake(){ 
         if (gridManager == null || globalOperations == null || Line == null){ //this may be able to go away
@@ -53,7 +100,7 @@ public class Ellipse : Tool
         int rowDif = gpos.row - beginGpos.row; //row and col components of
         int colDif = gpos.col - beginGpos.col; //difference between start and end
 
-        if (globalOperations.controls.Grid.RegularToggle.IsPressed() ||
+        if (globalOperations.controls.Grid.RegularToggle.IsPressed() || //if user wants circle
         (!globalOperations.controls.Grid.RegularToggle.IsPressed() && rowDif == colDif)){ //Math to make a circle
             float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
             //pythag: c = sqrt(a^2 + b^2)
@@ -81,47 +128,18 @@ public class Ellipse : Tool
             else {
                 r = 0;
             }
-            int rowNum = 0;
-            int colNum = r;
-            int p = 1 - r;
-
-            while (rowNum <= colNum) { // draws 8 sections "simulataneously"
-                if (!isFilled) {
-                    gridManager.addToPreviewBuffer(beginGpos.row + rowNum, beginGpos.col + colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGpos.row + colNum, beginGpos.col + rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGpos.row - colNum, beginGpos.col + rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGpos.row - rowNum, beginGpos.col + colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGpos.row - rowNum, beginGpos.col - colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGpos.row - colNum, beginGpos.col - rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGpos.row + colNum, beginGpos.col - rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGpos.row + rowNum, beginGpos.col - colNum, globalOperations.activeLetter);
-                }
-                else if (isFilled) { //much like the filled ellipse, we use lines to fill within the circle
-                    Line.line(
-                    (beginGpos.row + rowNum, beginGpos.col + colNum),
-                    (beginGpos.row - rowNum, beginGpos.col + colNum),
-                    false);
-                    Line.line(
-                    (beginGpos.row + colNum, beginGpos.col + rowNum),
-                    (beginGpos.row - colNum, beginGpos.col + rowNum),
-                    false);
-                    Line.line(
-                    (beginGpos.row + rowNum, beginGpos.col - colNum),
-                    (beginGpos.row - rowNum, beginGpos.col - colNum),
-                    false);
-                    Line.line(
-                    (beginGpos.row + colNum, beginGpos.col - rowNum),
-                    (beginGpos.row - colNum, beginGpos.col - rowNum),
-                    false);
-                }
-                rowNum += 1;
-                if (p < 0) {
-                    p += 2 * rowNum + 1;
-                }
-                else {
-                    colNum -= 1;
-                    p += 2 * (rowNum - colNum) + 1;
-                }
+            if (Toolbox.GetStrokeWidth() == 1){ //If no stroke
+                drawCircle(r); //Regular circle
+            }
+            else{ //If need stroke
+                bool temp = isFilled;
+                isFilled = true;
+                drawCircle(r); //Outer Circle
+                char lastActiveLetter = globalOperations.activeLetter;
+                globalOperations.activeLetter = ' '; //Now draw with spaces
+                drawCircle(r - Toolbox.GetStrokeWidth()); //Inner Circle
+                globalOperations.activeLetter = lastActiveLetter; //Restore activeLetter
+                isFilled = temp;
             }
         }
         else if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Math to make an ellipse
@@ -203,24 +221,7 @@ public class Ellipse : Tool
         setBeginGpos(startGpos);
         (int row, int col) gpos = gridManager.getGridPos();
 
-        for (int i = 0; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
-            if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
-            beginGpos.col += i;
-            beginGpos.row += i;
-            gpos.col -= i;
-            gpos.row -= i;
-            }
-            else if (i % 2 != 0){ //In odd, it goes out
-            beginGpos.col -= i;
-            beginGpos.row -= i;
-            gpos.col += i;
-            gpos.row += i;
-            }
-            else {
-                Debug.Log("Error: Invalid strokeWidth. How did you do that?");
-            }
-            ellipseLogic(beginGpos, gpos);
-        }  
+        ellipseLogic(beginGpos, gpos);
     }
     public override void handleInput(){
         base.handleInput();
