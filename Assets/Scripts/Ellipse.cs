@@ -143,7 +143,7 @@ public class Ellipse : Tool
             }
         }
         else if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Math to make an ellipse
-            if (rowDif == 0 || colDif == 0){ //Line optimization
+            if (rowDif == 0 || colDif == 0){ //Line optimization i.e. draw line instead of flat ellipse
                 if (rowDif == 0){
                     Line.line( //Line with length equal to flat ellipse
                     (beginGpos.row, beginGpos.col - (gpos.col - beginGpos.col)),
@@ -161,11 +161,23 @@ public class Ellipse : Tool
                     return;                    
                 }
             }
+            if (Toolbox.GetStrokeWidth() != 1){ //If need stroke
+                for (int i = 0; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1,
+                    //twice but once normal and once with offset if width = 2, etc.
+                    if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
+                        drawEllipse(drawQuadPixels, Math.Abs(rowDif - i), Math.Abs(colDif - i));
+                    }
+                    else if (i % 2 != 0){ //In odd, it goes out
+                        drawEllipse(drawQuadPixels, Math.Abs(rowDif + i), Math.Abs(colDif + i));
+                    }
+                }
+                return;
+            }
             if (!isFilled){
-                drawEllipse(drawQuadPixels, Mathf.Abs(rowDif), Mathf.Abs(colDif)); //Non filled ellipse
+                drawEllipse(drawQuadPixels, Math.Abs(rowDif), Math.Abs(colDif)); //Non-filled ellipse
             }
             else if (isFilled){
-                drawEllipse(drawLinePairs, Mathf.Abs(rowDif), Mathf.Abs(colDif)); //Filled ellipse
+                drawEllipse(drawLinePairs, Math.Abs(rowDif), Math.Abs(colDif)); //Filled ellipse
             }
         }
     }

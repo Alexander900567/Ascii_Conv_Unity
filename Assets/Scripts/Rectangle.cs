@@ -44,9 +44,9 @@ public class Rectangle : Tool
 
         if (!isFilled) {
             Line.line(
-            (beginGpos.row, beginGpos.col),
-            (beginGpos.row, gpos.col),
-            false
+                (beginGpos.row, beginGpos.col),
+                (beginGpos.row, gpos.col),
+                false
             );
             Line.line(
                 (beginGpos.row, beginGpos.col),
@@ -107,6 +107,7 @@ public class Rectangle : Tool
             }
             else {
                 Debug.Log("Error: Invalid strokeWidth. How did you do that?");
+                return;
             }
             DrawRectangle(beginGpos, gpos);
         }
