@@ -10,17 +10,19 @@ public class Pencil : Tool
 
             if (gpos != prevGpos){
                 gridManager.addToPreviewBuffer(gpos.row, gpos.col, globalOperations.activeLetter);
+                
+                int upperRow = gpos.row - Toolbox.GetStrokeWidth() + 1;
+                int lowerRow = gpos.row + Toolbox.GetStrokeWidth() - 1;
+                int leftSide = gpos.col - Toolbox.GetStrokeWidth() + 1;
+                int rightSide = gpos.col + Toolbox.GetStrokeWidth() - 1;
 
-                (int row, int col) topLeft = gpos;
-                (int row, int col) bottomRight = gpos;
-
-                for (int i = 0; i <= Toolbox.GetStrokeWidth(); i++) {
+                for (int i = upperRow; i <= lowerRow; i++) {
                     Line.line(
-                        (i, topLeft.col),
-                        (i, bottomRight.col),
+                        (i, leftSide),
+                        (i, rightSide),
                         false
                     );
-                }   
+                }
             prevGpos = gpos;
         }
     }

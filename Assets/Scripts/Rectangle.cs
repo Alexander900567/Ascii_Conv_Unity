@@ -65,19 +65,19 @@ public class Rectangle : Tool
             );
         }
         else if (isFilled) {
-        int upper_row;
-        int lower_row;
+        int upperRow;
+        int lowerRow;
 
             if (beginGpos.row <= gpos.row) {
-                upper_row = beginGpos.row;
-                lower_row = gpos.row;
+                upperRow = beginGpos.row;
+                lowerRow = gpos.row;
             }
             else { //hopefully no error
-                upper_row = gpos.row;
-                lower_row = beginGpos.row;
+                upperRow = gpos.row;
+                lowerRow = beginGpos.row;
             }
 
-            for (int i = upper_row; i <= lower_row; i++) {
+            for (int i = upperRow; i <= lowerRow; i++) {
                 Line.line(
                     (i, beginGpos.col),
                     (i, gpos.col),
