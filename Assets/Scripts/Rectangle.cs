@@ -41,7 +41,6 @@ public class Rectangle : Tool
                 }
             }
         }
-
         if (!isFilled) {
             Line.line(
                 (beginGpos.row, beginGpos.col),
@@ -92,24 +91,26 @@ public class Rectangle : Tool
         (int row, int col) beginGpos = startGpos; //initialize both corners
         (int row, int col) gpos = gridManager.getGridPos();
 
-        for (int i = 0; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1, twice but once normal and once with offset if width = 2, etc.
-            if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
-            beginGpos.col += i;
-            beginGpos.row += i;
-            gpos.col -= i;
-            gpos.row -= i;
-            }
-            else if (i % 2 != 0){ //In odd, it goes out
-            beginGpos.col -= i;
-            beginGpos.row -= i;
-            gpos.col += i;
-            gpos.row += i;
-            }
-            else {
-                Debug.Log("Error: Invalid strokeWidth. How did you do that?");
-                return;
-            }
-            DrawRectangle(beginGpos, gpos);
+        int rowGrowth;
+        if (gpos.row >= beginGpos.row){
+            rowGrowth = 1;
+        } 
+        else { rowGrowth = -1; }
+
+        int colGrowth;
+        if (gpos.col >= beginGpos.col){
+            colGrowth = 1;
+        } 
+        else { colGrowth = -1; }
+
+        for (int i = 0; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1
+        //twice but once normal and once with offset if width = 2, etc.
+        beginGpos.row -= rowGrowth;
+        beginGpos.col -= colGrowth;
+        gpos.row += rowGrowth;
+        gpos.col += colGrowth;
+
+        DrawRectangle(beginGpos, gpos);
         }
     }
 
