@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 
@@ -19,6 +20,19 @@ public class Ellipse : Tool
     private (int row, int col) getBeginGpos(){
         return beginGpos;
     }
+
+    private List<(int, int, char)> previewQueue = new List<(int, int, char)>(); //row, col, input
+    private void addToPreviewQueue(int row, int col, char input){
+        previewQueue.Add((row, col, input));
+    }
+    private void flushPreviewQueue(List<(int, int, char)> queue){
+        foreach ((int, int, char) item in queue){
+            if (item.Item3 != ' ') {
+                gridManager.addToPreviewBuffer(item.Item1, item.Item2, item.Item3);
+            }
+            previewQueue.Clear();
+        }
+    }
     private void drawCircle(int r){
             (int row, int col) beginGposLocal = getBeginGpos();
 
@@ -28,14 +42,14 @@ public class Ellipse : Tool
 
             while (rowNum <= colNum) { // draws 8 sections "simulataneously"
                 if (!isFilled) {
-                    gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
+                    addToPreviewQueue(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
+                    addToPreviewQueue(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
+                    addToPreviewQueue(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
+                    addToPreviewQueue(beginGposLocal.row - rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
+                    addToPreviewQueue(beginGposLocal.row - rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
+                    addToPreviewQueue(beginGposLocal.row - colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
+                    addToPreviewQueue(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
+                    addToPreviewQueue(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
                 }
                 else if (isFilled) { //much like the filled ellipse, we use lines to fill within the circle
                     Line.line(
@@ -64,6 +78,7 @@ public class Ellipse : Tool
                     p += 2 * (rowNum - colNum) + 1;
                 }
             }
+            flushPreviewQueue(previewQueue);
         }
 
     private void Awake(){ 
@@ -137,7 +152,8 @@ public class Ellipse : Tool
                 drawCircle(r); //Outer Circle
                 char lastActiveLetter = globalOperations.activeLetter;
                 globalOperations.activeLetter = ' '; //Now draw with spaces
-                drawCircle(r - Toolbox.GetStrokeWidth()); //Inner Circle
+                int innerR = Math.Max(1, r - Toolbox.GetStrokeWidth()); //At least 1
+                drawCircle(innerR); //Inner Circle
                 globalOperations.activeLetter = lastActiveLetter; //Restore activeLetter
                 isFilled = temp;
             }
