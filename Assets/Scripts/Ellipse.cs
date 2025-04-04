@@ -19,19 +19,32 @@ public class Ellipse : Tool
     private (int row, int col) getBeginGpos(){
         return beginGpos;
     }
-    private void addToPreviewQueue(int row, int col, char input){
-        previewQueue.Add((row, col, input));
-    }
-    private void flushPreviewQueue(List<(int, int, char)> queue){
-        foreach ((int, int, char) item in queue){
-            if (item.Item3 != ' ') {
-                Debug.Log(item.Item3);
-                gridManager.addToPreviewBuffer(item.Item1, item.Item2, item.Item3);
+    private void previewQueueLine((int row, int col) beginGposLocal, (int row, int col) gridPos){
+        int colIter = beginGposLocal.col <= gridPos.col ? 1 : -1;
+        int rowIter = beginGposLocal.row <= gridPos.row ? 1 : -1;
+
+        for (int i = beginGposLocal.col; i != gridPos.col + colIter; i += colIter){
+            for (int j = beginGposLocal.row; j != gridPos.row + rowIter; j += rowIter){
+                previewQueue.Add((j, i, globalOperations.activeLetter));
             }
         }
-        previewQueue.Clear();
     }
-    private void drawCircle(int r){
+private void flushPreviewQueue(List<(int, int, char)> queue) {
+    HashSet<(int, int)> conflictingPositions = new HashSet<(int, int)>(); //Finds difference of two circles
+    foreach ((int row, int col, char input) in queue) {
+        if (input == ' ') {
+            conflictingPositions.Add((row, col)); //Stores the void here
+        }
+    }
+
+    foreach ((int row, int col, char input) in queue) {
+        if (input != ' ' && !conflictingPositions.Contains((row, col))) {
+            gridManager.addToPreviewBuffer(row, col, input);
+        }
+    }
+    previewQueue.Clear();
+}
+    private void drawCircle(int r, bool strokeCircle = false){
             (int row, int col) beginGposLocal = getBeginGpos();
 
             int rowNum = 0;
@@ -39,15 +52,29 @@ public class Ellipse : Tool
             int p = 1 - r;
 
             while (rowNum <= colNum) { // draws 8 sections "simulataneously"
-                if (!isFilled) {
-                    addToPreviewQueue(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
-                    addToPreviewQueue(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
-                    addToPreviewQueue(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
-                    addToPreviewQueue(beginGposLocal.row - rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
-                    addToPreviewQueue(beginGposLocal.row - rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
-                    addToPreviewQueue(beginGposLocal.row - colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
-                    addToPreviewQueue(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
-                    addToPreviewQueue(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
+                if (strokeCircle){
+                    previewQueueLine(
+                    (beginGposLocal.row + rowNum, beginGposLocal.col + colNum),
+                    (beginGposLocal.row - rowNum, beginGposLocal.col + colNum));
+                    previewQueueLine(
+                    (beginGposLocal.row + colNum, beginGposLocal.col + rowNum),
+                    (beginGposLocal.row - colNum, beginGposLocal.col + rowNum));
+                    previewQueueLine(
+                    (beginGposLocal.row + rowNum, beginGposLocal.col - colNum),
+                    (beginGposLocal.row - rowNum, beginGposLocal.col - colNum));
+                    previewQueueLine(
+                    (beginGposLocal.row + colNum, beginGposLocal.col - rowNum),
+                    (beginGposLocal.row - colNum, beginGposLocal.col - rowNum));
+                }
+                else if (!isFilled) {
+                    gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
+                    gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
                 }
                 else if (isFilled) { //much like the filled ellipse, we use lines to fill within the circle
                     Line.line(
@@ -76,7 +103,6 @@ public class Ellipse : Tool
                     p += 2 * (rowNum - colNum) + 1;
                 }
             }
-            flushPreviewQueue(previewQueue);
         }
 
     private void Awake(){ 
@@ -146,15 +172,13 @@ public class Ellipse : Tool
                 drawCircle(r); //Regular circle
             }
             else{ //If need stroke
-                bool temp = isFilled;
-                isFilled = true;
-                drawCircle(r); //Outer Circle
+                drawCircle(r, true); //Outer Circle
                 char lastActiveLetter = globalOperations.activeLetter;
                 globalOperations.activeLetter = ' '; //Now draw with spaces
                 int innerR = Math.Max(1, r - Toolbox.GetStrokeWidth()); //At least 1
-                drawCircle(innerR); //Inner Circle
+                drawCircle(innerR, true); //Inner Circle
                 globalOperations.activeLetter = lastActiveLetter; //Restore activeLetter
-                isFilled = temp;
+                flushPreviewQueue(previewQueue); //Draw the circles
             }
         }
         else if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Math to make an ellipse
