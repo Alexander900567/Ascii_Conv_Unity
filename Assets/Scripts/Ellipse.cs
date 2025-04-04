@@ -11,6 +11,7 @@ public class Ellipse : Tool
     private (int row, int col) beginGpos;
     private Action<int, int> drawQuadPixels;
     private Action<int, int> drawLinePairs;
+    private Action<int, int> drawPrevQueueLinePairs;
     private List<(int, int, char)> previewQueue = new List<(int, int, char)>(); //(row, col, input)
     private void setBeginGpos((int row, int col) newBeginGpos){
         beginGpos.row = newBeginGpos.row;
@@ -43,68 +44,67 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
         }
     }
     previewQueue.Clear();
-}
+    }
     private void drawCircle(int r, bool strokeCircle = false){
-            (int row, int col) beginGposLocal = getBeginGpos();
+        (int row, int col) beginGposLocal = getBeginGpos();
 
-            int rowNum = 0;
-            int colNum = r;
-            int p = 1 - r;
+        int rowNum = 0;
+        int colNum = r;
+        int p = 1 - r;
 
-            while (rowNum <= colNum) { // draws 8 sections "simulataneously"
-                if (strokeCircle){
-                    previewQueueLine(
-                    (beginGposLocal.row + rowNum, beginGposLocal.col + colNum),
-                    (beginGposLocal.row - rowNum, beginGposLocal.col + colNum));
-                    previewQueueLine(
-                    (beginGposLocal.row + colNum, beginGposLocal.col + rowNum),
-                    (beginGposLocal.row - colNum, beginGposLocal.col + rowNum));
-                    previewQueueLine(
-                    (beginGposLocal.row + rowNum, beginGposLocal.col - colNum),
-                    (beginGposLocal.row - rowNum, beginGposLocal.col - colNum));
-                    previewQueueLine(
-                    (beginGposLocal.row + colNum, beginGposLocal.col - rowNum),
-                    (beginGposLocal.row - colNum, beginGposLocal.col - rowNum));
-                }
-                else if (!isFilled) {
-                    gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
-                    gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
-                }
-                else if (isFilled) { //much like the filled ellipse, we use lines to fill within the circle
-                    Line.line(
-                    (beginGposLocal.row + rowNum, beginGposLocal.col + colNum),
-                    (beginGposLocal.row - rowNum, beginGposLocal.col + colNum),
-                    false);
-                    Line.line(
-                    (beginGposLocal.row + colNum, beginGposLocal.col + rowNum),
-                    (beginGposLocal.row - colNum, beginGposLocal.col + rowNum),
-                    false);
-                    Line.line(
-                    (beginGposLocal.row + rowNum, beginGposLocal.col - colNum),
-                    (beginGposLocal.row - rowNum, beginGposLocal.col - colNum),
-                    false);
-                    Line.line(
-                    (beginGposLocal.row + colNum, beginGposLocal.col - rowNum),
-                    (beginGposLocal.row - colNum, beginGposLocal.col - rowNum),
-                    false);
-                }
-                rowNum += 1;
-                if (p < 0) {
-                    p += 2 * rowNum + 1;
-                }
-                else {
-                    colNum -= 1;
-                    p += 2 * (rowNum - colNum) + 1;
-                }
+        while (rowNum <= colNum) { // draws 8 sections "simulataneously"
+            if (strokeCircle){
+                previewQueueLine(
+                (beginGposLocal.row + rowNum, beginGposLocal.col + colNum),
+                (beginGposLocal.row - rowNum, beginGposLocal.col + colNum));
+                previewQueueLine(
+                (beginGposLocal.row + colNum, beginGposLocal.col + rowNum),
+                (beginGposLocal.row - colNum, beginGposLocal.col + rowNum));
+                previewQueueLine(
+                (beginGposLocal.row + rowNum, beginGposLocal.col - colNum),
+                (beginGposLocal.row - rowNum, beginGposLocal.col - colNum));
+                previewQueueLine(
+                (beginGposLocal.row + colNum, beginGposLocal.col - rowNum),
+                (beginGposLocal.row - colNum, beginGposLocal.col - rowNum));
+            }
+            else if (!isFilled) {
+                gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
+                gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
+                gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
+                gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
+                gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
+                gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
+                gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
+                gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
+            }
+            else if (isFilled) { //much like the filled ellipse, we use lines to fill within the circle
+                Line.line(
+                (beginGposLocal.row + rowNum, beginGposLocal.col + colNum),
+                (beginGposLocal.row - rowNum, beginGposLocal.col + colNum),
+                false);
+                Line.line(
+                (beginGposLocal.row + colNum, beginGposLocal.col + rowNum),
+                (beginGposLocal.row - colNum, beginGposLocal.col + rowNum),
+                false);
+                Line.line(
+                (beginGposLocal.row + rowNum, beginGposLocal.col - colNum),
+                (beginGposLocal.row - rowNum, beginGposLocal.col - colNum),
+                false);
+                Line.line(
+                (beginGposLocal.row + colNum, beginGposLocal.col - rowNum),
+                (beginGposLocal.row - colNum, beginGposLocal.col - rowNum),
+                false);
+            }
+            rowNum += 1;
+            if (p < 0) {
+                p += 2 * rowNum + 1;
+            }
+            else {
+                colNum -= 1;
+                p += 2 * (rowNum - colNum) + 1;
             }
         }
-
+    }
     private void Awake(){ 
         if (gridManager == null || globalOperations == null || Line == null){ //this may be able to go away
             Debug.LogError("Ellipse is missing gridManager, globalOperations, or Line");
@@ -118,6 +118,7 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
             gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
             gridManager.addToPreviewBuffer(beginGposLocal.row - rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
         };
+
         drawLinePairs = (rowNum, colNum) => { //Called if ellipse is filled
             (int row, int col) beginGposLocal = getBeginGpos();
             Line.line( //Draws lines to make the ellipse filled
@@ -133,6 +134,67 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                 beginGposLocal.col - colNum),
                 false);
         };
+
+        drawPrevQueueLinePairs = (rowNum, colNum) => { //Called if ellipse is stroke
+            (int row, int col) beginGposLocal = getBeginGpos();
+            previewQueueLine( //Draws lines to make the ellipse filled
+                (beginGposLocal.row - rowNum, 
+                beginGposLocal.col + colNum),
+                (beginGposLocal.row + rowNum,
+                beginGposLocal.col + colNum));
+            previewQueueLine(
+                (beginGposLocal.row - rowNum, 
+                beginGposLocal.col - colNum),
+                (beginGposLocal.row + rowNum,
+                beginGposLocal.col - colNum));
+        };
+    }
+    private void drawEllipse(Action <int, int> renderFunc, int rowDif, int colDif){
+
+        int rowNum = 0; //Used to keep track of drawing math
+        int colNum = colDif;
+
+        float rowDifSquared = rowDif * rowDif; //Used for math later :)
+        float colDifSquared = colDif * colDif;
+
+        float pRow = 0; //More drawing math
+        float pCol = 2 * rowDifSquared * colNum;
+
+        renderFunc(rowNum, colNum);
+
+        float p = colDifSquared - (rowDifSquared * colDif) + (0.25f * rowDifSquared);
+
+        while (pRow <= pCol){ //Top and bottom
+            rowNum += 1;
+            pRow += 2.0f * colDifSquared;
+            if (p < 0.0f){
+                p += colDifSquared + pRow;
+            }
+            else{
+                colNum -= 1;
+                pCol += -2.0f * rowDifSquared;
+                p += colDifSquared + pRow - pCol;
+            }
+            renderFunc(rowNum, colNum);
+        }
+        //Left and right
+        p = (colDifSquared * ((float)(rowNum + 0.5) * (float)(rowNum + 0.5))) +
+        (rowDifSquared * (colNum - 1) * (colNum - 1)) -
+        (rowDifSquared * colDifSquared);
+
+        while (colNum >= 0){
+            colNum -= 1;
+            pCol += -2.0f * rowDifSquared;
+            if (p > 0.0f){
+                p += rowDifSquared - pCol;
+            }
+            else{
+                rowNum += 1;
+                pRow += 2.0f * colDifSquared;
+                p += rowDifSquared - pCol + pRow;
+            }
+            renderFunc(rowNum, colNum);
+        }
     }
     private void ellipseLogic((int row, int col) beginGpos, (int row, int col) gpos){ //Controls logic to draw circle, ellipse, filled or not filled
 
@@ -200,71 +262,32 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                     return;                    
                 }
             }
-            if (Toolbox.GetStrokeWidth() != 1){ //If need stroke
-                for (int i = 0; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1,
-                    //twice but once normal and once with offset if width = 2, etc.
-                    if (i % 2 == 0){ //In even cases of strokeWidth, it goes in
-                        drawEllipse(drawQuadPixels, Math.Abs(rowDif - i), Math.Abs(colDif - i));
-                    }
-                    else if (i % 2 != 0){ //In odd, it goes out
-                        drawEllipse(drawQuadPixels, Math.Abs(rowDif + i), Math.Abs(colDif + i));
-                    }
+            else if (Toolbox.GetStrokeWidth() != 1){ //If need stroke
+                drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif), Math.Abs(colDif));  // Outer ring (not filled)
+                int bigDiff = Math.Max(Math.Abs(rowDif), Math.Abs(colDif));
+                int smallDiff = Math.Max(1, bigDiff - Toolbox.GetStrokeWidth() * (Toolbox.GetStrokeWidth() - 1));
+                int currentDiff = bigDiff;
+
+                while (currentDiff - Toolbox.GetStrokeWidth() > smallDiff){
+                    char lastActiveLetter = globalOperations.activeLetter;
+                    globalOperations.activeLetter = ' ';
+                    drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif) - Toolbox.GetStrokeWidth(),
+                    Math.Abs(colDif) - Toolbox.GetStrokeWidth()); // Inner ring (not filled)
+                    globalOperations.activeLetter = lastActiveLetter;
+                    currentDiff -= Toolbox.GetStrokeWidth();
                 }
-                return;
+
+                if (currentDiff >= smallDiff){
+                    drawEllipse(drawPrevQueueLinePairs, currentDiff, currentDiff);
+                }
+                flushPreviewQueue(previewQueue);
             }
-            if (!isFilled){
+            else if (!isFilled){
                 drawEllipse(drawQuadPixels, Math.Abs(rowDif), Math.Abs(colDif)); //Non-filled ellipse
             }
             else if (isFilled){
                 drawEllipse(drawLinePairs, Math.Abs(rowDif), Math.Abs(colDif)); //Filled ellipse
             }
-        }
-    }
-    private void drawEllipse(Action <int, int> renderFunc, int rowDif, int colDif) {
-
-        int rowNum = 0; //Used to keep track of drawing math
-        int colNum = colDif;
-
-        float rowDifSquared = rowDif * rowDif; //Used for math later :)
-        float colDifSquared = colDif * colDif;
-
-        float pRow = 0; //More drawing math
-        float pCol = 2 * rowDifSquared * colNum;
-
-        renderFunc(rowNum, colNum);
-
-        float p = colDifSquared - (rowDifSquared * colDif) + (0.25f * rowDifSquared);
-
-        while (pRow <= pCol){ //Top and bottom
-            rowNum += 1;
-            pRow += 2.0f * colDifSquared;
-            if (p < 0.0f){
-                p += colDifSquared + pRow;
-            }
-            else{
-                colNum -= 1;
-                pCol += -2.0f * rowDifSquared;
-                p += colDifSquared + pRow - pCol;
-            }
-            renderFunc(rowNum, colNum);
-        }
-        //Left and right
-        p = (colDifSquared * ((float)(rowNum + 0.5) * (float)(rowNum + 0.5))) +
-        (rowDifSquared * (colNum - 1) * (colNum - 1)) -
-        (rowDifSquared * colDifSquared);
-
-        while (colNum >= 0){
-            colNum -= 1;
-            pCol += -2.0f * rowDifSquared;
-            if (p > 0.0f){
-                p += rowDifSquared - pCol;
-            }
-            else{
-                rowNum += 1;
-                pRow += 2.0f * colDifSquared;
-                p += rowDifSquared - pCol + pRow;
-            }
-            renderFunc(rowNum, colNum);
         }
     }
     public override void draw(){
