@@ -90,28 +90,33 @@ public class Rectangle : Tool
         gridManager.emptyPreviewBuffer();
         (int row, int col) beginGpos = startGpos; //initialize both corners
         (int row, int col) gpos = gridManager.getGridPos();
+            if (!isFilled) { //Usually goes here
+                Debug.Log("No stroke detected.");
+                int rowGrowth;
+                if (gpos.row >= beginGpos.row){
+                    rowGrowth = 1;
+                } 
+                else { rowGrowth = -1; }
 
-        int rowGrowth;
-        if (gpos.row >= beginGpos.row){
-            rowGrowth = 1;
-        } 
-        else { rowGrowth = -1; }
+                int colGrowth;
+                if (gpos.col >= beginGpos.col){
+                    colGrowth = 1;
+                } 
+                else { colGrowth = -1; }
 
-        int colGrowth;
-        if (gpos.col >= beginGpos.col){
-            colGrowth = 1;
-        } 
-        else { colGrowth = -1; }
+                DrawRectangle(beginGpos, gpos);
 
-        for (int i = 0; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1
-        //twice but once normal and once with offset if width = 2, etc.
-        beginGpos.row -= rowGrowth;
-        beginGpos.col -= colGrowth;
-        gpos.row += rowGrowth;
-        gpos.col += colGrowth;
+                for (int i = 1; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1
+                //twice but once normal and once with offset if width = 2, etc.
+                    beginGpos.row -= rowGrowth;
+                    beginGpos.col -= colGrowth;
+                    gpos.row += rowGrowth;
+                    gpos.col += colGrowth;
 
-        DrawRectangle(beginGpos, gpos);
-        }
+                    DrawRectangle(beginGpos, gpos);
+                }
+            }
+            else { DrawRectangle(beginGpos, gpos); } //Does this to avoid stroke for filled rects.
     }
 
     public override void handleInput(){
