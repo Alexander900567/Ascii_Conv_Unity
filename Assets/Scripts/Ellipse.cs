@@ -11,27 +11,25 @@ public class Ellipse : Tool
     private (int row, int col) beginGpos;
     private Action<int, int> drawQuadPixels;
     private Action<int, int> drawLinePairs;
-
+    private List<(int, int, char)> previewQueue = new List<(int, int, char)>(); //(row, col, input)
     private void setBeginGpos((int row, int col) newBeginGpos){
         beginGpos.row = newBeginGpos.row;
         beginGpos.col = newBeginGpos.col;
     }
-
     private (int row, int col) getBeginGpos(){
         return beginGpos;
     }
-
-    private List<(int, int, char)> previewQueue = new List<(int, int, char)>(); //row, col, input
     private void addToPreviewQueue(int row, int col, char input){
         previewQueue.Add((row, col, input));
     }
     private void flushPreviewQueue(List<(int, int, char)> queue){
         foreach ((int, int, char) item in queue){
             if (item.Item3 != ' ') {
+                Debug.Log(item.Item3);
                 gridManager.addToPreviewBuffer(item.Item1, item.Item2, item.Item3);
             }
-            previewQueue.Clear();
         }
+        previewQueue.Clear();
     }
     private void drawCircle(int r){
             (int row, int col) beginGposLocal = getBeginGpos();
@@ -143,6 +141,7 @@ public class Ellipse : Tool
             else {
                 r = 0;
             }
+            
             if (Toolbox.GetStrokeWidth() == 1){ //If no stroke
                 drawCircle(r); //Regular circle
             }

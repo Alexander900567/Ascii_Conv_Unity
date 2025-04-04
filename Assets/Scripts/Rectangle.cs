@@ -91,7 +91,6 @@ public class Rectangle : Tool
         (int row, int col) beginGpos = startGpos; //initialize both corners
         (int row, int col) gpos = gridManager.getGridPos();
             if (!isFilled) { //Usually goes here
-                Debug.Log("No stroke detected.");
                 int rowGrowth;
                 if (gpos.row >= beginGpos.row){
                     rowGrowth = 1;

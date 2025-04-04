@@ -145,7 +145,7 @@ public class GridManager : MonoBehaviour
 
     public void addToPreviewBuffer(int row, int col, char input){
 
-        if (row >= rowCount || row < 0){ return; }
+        if (row >= rowCount || row < 0){ return; } //If out of bounds of screen, ignore
         else if (col >= colCount || col < 0){ return; }
 
         previewBuffer.Add((row, col, input));
