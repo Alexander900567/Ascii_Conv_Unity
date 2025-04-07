@@ -20,6 +20,7 @@ public class ImageConvertor : Tool
     
     private bool imageActive = false;
     private bool outlineActive = false;
+    private bool equalizerActive = true;
 
 
     public override void onUpdate(){
@@ -120,10 +121,70 @@ public class ImageConvertor : Tool
 
         List<List<char>> outputList = new List<List<char>>();
         outputList.Add(new List<char>());
+        
+        //equalize luminancePerChar
+        float lowLumi = 0;
+        if(equalizerActive){
+            Dictionary<float, int> lumiCounts = new Dictionary<float, int>();
+            foreach(Color pixel in pixels){
+                float lumi = pixel.grayscale;
+                if(lumiCounts.ContainsKey(lumi)){
+                    lumiCounts[lumi] += 1;
+                }
+                else{
+                    lumiCounts[lumi] = 0;
+                }
+            }
+            List<float> luminaceList = new List<float>(lumiCounts.Keys);
+            luminaceList.Sort();
+            int fivePercent = (int)(downscaledTexture.width * downscaledTexture.height * 0.05);
+
+            int lumiAdded = 0;
+            lowLumi = 0;
+            for (
+                int lumiInd = 0; 
+                lumiInd < luminaceList.Count && lumiAdded < fivePercent; 
+                lumiInd+=1
+            ){
+                float currentLuminace = luminaceList[lumiInd];
+                int occurences = lumiCounts[currentLuminace];
+                int multiplier = Mathf.Min(fivePercent - lumiAdded, occurences);
+                lowLumi += currentLuminace * multiplier;
+                lumiAdded += multiplier;
+            }
+            lowLumi = lowLumi / (float) lumiAdded; 
+            Debug.Log($"lowLumi: {lowLumi}");
+
+            lumiAdded = 0;
+            float highLumi = 0;
+            for (
+                int lumiInd = luminaceList.Count - 1; 
+                lumiInd >= 0 && lumiAdded < fivePercent; 
+                lumiInd-=1
+            ){
+                float currentLuminace = luminaceList[lumiInd];
+                int occurences = lumiCounts[currentLuminace];
+                int multiplier = Mathf.Min(fivePercent - lumiAdded, occurences);
+                highLumi += currentLuminace * multiplier;
+                lumiAdded += multiplier;
+            }
+            highLumi = highLumi / (float) lumiAdded; 
+            Debug.Log($"highLumi: {highLumi}");
+
+            luminacePerChar = (float)(highLumi - lowLumi) / (maxMapIndex + 1);
+            Debug.Log($"luminacePerChar: {luminacePerChar}");
+        }
 
         int col = topLeft.col;
         foreach(Color pixel in pixels){
-            int index = Mathf.Min(maxMapIndex, (int)(pixel.grayscale / luminacePerChar)); 
+            int index = (int)((pixel.grayscale - lowLumi) / luminacePerChar);
+            index = Mathf.Min(maxMapIndex, index); 
+            index = Mathf.Max(0, index); 
+
+            Debug.Log($"pixel.grayscale: {pixel.grayscale}");
+            Debug.Log($"division: {(int)((pixel.grayscale - lowLumi) / luminacePerChar)}");
+            Debug.Log($"index: {index}");
+
             outputList[0].Add((char)asciiMap[index]);
             col += 1;
             if (col > botRight.col){
