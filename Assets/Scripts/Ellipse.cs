@@ -45,6 +45,7 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
     }
     previewQueue.Clear();
     }
+
     private void drawCircle(int r, bool strokeCircle = false){
         (int row, int col) beginGposLocal = getBeginGpos();
 
@@ -67,7 +68,7 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                 (beginGposLocal.row + colNum, beginGposLocal.col - rowNum),
                 (beginGposLocal.row - colNum, beginGposLocal.col - rowNum));
             }
-            else if (!isFilled) {
+            else if (!isFilled){
                 gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
                 gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
                 gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
@@ -77,7 +78,7 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                 gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
                 gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
             }
-            else if (isFilled) { //much like the filled ellipse, we use lines to fill within the circle
+            else if (isFilled){ //much like the filled ellipse, we use lines to fill within the circle
                 Line.line(
                 (beginGposLocal.row + rowNum, beginGposLocal.col + colNum),
                 (beginGposLocal.row - rowNum, beginGposLocal.col + colNum),
@@ -262,7 +263,7 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                     return;                    
                 }
             }
-            else if (Toolbox.GetStrokeWidth() != 1){ //If need stroke
+/*             else if (Toolbox.GetStrokeWidth() != 1){ //If need stroke
                 drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif), Math.Abs(colDif));  // Outer ring (not filled)
                 int bigDiff = Math.Max(Math.Abs(rowDif), Math.Abs(colDif));
                 int smallDiff = Math.Max(1, bigDiff - Toolbox.GetStrokeWidth() * (Toolbox.GetStrokeWidth() - 1));
@@ -281,7 +282,7 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                     drawEllipse(drawPrevQueueLinePairs, currentDiff, currentDiff);
                 }
                 flushPreviewQueue(previewQueue);
-            }
+            } */
             else if (!isFilled){
                 drawEllipse(drawQuadPixels, Math.Abs(rowDif), Math.Abs(colDif)); //Non-filled ellipse
             }
