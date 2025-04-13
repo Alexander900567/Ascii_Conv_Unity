@@ -18,6 +18,7 @@ public class ImageConvertor : Tool
     private List<int> asciiMap;
     
     private bool imageActive = false;
+    private bool invertActive = false;
     private bool outlineActive = false;
     private bool equalizerActive = false;
 
@@ -172,8 +173,14 @@ public class ImageConvertor : Tool
         int col = topLeft.col;
         foreach(Color pixel in pixels){
             int index = (int)((pixel.grayscale - lowLumi) / luminacePerChar);
+
+            if(invertActive){
+                index = maxMapIndex - index;                
+            }
+
             index = Mathf.Min(maxMapIndex, index); 
             index = Mathf.Max(0, index); 
+
 
             outputList[0].Add((char)asciiMap[index]);
             col += 1;
@@ -216,5 +223,9 @@ public class ImageConvertor : Tool
 
     public void toggleEqualizer(bool toggleState){
         equalizerActive = toggleState;
+    }
+
+    public void toggleInvert(bool toggleState){
+        invertActive = toggleState;
     }
 }
