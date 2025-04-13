@@ -3,8 +3,6 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 public class ImageConvertor : Tool
 {
@@ -21,6 +19,9 @@ public class ImageConvertor : Tool
     private bool invertActive = false;
     private bool outlineActive = false;
     private bool equalizerActive = false;
+
+    private float lowFilter = 0;
+    private float highFilter = 1;
 
 
     public override void onUpdate(){
@@ -227,5 +228,12 @@ public class ImageConvertor : Tool
 
     public void toggleInvert(bool toggleState){
         invertActive = toggleState;
+    }
+
+    public void updateLowFilter(float newNumber){
+        lowFilter = (float) Math.Round(newNumber, 2);
+    }
+    public void updateHighFilter(float newNumber){
+        highFilter = (float) Math.Round(newNumber, 2);
     }
 }

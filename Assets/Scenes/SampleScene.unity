@@ -769,6 +769,34 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 301216688}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: updateLowFilter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ImageConvertor, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5652685250666915329, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3507,6 +3535,34 @@ PrefabInstance:
     - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
       propertyPath: m_Value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 301216688}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: updateHighFilter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ImageConvertor, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099188496169808944, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5652685250666915329, guid: 87108af3ff35abfd9a55fc5c32b8ea0a, type: 3}
       propertyPath: m_AnchorMax.x
