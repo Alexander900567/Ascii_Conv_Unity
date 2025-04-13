@@ -182,6 +182,7 @@ public class ImageConvertor : Tool
             index = Mathf.Min(maxMapIndex, index); 
             index = Mathf.Max(0, index); 
 
+            index = runPixelThroughLumFilters(pixel.grayscale, index);
 
             outputList[0].Add((char)asciiMap[index]);
             col += 1;
@@ -235,5 +236,14 @@ public class ImageConvertor : Tool
     }
     public void updateHighFilter(float newNumber){
         highFilter = (float) Math.Round(newNumber, 2);
+    }
+    private int runPixelThroughLumFilters(float lumin, int index){
+        if (lumin < lowFilter){
+            index = 0;
+        }
+        else if (lumin > highFilter){
+            index = 0;
+        }
+        return index;
     }
 }
