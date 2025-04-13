@@ -3,14 +3,11 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Collections.Generic;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 public class ImageConvertor : Tool
 {
     //normal vars
-    [SerializeField] private GameObject chooseImageButton;
-    [SerializeField] private GameObject convertButton;
+    [SerializeField] private GameObject optionsContainer;
     [SerializeField] private GameObject outline;
     private GameObject outlineInstance;
     [SerializeField] private Texture2D image;
@@ -19,7 +16,12 @@ public class ImageConvertor : Tool
     private List<int> asciiMap;
     
     private bool imageActive = false;
+    private bool invertActive = false;
     private bool outlineActive = false;
+    private bool equalizerActive = false;
+
+    private float lowFilter = 0;
+    private float highFilter = 1;
 
 
     public override void onUpdate(){
@@ -56,12 +58,10 @@ public class ImageConvertor : Tool
     }
 
     public override void onEnter(){
-        chooseImageButton.SetActive(true);
-        convertButton.SetActive(true);
+        optionsContainer.SetActive(true);
     }
     public override void onExit(){
-        chooseImageButton.SetActive(false);
-        convertButton.SetActive(false);
+        optionsContainer.SetActive(false);
         if (outlineActive){
             Destroy(outlineInstance);
         }
@@ -120,10 +120,70 @@ public class ImageConvertor : Tool
 
         List<List<char>> outputList = new List<List<char>>();
         outputList.Add(new List<char>());
+        
+        //equalize luminancePerChar
+        float lowLumi = 0;
+        if(equalizerActive){
+            Dictionary<float, int> lumiCounts = new Dictionary<float, int>();
+            foreach(Color pixel in pixels){
+                float lumi = pixel.grayscale;
+                if(lumiCounts.ContainsKey(lumi)){
+                    lumiCounts[lumi] += 1;
+                }
+                else{
+                    lumiCounts[lumi] = 0;
+                }
+            }
+            List<float> luminaceList = new List<float>(lumiCounts.Keys);
+            luminaceList.Sort();
+            int fivePercent = (int)(downscaledTexture.width * downscaledTexture.height * 0.05);
+
+            int lumiAdded = 0;
+            lowLumi = 0;
+            for (
+                int lumiInd = 0; 
+                lumiInd < luminaceList.Count && lumiAdded < fivePercent; 
+                lumiInd+=1
+            ){
+                float currentLuminace = luminaceList[lumiInd];
+                int occurences = lumiCounts[currentLuminace];
+                int multiplier = Mathf.Min(fivePercent - lumiAdded, occurences);
+                lowLumi += currentLuminace * multiplier;
+                lumiAdded += multiplier;
+            }
+            lowLumi = lowLumi / (float) lumiAdded; 
+
+            lumiAdded = 0;
+            float highLumi = 0;
+            for (
+                int lumiInd = luminaceList.Count - 1; 
+                lumiInd >= 0 && lumiAdded < fivePercent; 
+                lumiInd-=1
+            ){
+                float currentLuminace = luminaceList[lumiInd];
+                int occurences = lumiCounts[currentLuminace];
+                int multiplier = Mathf.Min(fivePercent - lumiAdded, occurences);
+                highLumi += currentLuminace * multiplier;
+                lumiAdded += multiplier;
+            }
+            highLumi = highLumi / (float) lumiAdded; 
+
+            luminacePerChar = (float)(highLumi - lowLumi) / (maxMapIndex + 1);
+        }
 
         int col = topLeft.col;
         foreach(Color pixel in pixels){
-            int index = Mathf.Min(maxMapIndex, (int)(pixel.grayscale / luminacePerChar)); 
+            int index = (int)((pixel.grayscale - lowLumi) / luminacePerChar);
+
+            if(invertActive){
+                index = maxMapIndex - index;                
+            }
+
+            index = Mathf.Min(maxMapIndex, index); 
+            index = Mathf.Max(0, index); 
+
+            index = runPixelThroughLumFilters(pixel.grayscale, index);
+
             outputList[0].Add((char)asciiMap[index]);
             col += 1;
             if (col > botRight.col){
@@ -161,5 +221,29 @@ public class ImageConvertor : Tool
         }
         gridManager.writePbufferToArray();
         globalOperations.renderUpdate = true;
+    }
+
+    public void toggleEqualizer(bool toggleState){
+        equalizerActive = toggleState;
+    }
+
+    public void toggleInvert(bool toggleState){
+        invertActive = toggleState;
+    }
+
+    public void updateLowFilter(float newNumber){
+        lowFilter = (float) Math.Round(newNumber, 2);
+    }
+    public void updateHighFilter(float newNumber){
+        highFilter = (float) Math.Round(newNumber, 2);
+    }
+    private int runPixelThroughLumFilters(float lumin, int index){
+        if (lumin < lowFilter){
+            index = 0;
+        }
+        else if (lumin > highFilter){
+            index = 0;
+        }
+        return index;
     }
 }
