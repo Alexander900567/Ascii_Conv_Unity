@@ -9,8 +9,7 @@ using UnityEngine.UI;
 public class ImageConvertor : Tool
 {
     //normal vars
-    [SerializeField] private GameObject chooseImageButton;
-    [SerializeField] private GameObject convertButton;
+    [SerializeField] private GameObject optionsContainer;
     [SerializeField] private GameObject outline;
     private GameObject outlineInstance;
     [SerializeField] private Texture2D image;
@@ -20,7 +19,7 @@ public class ImageConvertor : Tool
     
     private bool imageActive = false;
     private bool outlineActive = false;
-    private bool equalizerActive = true;
+    private bool equalizerActive = false;
 
 
     public override void onUpdate(){
@@ -57,12 +56,10 @@ public class ImageConvertor : Tool
     }
 
     public override void onEnter(){
-        chooseImageButton.SetActive(true);
-        convertButton.SetActive(true);
+        optionsContainer.SetActive(true);
     }
     public override void onExit(){
-        chooseImageButton.SetActive(false);
-        convertButton.SetActive(false);
+        optionsContainer.SetActive(false);
         if (outlineActive){
             Destroy(outlineInstance);
         }
@@ -153,7 +150,6 @@ public class ImageConvertor : Tool
                 lumiAdded += multiplier;
             }
             lowLumi = lowLumi / (float) lumiAdded; 
-            Debug.Log($"lowLumi: {lowLumi}");
 
             lumiAdded = 0;
             float highLumi = 0;
@@ -169,10 +165,8 @@ public class ImageConvertor : Tool
                 lumiAdded += multiplier;
             }
             highLumi = highLumi / (float) lumiAdded; 
-            Debug.Log($"highLumi: {highLumi}");
 
             luminacePerChar = (float)(highLumi - lowLumi) / (maxMapIndex + 1);
-            Debug.Log($"luminacePerChar: {luminacePerChar}");
         }
 
         int col = topLeft.col;
@@ -180,10 +174,6 @@ public class ImageConvertor : Tool
             int index = (int)((pixel.grayscale - lowLumi) / luminacePerChar);
             index = Mathf.Min(maxMapIndex, index); 
             index = Mathf.Max(0, index); 
-
-            Debug.Log($"pixel.grayscale: {pixel.grayscale}");
-            Debug.Log($"division: {(int)((pixel.grayscale - lowLumi) / luminacePerChar)}");
-            Debug.Log($"index: {index}");
 
             outputList[0].Add((char)asciiMap[index]);
             col += 1;
@@ -222,5 +212,9 @@ public class ImageConvertor : Tool
         }
         gridManager.writePbufferToArray();
         globalOperations.renderUpdate = true;
+    }
+
+    public void toggleEqualizer(bool toggleState){
+        equalizerActive = toggleState;
     }
 }
