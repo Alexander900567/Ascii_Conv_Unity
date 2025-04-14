@@ -26,8 +26,6 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Brush Brush;
     [SerializeField] private SaveLoad SaveLoad;
     [SerializeField] private Bucket Bucket;
-    [SerializeField] private GameObject MoreStrokeButton;
-    [SerializeField] private GameObject LessStrokeButton;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
