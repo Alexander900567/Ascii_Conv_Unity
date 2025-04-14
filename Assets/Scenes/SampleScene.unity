@@ -942,6 +942,8 @@ MonoBehaviour:
   Brush: {fileID: 301216689}
   SaveLoad: {fileID: 1431813953}
   Bucket: {fileID: 301216691}
+  MoreStrokeButton: {fileID: 0}
+  LessStrokeButton: {fileID: 0}
 --- !u!4 &301216680
 Transform:
   m_ObjectHideFlags: 0
@@ -1005,6 +1007,7 @@ MonoBehaviour:
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
   Line: {fileID: 301216685}
+  Brush: {fileID: 301216689}
 --- !u!114 &301216685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1033,6 +1036,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
+  Line: {fileID: 301216685}
 --- !u!114 &301216687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,8 +1084,6 @@ MonoBehaviour:
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
   Line: {fileID: 301216685}
-  MoreStrokeButton: {fileID: 722042565}
-  LessStrokeButton: {fileID: 960034457}
 --- !u!114 &301216690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2296,11 +2298,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
---- !u!1 &722042565 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1527770463056232808, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
-  m_PrefabInstance: {fileID: 722042564}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &722042566 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3742716123681225267, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
@@ -3077,11 +3074,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
---- !u!1 &960034457 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1527770463056232808, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
-  m_PrefabInstance: {fileID: 960034456}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &960034458 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3742716123681225267, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
