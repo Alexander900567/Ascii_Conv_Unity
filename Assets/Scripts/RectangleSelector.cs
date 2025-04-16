@@ -6,13 +6,19 @@ public class RectangleSelector : Tool
     [SerializeField] private UndoRedo undoRedo;
     [SerializeField] private GameObject selectorBox;
     private GameObject selectorBoxInstance;
+    [SerializeField] private GameObject selectorOptionsContainer;
     [SerializeField] private GameObject commitButton;
 
     private bool active;
     private (int row, int col) topLeft;
     private (int row, int col) botRight;
-    private (int row, int col) size;
     private List<(int, int, char)> originalBuffer;
+
+    private enum SelectorTypes{
+        Move,
+        Copy,
+    }
+    private SelectorTypes activeType = SelectorTypes.Move; 
 
     public override void onUpdate(){
         handleInput();
@@ -43,14 +49,13 @@ public class RectangleSelector : Tool
         startGpos = (-1, -1);
         topLeft = (-1, -1);
         botRight = (-1, -1);
-        size = (-1, -1);
         originalBuffer = new List<(int, int, char)>();
+        selectorOptionsContainer.SetActive(true);
     }
 
     public override void onExit(){
-        if (active){
-            resetBox();
-        }
+        handleInterupt();
+        selectorOptionsContainer.SetActive(false);
     }
 
     public void renderRectangleSelector(){
@@ -123,35 +128,47 @@ public class RectangleSelector : Tool
                 for(int col = topLeft.col; col <= botRight.col; col++){
                     gridManager.addToPreviewBuffer(row, col, gridManager.getGarrSpace(row, col));
                     originalBuffer.Add((row, col, gridManager.getGarrSpace(row, col)));
-                    gridManager.addToGridArray(row, col, ' ');
+                    if (activeType == SelectorTypes.Move){
+                        gridManager.addToGridArray(row, col, ' ');
+                    }
                 }
             } 
         }
     }
 
-    public void resetBox(){
+    private void resetStates(){
         active = false;
         topLeft = (-1, -1);
         botRight = (-1, -1);
-        size = (-1, -1);
         startGpos = (-1, -1);
-
-        List<(int, int, char)> undoElement = new List<(int, int, char)>();
-        foreach((int, int, char) item in gridManager.getPbuffer()){
-            undoElement.Add((item.Item1, item.Item2, gridManager.getGarrSpace(item.Item1, item.Item2)));
-        }
-        foreach((int, int, char) item in originalBuffer){
-            undoElement.Add((item.Item1, item.Item2, item.Item3));
-        }
-        undoRedo.addUndoElement(undoElement);
-        gridManager.writePbufferToArray(addToUndo:false);
-
         Destroy(selectorBoxInstance);
         commitButton.SetActive(false);
         undoRedo.enableUndoRedo();
     }
 
+    public void resetBox(){
+        resetStates();
+
+        //Set up undo for this rectangle commit
+        List<(int, int, char)> undoElement = new List<(int, int, char)>();
+        //record what happened to the new position 
+        foreach((int, int, char) item in gridManager.getPbuffer()){
+            undoElement.Add((item.Item1, item.Item2, gridManager.getGarrSpace(item.Item1, item.Item2)));
+        }
+        //record what happened to the original position if nessacary
+        if (activeType == SelectorTypes.Move){
+            foreach((int, int, char) item in originalBuffer){
+                undoElement.Add((item.Item1, item.Item2, item.Item3));
+            }
+        }
+        undoRedo.addUndoElement(undoElement);
+        
+        //write the edit to the grid
+        gridManager.writePbufferToArray(addToUndo:false);
+    }
+
     public void changeCorners((int row, int col) newGpos){
+        //derive the top left and bottom right corner benwteen start and new gpos
         topLeft = (
             Mathf.Min(startGpos.row, newGpos.row),
             Mathf.Min(startGpos.col, newGpos.col)
@@ -160,6 +177,34 @@ public class RectangleSelector : Tool
             Mathf.Max(startGpos.row, newGpos.row),
             Mathf.Max(startGpos.col, newGpos.col)
         );
-        size = (botRight.row - topLeft.row + 1, botRight.col - topLeft.col + 1); 
     }
+
+    private void handleInterupt(){
+        //handle if Tool or SelectorType is changed while a box is active
+        if (!active){
+            return;
+        }
+
+        if (activeType == SelectorTypes.Move){
+            resetBox();
+        }
+        else if (activeType == SelectorTypes.Copy){
+            resetStates();
+        }
+    }
+
+    private void changeSelectorState(SelectorTypes type){
+        handleInterupt();
+        activeType = type;
+    }
+
+    public void handleMoveToggle(bool toggleState){
+        if(toggleState) { changeSelectorState(SelectorTypes.Move); }
+    }    
+    public void handleCopyToggle(bool toggleState){
+        if(toggleState) { changeSelectorState(SelectorTypes.Copy); }
+    }    
+
+
+
 }
