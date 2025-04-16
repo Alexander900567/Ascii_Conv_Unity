@@ -19,6 +19,7 @@ public class RectangleSelector : Tool
         Copy,
     }
     private SelectorTypes activeType = SelectorTypes.Move; 
+    private bool ignoreSpaces = true;
 
     public override void onUpdate(){
         handleInput();
@@ -124,16 +125,29 @@ public class RectangleSelector : Tool
         if (!active){
             active = true;
             commitButton.SetActive(true);
+            //for every space within the box
             for(int row = topLeft.row; row <= botRight.row; row++){
                 for(int col = topLeft.col; col <= botRight.col; col++){
-                    gridManager.addToPreviewBuffer(row, col, gridManager.getGarrSpace(row, col));
-                    originalBuffer.Add((row, col, gridManager.getGarrSpace(row, col)));
+
+                    spaceFromGridToBuffer(row, col);
+
+                    //fill in the selection space when Move type
                     if (activeType == SelectorTypes.Move){
                         gridManager.addToGridArray(row, col, ' ');
                     }
                 }
             } 
         }
+    }
+
+    private void spaceFromGridToBuffer(int row, int col){
+        //decides what spaces in the box get picked up from in box
+        char spaceChar = gridManager.getGarrSpace(row, col);
+        originalBuffer.Add((row, col, spaceChar));
+        if(ignoreSpaces && spaceChar == ' '){
+            return;
+        }
+        gridManager.addToPreviewBuffer(row, col, spaceChar);
     }
 
     private void resetStates(){
@@ -192,6 +206,10 @@ public class RectangleSelector : Tool
             resetStates();
         }
     }
+
+    public void handleSpaceToggle(bool toggleState){
+        ignoreSpaces = toggleState;
+    }    
 
     private void changeSelectorState(SelectorTypes type){
         handleInterupt();
