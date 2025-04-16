@@ -155,9 +155,9 @@ public class RectangleSelector : Tool
         topLeft = (-1, -1);
         botRight = (-1, -1);
         startGpos = (-1, -1);
-        Destroy(selectorBoxInstance);
         commitButton.SetActive(false);
         undoRedo.enableUndoRedo();
+        Destroy(selectorBoxInstance);
     }
 
     public void resetBox(){
@@ -204,6 +204,8 @@ public class RectangleSelector : Tool
         }
         else if (activeType == SelectorTypes.Copy){
             resetStates();
+            gridManager.emptyPreviewBuffer();
+            globalOperations.renderUpdate = true;
         }
     }
 
