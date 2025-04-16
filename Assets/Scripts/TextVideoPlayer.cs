@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 
 public class TextVideoPlayer : MonoBehaviour
@@ -12,18 +13,10 @@ public class TextVideoPlayer : MonoBehaviour
     [SerializeField] private SaveLoad saveLoad;
     [SerializeField] private GameObject videoPopUp;
 
-    private bool videoPlaying = false;
     private string[] frameArray;
     private int frameNum;
     private int totalFrames;
-    private double secBetweenFrames;
-    private DateTime lastFrameTime;
-
-    void Update(){
-        if (videoPlaying){
-            handlePlayingVideo();
-        }//
-    }
+    private float secBetweenFrames;
 
     public void displayVideoPopUp(){
         globalOperations.openPopUp(videoPopUp);
@@ -80,7 +73,7 @@ public class TextVideoPlayer : MonoBehaviour
         int rowNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
         int colNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
         int frameRate = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
-        secBetweenFrames = 1.0 / (double)frameRate;
+        secBetweenFrames = 1.0f / frameRate;
         string t = file.ReadLine();
 
         gridManager.resizeGrid(rowNum, colNum);
@@ -89,32 +82,27 @@ public class TextVideoPlayer : MonoBehaviour
         string saveString = file.ReadToEnd();
         file.Close();
         frameArray = saveString.Split("-----\n");
-        lastFrameTime = DateTime.Now;
         frameNum = 0;
         totalFrames = frameArray.Length;
-        videoPlaying = true;
+        StartCoroutine("handlePlayingVideo");
     }
 
-    private void handlePlayingVideo(){
-        DateTime currentTime = DateTime.Now;
-        if ((currentTime - lastFrameTime).TotalSeconds < secBetweenFrames){
-            return;
-        }
-        lastFrameTime = currentTime;
+    private IEnumerator handlePlayingVideo(){
+        Debug.Log(secBetweenFrames);
+        while (frameNum < totalFrames){
+            string frame = frameArray[frameNum];
 
-        string frame = frameArray[frameNum];
-
-        List<List<char>> newGrid = saveLoad.decompressSaveStringToGrid(frame);
-        for (int row = 0; row < gridManager.getRowCount(); row++){
-            for (int col = 0; col < gridManager.getColCount(); col++){
-                gridManager.addToGridArray(row, col, newGrid[row][col]);
+            List<List<char>> newGrid = saveLoad.decompressSaveStringToGrid(frame);
+            for (int row = 0; row < gridManager.getRowCount(); row++){
+                for (int col = 0; col < gridManager.getColCount(); col++){
+                    gridManager.addToGridArray(row, col, newGrid[row][col]);
+                }
             }
+
+            globalOperations.renderUpdate = true;
+            frameNum += 1;
+            yield return new WaitForSeconds(secBetweenFrames);
         }
 
-        globalOperations.renderUpdate = true;
-        frameNum += 1;
-        if(frameNum >= totalFrames){
-            videoPlaying = false;
-        }
     }
 }
