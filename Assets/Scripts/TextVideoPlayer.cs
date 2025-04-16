@@ -16,13 +16,13 @@ public class TextVideoPlayer : MonoBehaviour
     private string[] frameArray;
     private int frameNum;
     private int totalFrames;
-    private double secBetweenFrames;
-    private DateTime lastFrameTime;
+    private float secBetweenFrames;
+    private float frameTimer;
 
     void Update(){
         if (videoPlaying){
             handlePlayingVideo();
-        }//
+        }
     }
 
     public void displayVideoPopUp(){
@@ -80,7 +80,7 @@ public class TextVideoPlayer : MonoBehaviour
         int rowNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
         int colNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
         int frameRate = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
-        secBetweenFrames = 1.0 / (double)frameRate;
+        secBetweenFrames = 1.0f / frameRate;
         string t = file.ReadLine();
 
         gridManager.resizeGrid(rowNum, colNum);
@@ -89,18 +89,18 @@ public class TextVideoPlayer : MonoBehaviour
         string saveString = file.ReadToEnd();
         file.Close();
         frameArray = saveString.Split("-----\n");
-        lastFrameTime = DateTime.Now;
         frameNum = 0;
         totalFrames = frameArray.Length;
         videoPlaying = true;
+        frameTimer = 0;
     }
 
     private void handlePlayingVideo(){
-        DateTime currentTime = DateTime.Now;
-        if ((currentTime - lastFrameTime).TotalSeconds < secBetweenFrames){
+        frameTimer += Time.deltaTime;
+        if (frameTimer < secBetweenFrames){
             return;
         }
-        lastFrameTime = currentTime;
+        frameTimer = frameTimer - secBetweenFrames;
 
         string frame = frameArray[frameNum];
 
