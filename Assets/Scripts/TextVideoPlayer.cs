@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class TextVideoPlayer : MonoBehaviour
 {
@@ -11,7 +13,9 @@ public class TextVideoPlayer : MonoBehaviour
     [SerializeField] private ImageConvertor imageConvertor;
     [SerializeField] private SaveLoad saveLoad;
     [SerializeField] private GameObject videoPopUp;
+    [SerializeField] private GameObject loadingMenuObj;
 
+    private bool videoConverting = false;
     private bool videoPlaying = false;
     private string[] frameArray;
     private int frameNum;
@@ -30,10 +34,30 @@ public class TextVideoPlayer : MonoBehaviour
     }
 
     public void convertVideo(int frameRate){
+        if(videoConverting){
+            return;
+        }
         string filePath = EditorUtility.OpenFolderPanel("Choose a directory of images", "~", "");
         if (filePath == ""){
             return;
         }
+        StartCoroutine(processImagesIntoText(frameRate, filePath));
+    }
+
+    public IEnumerator processImagesIntoText(int frameRate, string filePath){
+        videoConverting = true;
+        globalOperations.controls.Grid.Disable();
+
+        //show loading menu
+        GameObject loadingMenu = Instantiate(
+            loadingMenuObj,
+            new Vector3(-2, -2, 0),
+            transform.rotation
+        );
+        Slider loadingSlider = loadingMenu.transform.Find("LoadingSlider").GetComponent<Slider>();
+        RectTransform canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        loadingMenu.transform.SetParent(canvas);
+
 
         DirectoryInfo dirObj = new DirectoryInfo(filePath);
         FileInfo[] fileList = dirObj.GetFiles();
@@ -44,10 +68,14 @@ public class TextVideoPlayer : MonoBehaviour
         saveFile.WriteLine($"colCount:{gridManager.getColCount()}");
         saveFile.WriteLine($"frameRate:{frameRate}");
 
+        //mark the entire canvas as the size of the converted images
         imageConvertor.setCornersManual(
             (row:0,col:0),
             (row: gridManager.getRowCount() - 1, col: gridManager.getColCount() - 1)
         );
+
+        //calculate how much the loading slider should change per image
+        float loadingProgressInc = 1f / (float)fileList.Length;
 
         foreach(FileInfo file in fileList){
             string fileExtension = file.Name.Split('.')[^1];
@@ -63,8 +91,15 @@ public class TextVideoPlayer : MonoBehaviour
             foreach(string row in compString.Split("\n")){
                 saveFile.WriteLine(row);
             }
+            loadingSlider.value += loadingProgressInc;
+            yield return null;
         }
         saveFile.Close();
+
+        videoConverting = false;
+        globalOperations.controls.Grid.Enable();
+        Destroy(loadingMenu);
+        yield return null;
     }
 
     public void playVideo(){
