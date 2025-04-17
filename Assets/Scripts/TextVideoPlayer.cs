@@ -44,6 +44,7 @@ public class TextVideoPlayer : MonoBehaviour
         StartCoroutine(processImagesIntoText(frameRate, filePath));
     }
 
+    //ffmpeg -i bad_apple.mp4 -vf fps=30 %04d.png
     public IEnumerator processImagesIntoText(int frameRate, string filePath){
         videoConverting = true;
         globalOperations.controls.Grid.Disable();
