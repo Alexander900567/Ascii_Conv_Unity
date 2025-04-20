@@ -40,7 +40,6 @@ public class LetterSelector : MonoBehaviour
         (float x, float y) mpos = getMousePosOnImage();
         int xCord = Mathf.Min((int)(mpos.x / selCharWidth), fontScript.getNumCharWidth() - 1);
         int yCord = Mathf.Min((int)(mpos.y / selCharHeight), fontScript.getNumCharHeight() - 1);
-        Debug.Log($"({xCord}, {yCord})");
-
+        global.activeLetter = fontScript.getCharFromSimpLocation((xCord, yCord));
     }
 }

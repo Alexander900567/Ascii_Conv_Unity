@@ -47,6 +47,7 @@ public class FontSource : MonoBehaviour
             }
             else if (character == "none"){
                 noneCords = getLocation(col, row);
+                simplifiedCordsToChar.Add((col, row), '\uFFF0');
             }
             else{
                 charLocations.Add(character.ToCharArray()[0], getLocation(col, row));
