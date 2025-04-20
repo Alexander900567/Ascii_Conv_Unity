@@ -6,15 +6,13 @@ public class FontSource : MonoBehaviour
     public Texture2D fontTexture;
 
     private Dictionary<char, (int, int)> charLocations; 
-    private int charHeight;
-    private int charWidth;
+    private int charHeight = 16;
+    private int charWidth = 16;
     private (int, int) noneCords;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        charHeight = 16;
-        charWidth = 16;
         noneCords = (0, 0);
         charLocations = new Dictionary<char, (int, int)>();
         translateStringToLocations(
@@ -82,5 +80,14 @@ public class FontSource : MonoBehaviour
     }
     public int getCharWidth(){
         return charWidth;
+    }
+    public int getNumCharHeight(){
+        return fontTexture.height / charHeight;
+    }
+    public int getNumCharWidth(){
+        return fontTexture.width / charWidth;
+    }
+    public Dictionary<char, (int, int)> getCharLocations(){
+        return charLocations;
     }
 }
