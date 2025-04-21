@@ -12,7 +12,7 @@ public class FontSource : MonoBehaviour
     private (int, int) noneCords;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         noneCords = (0, 0);
         charLocations = new Dictionary<char, (int, int)>();
@@ -88,6 +88,15 @@ public class FontSource : MonoBehaviour
         else {
             return ' ';
         }
+    }
+
+    public (int, int) getSimpLocationFromChar(char character){
+        foreach((int, int) location in simplifiedCordsToChar.Keys){
+            if (simplifiedCordsToChar[location] == character){
+                return location;
+            }
+        }
+        return (-1, -1);
     }
 
     public int getCharHeight(){
