@@ -64,6 +64,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""BucketSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""d520554e-8c86-45be-b8e6-84e4bf49e9d6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""LineSwitch"",
                     ""type"": ""Button"",
                     ""id"": ""1d86327a-61a1-4e62-a557-a06a2d84193e"",
@@ -622,6 +631,17 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""PerformCopy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05d5168b-11a9-4e85-88ab-36c90ef6d2c0"",
+                    ""path"": ""<Keyboard>/u"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BucketSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -634,6 +654,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_PenSwitch = m_Grid.FindAction("PenSwitch", throwIfNotFound: true);
         m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
         m_Grid_BrushSwitch = m_Grid.FindAction("BrushSwitch", throwIfNotFound: true);
+        m_Grid_BucketSwitch = m_Grid.FindAction("BucketSwitch", throwIfNotFound: true);
         m_Grid_LineSwitch = m_Grid.FindAction("LineSwitch", throwIfNotFound: true);
         m_Grid_RectangleSwitch = m_Grid.FindAction("RectangleSwitch", throwIfNotFound: true);
         m_Grid_EllipseSwitch = m_Grid.FindAction("EllipseSwitch", throwIfNotFound: true);
@@ -722,6 +743,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_PenSwitch;
     private readonly InputAction m_Grid_EraserSwitch;
     private readonly InputAction m_Grid_BrushSwitch;
+    private readonly InputAction m_Grid_BucketSwitch;
     private readonly InputAction m_Grid_LineSwitch;
     private readonly InputAction m_Grid_RectangleSwitch;
     private readonly InputAction m_Grid_EllipseSwitch;
@@ -748,6 +770,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @PenSwitch => m_Wrapper.m_Grid_PenSwitch;
         public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
         public InputAction @BrushSwitch => m_Wrapper.m_Grid_BrushSwitch;
+        public InputAction @BucketSwitch => m_Wrapper.m_Grid_BucketSwitch;
         public InputAction @LineSwitch => m_Wrapper.m_Grid_LineSwitch;
         public InputAction @RectangleSwitch => m_Wrapper.m_Grid_RectangleSwitch;
         public InputAction @EllipseSwitch => m_Wrapper.m_Grid_EllipseSwitch;
@@ -787,6 +810,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @BrushSwitch.started += instance.OnBrushSwitch;
             @BrushSwitch.performed += instance.OnBrushSwitch;
             @BrushSwitch.canceled += instance.OnBrushSwitch;
+            @BucketSwitch.started += instance.OnBucketSwitch;
+            @BucketSwitch.performed += instance.OnBucketSwitch;
+            @BucketSwitch.canceled += instance.OnBucketSwitch;
             @LineSwitch.started += instance.OnLineSwitch;
             @LineSwitch.performed += instance.OnLineSwitch;
             @LineSwitch.canceled += instance.OnLineSwitch;
@@ -857,6 +883,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @BrushSwitch.started -= instance.OnBrushSwitch;
             @BrushSwitch.performed -= instance.OnBrushSwitch;
             @BrushSwitch.canceled -= instance.OnBrushSwitch;
+            @BucketSwitch.started -= instance.OnBucketSwitch;
+            @BucketSwitch.performed -= instance.OnBucketSwitch;
+            @BucketSwitch.canceled -= instance.OnBucketSwitch;
             @LineSwitch.started -= instance.OnLineSwitch;
             @LineSwitch.performed -= instance.OnLineSwitch;
             @LineSwitch.canceled -= instance.OnLineSwitch;
@@ -934,6 +963,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnPenSwitch(InputAction.CallbackContext context);
         void OnEraserSwitch(InputAction.CallbackContext context);
         void OnBrushSwitch(InputAction.CallbackContext context);
+        void OnBucketSwitch(InputAction.CallbackContext context);
         void OnLineSwitch(InputAction.CallbackContext context);
         void OnRectangleSwitch(InputAction.CallbackContext context);
         void OnEllipseSwitch(InputAction.CallbackContext context);

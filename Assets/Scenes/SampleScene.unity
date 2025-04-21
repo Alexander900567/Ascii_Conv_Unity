@@ -334,7 +334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8707593233976669412, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 68.519
+      value: 40.99984
       objectReference: {fileID: 0}
     - target: {fileID: 8707593233976669412, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -342,7 +342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8707593233976669412, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -68.25966
+      value: -54.50008
       objectReference: {fileID: 0}
     - target: {fileID: 8906136923471988870, guid: fba28cf32b56d81c68aa5caed0c15d78, type: 3}
       propertyPath: m_Name
@@ -2040,13 +2040,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: KeybindsPopUp
       objectReference: {fileID: 0}
+    - target: {fileID: 5426341435239693401, guid: d3426de9797aeb944b433054d05083c4, type: 3}
+      propertyPath: keybindsText
+      value: 
+      objectReference: {fileID: 1063542026}
+    - target: {fileID: 5426341435239693401, guid: d3426de9797aeb944b433054d05083c4, type: 3}
+      propertyPath: globalOperations
+      value: 
+      objectReference: {fileID: 1327812282}
     - target: {fileID: 5580502565481137486, guid: d3426de9797aeb944b433054d05083c4, type: 3}
       propertyPath: m_fontSize
       value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6872712673647608545, guid: d3426de9797aeb944b433054d05083c4, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872712673647608545, guid: d3426de9797aeb944b433054d05083c4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6872712673647608545, guid: d3426de9797aeb944b433054d05083c4, type: 3}
       propertyPath: m_fontSize
-      value: 22
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8491029597784791532, guid: d3426de9797aeb944b433054d05083c4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4094,6 +4110,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5c333ec01c9e7361be2849ce6e22f34, type: 3}
+--- !u!114 &1063542026 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6872712673647608545, guid: d3426de9797aeb944b433054d05083c4, type: 3}
+  m_PrefabInstance: {fileID: 546955362}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1073767862
 GameObject:
   m_ObjectHideFlags: 0

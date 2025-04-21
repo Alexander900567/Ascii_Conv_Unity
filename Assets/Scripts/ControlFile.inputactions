@@ -42,6 +42,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "BucketSwitch",
+                    "type": "Button",
+                    "id": "d520554e-8c86-45be-b8e6-84e4bf49e9d6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LineSwitch",
                     "type": "Button",
                     "id": "1d86327a-61a1-4e62-a557-a06a2d84193e",
@@ -600,6 +609,17 @@
                     "action": "PerformCopy",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "05d5168b-11a9-4e85-88ab-36c90ef6d2c0",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BucketSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

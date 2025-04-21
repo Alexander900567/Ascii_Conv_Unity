@@ -1,0 +1,43 @@
+Tools -
+          Use Current Tool (Hold):  Left Mouse Button
+            Switch to Pencil tool:  P
+            Switch to Eraser tool:  E
+             Switch to Brush tool:  B
+                 Switch to Bucket:  U
+              Switch to Line tool:  L
+         Switch to Rectangle tool:  R
+           Switch to Ellipse tool:  O
+       Switch to Text/Typing tool:  L
+Switch to Rectangle Selector tool:  S
+     Switch to Choose Letter tool:  I
+
+Modifiers -
+ Fill Shape (Toggle): F
+Regular Shape (Hold): Shift
+Increase Stroke by 1: ]
+Increase Stroke by 5: Ctrl + ]
+Decrease Stroke by 1: [
+Decrease Stroke by 5: Ctrl + [
+                
+Actions -
+             Undo: Ctrl + Z
+             Redo: Ctrl + Y
+Copy to Clipboard: Ctrl + C
+             Save: Ctrl + S
+             Load: Ctrl + O
+
+Additional Information -
+All Tools are Toggle unless otherwise specified
+The Pencil is enabled upon startup
+
+The Modifiers are Single Press unless otherwise specified
+Fill Shape makes shape tools make filled shapes
+Pressing Fill Shape again will return shape tools to make outlined shapes
+Regular Shape makes the Rectangle tool create squares, the Ellipse tool create circles,
+and the Line tool create straight lines at 45 degree intervals
+Stroke is responsible for how thick the Pencil, Brush, Rectangle, and Ellipses are
+
+The Actions are Single Press unless otherwise specified
+
+
+
