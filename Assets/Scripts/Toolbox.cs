@@ -141,6 +141,9 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.BrushSwitch.triggered){
             changeToBrush(true);
         }
+        else if(global.controls.Grid.BucketSwitch.triggered){
+            changeToBucket(true);
+        }
         else if(global.controls.Grid.LineSwitch.triggered){
             changeToLine(true);
         }
