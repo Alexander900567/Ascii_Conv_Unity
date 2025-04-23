@@ -6,15 +6,6 @@
             "id": "7b262e65-e00a-464c-b66e-79d9df8d02dc",
             "actions": [
                 {
-                    "name": "ClosePopUp",
-                    "type": "Button",
-                    "id": "0e7aa2f1-692a-450e-8040-d54d139b8569",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "MainClick",
                     "type": "Button",
                     "id": "e437244a-e846-4438-a545-456470fd6792",
@@ -629,10 +620,27 @@
                     "action": "BucketSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "PopUp",
+            "id": "d6598096-8cbf-4fe0-a19b-84f47644923f",
+            "actions": [
+                {
+                    "name": "ClosePopUp",
+                    "type": "Button",
+                    "id": "56bc38ab-1d73-438b-b398-7d3d7aaf1645",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "9a3b1428-54a1-4d26-b560-dd57be454079",
+                    "id": "d3dd8b44-7632-4999-8685-ebfd63836bd9",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",

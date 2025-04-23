@@ -28,15 +28,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             ""id"": ""7b262e65-e00a-464c-b66e-79d9df8d02dc"",
             ""actions"": [
                 {
-                    ""name"": ""ClosePopUp"",
-                    ""type"": ""Button"",
-                    ""id"": ""0e7aa2f1-692a-450e-8040-d54d139b8569"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""MainClick"",
                     ""type"": ""Button"",
                     ""id"": ""e437244a-e846-4438-a545-456470fd6792"",
@@ -651,10 +642,27 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""BucketSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
+                }
+            ]
+        },
+        {
+            ""name"": ""PopUp"",
+            ""id"": ""d6598096-8cbf-4fe0-a19b-84f47644923f"",
+            ""actions"": [
+                {
+                    ""name"": ""ClosePopUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""56bc38ab-1d73-438b-b398-7d3d7aaf1645"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""9a3b1428-54a1-4d26-b560-dd57be454079"",
+                    ""id"": ""d3dd8b44-7632-4999-8685-ebfd63836bd9"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -670,7 +678,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
 }");
         // Grid
         m_Grid = asset.FindActionMap("Grid", throwIfNotFound: true);
-        m_Grid_ClosePopUp = m_Grid.FindAction("ClosePopUp", throwIfNotFound: true);
         m_Grid_MainClick = m_Grid.FindAction("MainClick", throwIfNotFound: true);
         m_Grid_PenSwitch = m_Grid.FindAction("PenSwitch", throwIfNotFound: true);
         m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
@@ -694,11 +701,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_PerformStrokeDecrease = m_Grid.FindAction("PerformStrokeDecrease", throwIfNotFound: true);
         m_Grid_PerformStrokeBigIncrease = m_Grid.FindAction("PerformStrokeBigIncrease", throwIfNotFound: true);
         m_Grid_PerformStrokeBigDecrease = m_Grid.FindAction("PerformStrokeBigDecrease", throwIfNotFound: true);
+        // PopUp
+        m_PopUp = asset.FindActionMap("PopUp", throwIfNotFound: true);
+        m_PopUp_ClosePopUp = m_PopUp.FindAction("ClosePopUp", throwIfNotFound: true);
     }
 
     ~@ControlFile()
     {
         UnityEngine.Debug.Assert(!m_Grid.enabled, "This will cause a leak and performance issues, ControlFile.Grid.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_PopUp.enabled, "This will cause a leak and performance issues, ControlFile.PopUp.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -760,7 +771,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     // Grid
     private readonly InputActionMap m_Grid;
     private List<IGridActions> m_GridActionsCallbackInterfaces = new List<IGridActions>();
-    private readonly InputAction m_Grid_ClosePopUp;
     private readonly InputAction m_Grid_MainClick;
     private readonly InputAction m_Grid_PenSwitch;
     private readonly InputAction m_Grid_EraserSwitch;
@@ -788,7 +798,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     {
         private @ControlFile m_Wrapper;
         public GridActions(@ControlFile wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ClosePopUp => m_Wrapper.m_Grid_ClosePopUp;
         public InputAction @MainClick => m_Wrapper.m_Grid_MainClick;
         public InputAction @PenSwitch => m_Wrapper.m_Grid_PenSwitch;
         public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
@@ -821,9 +830,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GridActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GridActionsCallbackInterfaces.Add(instance);
-            @ClosePopUp.started += instance.OnClosePopUp;
-            @ClosePopUp.performed += instance.OnClosePopUp;
-            @ClosePopUp.canceled += instance.OnClosePopUp;
             @MainClick.started += instance.OnMainClick;
             @MainClick.performed += instance.OnMainClick;
             @MainClick.canceled += instance.OnMainClick;
@@ -897,9 +903,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IGridActions instance)
         {
-            @ClosePopUp.started -= instance.OnClosePopUp;
-            @ClosePopUp.performed -= instance.OnClosePopUp;
-            @ClosePopUp.canceled -= instance.OnClosePopUp;
             @MainClick.started -= instance.OnMainClick;
             @MainClick.performed -= instance.OnMainClick;
             @MainClick.canceled -= instance.OnMainClick;
@@ -986,9 +989,54 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         }
     }
     public GridActions @Grid => new GridActions(this);
+
+    // PopUp
+    private readonly InputActionMap m_PopUp;
+    private List<IPopUpActions> m_PopUpActionsCallbackInterfaces = new List<IPopUpActions>();
+    private readonly InputAction m_PopUp_ClosePopUp;
+    public struct PopUpActions
+    {
+        private @ControlFile m_Wrapper;
+        public PopUpActions(@ControlFile wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ClosePopUp => m_Wrapper.m_PopUp_ClosePopUp;
+        public InputActionMap Get() { return m_Wrapper.m_PopUp; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PopUpActions set) { return set.Get(); }
+        public void AddCallbacks(IPopUpActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PopUpActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PopUpActionsCallbackInterfaces.Add(instance);
+            @ClosePopUp.started += instance.OnClosePopUp;
+            @ClosePopUp.performed += instance.OnClosePopUp;
+            @ClosePopUp.canceled += instance.OnClosePopUp;
+        }
+
+        private void UnregisterCallbacks(IPopUpActions instance)
+        {
+            @ClosePopUp.started -= instance.OnClosePopUp;
+            @ClosePopUp.performed -= instance.OnClosePopUp;
+            @ClosePopUp.canceled -= instance.OnClosePopUp;
+        }
+
+        public void RemoveCallbacks(IPopUpActions instance)
+        {
+            if (m_Wrapper.m_PopUpActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPopUpActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PopUpActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PopUpActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PopUpActions @PopUp => new PopUpActions(this);
     public interface IGridActions
     {
-        void OnClosePopUp(InputAction.CallbackContext context);
         void OnMainClick(InputAction.CallbackContext context);
         void OnPenSwitch(InputAction.CallbackContext context);
         void OnEraserSwitch(InputAction.CallbackContext context);
@@ -1012,5 +1060,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnPerformStrokeDecrease(InputAction.CallbackContext context);
         void OnPerformStrokeBigIncrease(InputAction.CallbackContext context);
         void OnPerformStrokeBigDecrease(InputAction.CallbackContext context);
+    }
+    public interface IPopUpActions
+    {
+        void OnClosePopUp(InputAction.CallbackContext context);
     }
 }
