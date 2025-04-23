@@ -6,9 +6,9 @@ public class TextBasedPopUp : MonoBehaviour
     [SerializeField] private GlobalOperations globalOperations;
     [SerializeField] private GameObject keybindsPopUp;
     [SerializeField] private TMPro.TextMeshProUGUI keybindsText;
+    [SerializeField] private GameObject aboutPopUp;
 
-    public void displayKeybindsPopUp()
-    {
+    public void displayKeybindsPopUp(){
         // Load the file from Resources
         TextAsset file = Resources.Load<TextAsset>("keybinds"); //Finds file in Resources folder
         if (file != null)
@@ -21,5 +21,8 @@ public class TextBasedPopUp : MonoBehaviour
         }
 
         globalOperations.openPopUp(keybindsPopUp);
+    }
+    public void displayAboutPopUp(){
+        globalOperations.openPopUp(aboutPopUp);
     }
 }

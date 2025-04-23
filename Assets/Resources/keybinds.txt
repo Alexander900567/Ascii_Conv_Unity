@@ -28,17 +28,17 @@ Save: Ctrl + S
 Load: Ctrl + O
 
 Additional Information -
-All Tools are Toggle unless otherwise specified
-The Pencil is enabled upon startup
+All Tools are Toggle unless otherwise specified.
+The Pencil is enabled upon startup.
 
-The Modifiers are Single Press unless otherwise specified
-Fill Shape makes shape tools make filled shapes
-Pressing Fill Shape again will return shape tools to make outlined shapes
-Regular Shape makes the Rectangle tool create squares, the Ellipse tool create circles,
-and the Line tool create straight lines at 45 degree intervals
-Stroke is responsible for how thick the Pencil, Brush, Rectangle, and Ellipses are
+The Modifiers are Single Press unless otherwise specified.
+Fill Shape makes shape tools make filled shapes.
+Pressing Fill Shape again will return shape tools to make outlined shapes.
+Regular Shape makes the Rectangle tool create squares, the Ellipse tool
+create circles, and the Line tool create straight lines at 45 degree intervals
+Stroke is responsible for how thick the Pencil, Brush, Rectangle, and Ellipses are.
 
-The Actions are Single Press unless otherwise specified
+The Actions are Single Press unless otherwise specified.
 
 
 
