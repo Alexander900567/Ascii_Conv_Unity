@@ -30,20 +30,21 @@ public class Ellipse : Tool
             }
         }
     }
-private void flushPreviewQueue(List<(int, int, char)> queue) {
-    HashSet<(int, int)> conflictingPositions = new HashSet<(int, int)>(); //Finds difference of two circles
-    foreach ((int row, int col, char input) in queue) {
-        if (input == ' ') {
-            conflictingPositions.Add((row, col)); //Stores the void here
+    private void flushPreviewQueue(List<(int, int, char)> queue) {
+        HashSet<(int, int)> conflictingPositions = new HashSet<(int, int)>(); //Finds difference of two circles
+        foreach ((int row, int col, char input) in queue) {
+            if (input == ' ') {
+                conflictingPositions.Add((row, col)); //Stores the void here
+            }
         }
-    }
 
-    foreach ((int row, int col, char input) in queue) {
-        if (input != ' ' && !conflictingPositions.Contains((row, col))) {
-            gridManager.addToPreviewBuffer(row, col, input);
+        foreach ((int row, int col, char input) in queue) {
+            if (input != ' ' && !conflictingPositions.Contains((row, col))) {
+                gridManager.addToPreviewBuffer(row, col, input);
+            }
         }
-    }
-    previewQueue.Clear();
+        conflictingPositions.Clear();
+        previewQueue.Clear();
     }
 
     private void drawCircle(int r, bool strokeCircle = false){
@@ -263,26 +264,20 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                     return;                    
                 }
             }
-/*             else if (Toolbox.getStrokeWidth() != 1){ //If need stroke
-                drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif), Math.Abs(colDif));  // Outer ring (not filled)
-                int bigDiff = Math.Max(Math.Abs(rowDif), Math.Abs(colDif));
-                int smallDiff = Math.Max(1, bigDiff - Toolbox.getStrokeWidth() * (Toolbox.getStrokeWidth() - 1));
-                int currentDiff = bigDiff;
+            else if (Toolbox.getStrokeWidth() != 1){ // If stroke is needed
+                drawEllipse(drawPrevQueueLinePairs, rowDif, colDif); //Outer ellipse
 
-                while (currentDiff - Toolbox.getStrokeWidth() > smallDiff){
-                    char lastActiveLetter = globalOperations.activeLetter;
-                    globalOperations.activeLetter = ' ';
-                    drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif) - Toolbox.getStrokeWidth(),
-                    Math.Abs(colDif) - Toolbox.getStrokeWidth()); // Inner ring (not filled)
-                    globalOperations.activeLetter = lastActiveLetter;
-                    currentDiff -= Toolbox.getStrokeWidth();
-                }
+                char lastActiveLetter = globalOperations.activeLetter; //Save for later
+                globalOperations.activeLetter = ' '; //Prepare empty 
 
-                if (currentDiff >= smallDiff){
-                    drawEllipse(drawPrevQueueLinePairs, currentDiff, currentDiff);
-                }
+                int innerRowDif = Math.Max(1, rowDif - Toolbox.getStrokeWidth()); //Prevent 0 nonsense
+                int innerColDif = Math.Max(1, colDif - Toolbox.getStrokeWidth());
+                
+                drawEllipse(drawPrevQueueLinePairs, innerRowDif, innerColDif); //Empty out middle
+
+                globalOperations.activeLetter = lastActiveLetter; //Restore active letter
                 flushPreviewQueue(previewQueue);
-            } */
+            }
             else if (!isFilled){
                 drawEllipse(drawQuadPixels, Math.Abs(rowDif), Math.Abs(colDif)); //Non-filled ellipse
             }
