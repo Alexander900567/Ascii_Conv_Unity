@@ -266,15 +266,11 @@ public class Ellipse : Tool
             }
             else if (Toolbox.getStrokeWidth() != 1){ // If stroke is needed
                 drawEllipse(drawPrevQueueLinePairs, rowDif, colDif); //Outer ellipse
-
                 char lastActiveLetter = globalOperations.activeLetter; //Save for later
                 globalOperations.activeLetter = ' '; //Prepare empty 
-
                 int innerRowDif = Math.Max(1, rowDif - Toolbox.getStrokeWidth()); //Prevent 0 nonsense
                 int innerColDif = Math.Max(1, colDif - Toolbox.getStrokeWidth());
-                
                 drawEllipse(drawPrevQueueLinePairs, innerRowDif, innerColDif); //Empty out middle
-
                 globalOperations.activeLetter = lastActiveLetter; //Restore active letter
                 flushPreviewQueue(previewQueue);
             }
