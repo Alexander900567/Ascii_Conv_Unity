@@ -123,6 +123,10 @@ public class Toolbox : MonoBehaviour
         if(isLetterListening){
             readInActiveLetter();
         }
+        else if(global.controls.Grid.ClosePopUp.triggered){
+            Debug.Log("Tried closing.");
+            global.closePopUp();
+        }
         else if(global.controls.Grid.PerformCopy.triggered){ //These are at the beginning because they have modifiers
             gridManager.copyGridToClipboard();
         }

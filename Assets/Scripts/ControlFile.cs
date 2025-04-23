@@ -28,6 +28,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             ""id"": ""7b262e65-e00a-464c-b66e-79d9df8d02dc"",
             ""actions"": [
                 {
+                    ""name"": ""ClosePopUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""0e7aa2f1-692a-450e-8040-d54d139b8569"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""MainClick"",
                     ""type"": ""Button"",
                     ""id"": ""e437244a-e846-4438-a545-456470fd6792"",
@@ -642,6 +651,17 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""BucketSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a3b1428-54a1-4d26-b560-dd57be454079"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ClosePopUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -650,6 +670,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
 }");
         // Grid
         m_Grid = asset.FindActionMap("Grid", throwIfNotFound: true);
+        m_Grid_ClosePopUp = m_Grid.FindAction("ClosePopUp", throwIfNotFound: true);
         m_Grid_MainClick = m_Grid.FindAction("MainClick", throwIfNotFound: true);
         m_Grid_PenSwitch = m_Grid.FindAction("PenSwitch", throwIfNotFound: true);
         m_Grid_EraserSwitch = m_Grid.FindAction("EraserSwitch", throwIfNotFound: true);
@@ -739,6 +760,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     // Grid
     private readonly InputActionMap m_Grid;
     private List<IGridActions> m_GridActionsCallbackInterfaces = new List<IGridActions>();
+    private readonly InputAction m_Grid_ClosePopUp;
     private readonly InputAction m_Grid_MainClick;
     private readonly InputAction m_Grid_PenSwitch;
     private readonly InputAction m_Grid_EraserSwitch;
@@ -766,6 +788,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     {
         private @ControlFile m_Wrapper;
         public GridActions(@ControlFile wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ClosePopUp => m_Wrapper.m_Grid_ClosePopUp;
         public InputAction @MainClick => m_Wrapper.m_Grid_MainClick;
         public InputAction @PenSwitch => m_Wrapper.m_Grid_PenSwitch;
         public InputAction @EraserSwitch => m_Wrapper.m_Grid_EraserSwitch;
@@ -798,6 +821,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GridActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GridActionsCallbackInterfaces.Add(instance);
+            @ClosePopUp.started += instance.OnClosePopUp;
+            @ClosePopUp.performed += instance.OnClosePopUp;
+            @ClosePopUp.canceled += instance.OnClosePopUp;
             @MainClick.started += instance.OnMainClick;
             @MainClick.performed += instance.OnMainClick;
             @MainClick.canceled += instance.OnMainClick;
@@ -871,6 +897,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IGridActions instance)
         {
+            @ClosePopUp.started -= instance.OnClosePopUp;
+            @ClosePopUp.performed -= instance.OnClosePopUp;
+            @ClosePopUp.canceled -= instance.OnClosePopUp;
             @MainClick.started -= instance.OnMainClick;
             @MainClick.performed -= instance.OnMainClick;
             @MainClick.canceled -= instance.OnMainClick;
@@ -959,6 +988,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     public GridActions @Grid => new GridActions(this);
     public interface IGridActions
     {
+        void OnClosePopUp(InputAction.CallbackContext context);
         void OnMainClick(InputAction.CallbackContext context);
         void OnPenSwitch(InputAction.CallbackContext context);
         void OnEraserSwitch(InputAction.CallbackContext context);

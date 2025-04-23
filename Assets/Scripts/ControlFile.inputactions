@@ -6,6 +6,15 @@
             "id": "7b262e65-e00a-464c-b66e-79d9df8d02dc",
             "actions": [
                 {
+                    "name": "ClosePopUp",
+                    "type": "Button",
+                    "id": "0e7aa2f1-692a-450e-8040-d54d139b8569",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "MainClick",
                     "type": "Button",
                     "id": "e437244a-e846-4438-a545-456470fd6792",
@@ -618,6 +627,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "BucketSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9a3b1428-54a1-4d26-b560-dd57be454079",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClosePopUp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

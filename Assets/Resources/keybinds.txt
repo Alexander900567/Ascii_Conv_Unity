@@ -1,30 +1,31 @@
+Close Pop Up: Escape
 Tools -
-          Use Current Tool (Hold):  Left Mouse Button
-            Switch to Pencil tool:  P
-            Switch to Eraser tool:  E
-             Switch to Brush tool:  B
-                 Switch to Bucket:  U
-              Switch to Line tool:  L
-         Switch to Rectangle tool:  R
-           Switch to Ellipse tool:  O
-       Switch to Text/Typing tool:  L
-Switch to Rectangle Selector tool:  S
-     Switch to Choose Letter tool:  I
+Use Current Tool (Hold): Left Mouse Button
+Switch to Pencil tool: P
+Switch to Eraser tool: E
+Switch to Brush tool: B
+Switch to Bucket: U
+Switch to Line tool: L
+Switch to Rectangle tool: R
+Switch to Ellipse tool: O
+Switch to Text/Typing tool: L
+Switch to Rectangle Selector tool: S
+Switch to Choose Letter tool: I
 
 Modifiers -
- Fill Shape (Toggle): F
+Fill Shape (Toggle): F
 Regular Shape (Hold): Shift
 Increase Stroke by 1: ]
 Increase Stroke by 5: Ctrl + ]
 Decrease Stroke by 1: [
 Decrease Stroke by 5: Ctrl + [
-                
+
 Actions -
-             Undo: Ctrl + Z
-             Redo: Ctrl + Y
+Undo: Ctrl + Z
+Redo: Ctrl + Y
 Copy to Clipboard: Ctrl + C
-             Save: Ctrl + S
-             Load: Ctrl + O
+Save: Ctrl + S
+Load: Ctrl + O
 
 Additional Information -
 All Tools are Toggle unless otherwise specified
