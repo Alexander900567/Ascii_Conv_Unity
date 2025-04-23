@@ -9,7 +9,7 @@ public class Brush : Tool
         (int row, int col) gpos = gridManager.getGridPos();
 
         if (gpos != prevGpos){
-            brush(gpos, Toolbox.GetStrokeWidth());
+            brush(gpos, Toolbox.getStrokeWidth());
         }
         prevGpos = gpos;
     }

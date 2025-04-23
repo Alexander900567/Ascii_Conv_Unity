@@ -231,14 +231,14 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                 r = 0;
             }
             
-            if (Toolbox.GetStrokeWidth() == 1){ //If no stroke
+            if (Toolbox.getStrokeWidth() == 1){ //If no stroke
                 drawCircle(r); //Regular circle
             }
             else{ //If need stroke
                 drawCircle(r, true); //Outer Circle
                 char lastActiveLetter = globalOperations.activeLetter;
                 globalOperations.activeLetter = ' '; //Now draw with spaces
-                int innerR = Math.Max(1, r - Toolbox.GetStrokeWidth()); //At least 1
+                int innerR = Math.Max(1, r - Toolbox.getStrokeWidth()); //At least 1
                 drawCircle(innerR, true); //Inner Circle
                 globalOperations.activeLetter = lastActiveLetter; //Restore activeLetter
                 flushPreviewQueue(previewQueue); //Draw the circles
@@ -263,19 +263,19 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                     return;                    
                 }
             }
-/*             else if (Toolbox.GetStrokeWidth() != 1){ //If need stroke
+/*             else if (Toolbox.getStrokeWidth() != 1){ //If need stroke
                 drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif), Math.Abs(colDif));  // Outer ring (not filled)
                 int bigDiff = Math.Max(Math.Abs(rowDif), Math.Abs(colDif));
-                int smallDiff = Math.Max(1, bigDiff - Toolbox.GetStrokeWidth() * (Toolbox.GetStrokeWidth() - 1));
+                int smallDiff = Math.Max(1, bigDiff - Toolbox.getStrokeWidth() * (Toolbox.getStrokeWidth() - 1));
                 int currentDiff = bigDiff;
 
-                while (currentDiff - Toolbox.GetStrokeWidth() > smallDiff){
+                while (currentDiff - Toolbox.getStrokeWidth() > smallDiff){
                     char lastActiveLetter = globalOperations.activeLetter;
                     globalOperations.activeLetter = ' ';
-                    drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif) - Toolbox.GetStrokeWidth(),
-                    Math.Abs(colDif) - Toolbox.GetStrokeWidth()); // Inner ring (not filled)
+                    drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif) - Toolbox.getStrokeWidth(),
+                    Math.Abs(colDif) - Toolbox.getStrokeWidth()); // Inner ring (not filled)
                     globalOperations.activeLetter = lastActiveLetter;
-                    currentDiff -= Toolbox.GetStrokeWidth();
+                    currentDiff -= Toolbox.getStrokeWidth();
                 }
 
                 if (currentDiff >= smallDiff){

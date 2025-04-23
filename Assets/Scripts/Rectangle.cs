@@ -105,7 +105,7 @@ public class Rectangle : Tool
 
                 DrawRectangle(beginGpos, gpos);
 
-                for (int i = 1; i <= Toolbox.GetStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1
+                for (int i = 1; i <= Toolbox.getStrokeWidth() - 1; i++) { //will run once with no offset if strokeWidth = 1
                 //twice but once normal and once with offset if width = 2, etc.
                     beginGpos.row -= rowGrowth;
                     beginGpos.col -= colGrowth;

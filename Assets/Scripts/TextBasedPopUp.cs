@@ -7,6 +7,7 @@ public class TextBasedPopUp : MonoBehaviour
     [SerializeField] private GameObject keybindsPopUp;
     [SerializeField] private TMPro.TextMeshProUGUI keybindsText;
     [SerializeField] private GameObject aboutPopUp;
+    [SerializeField] private GameObject strokeWidthPopUp;
 
     public void displayKeybindsPopUp(){
         // Load the file from Resources
@@ -24,5 +25,8 @@ public class TextBasedPopUp : MonoBehaviour
     }
     public void displayAboutPopUp(){
         globalOperations.openPopUp(aboutPopUp);
+    }
+    public void displayStrokeWidthPopUp(){
+        globalOperations.openPopUp(strokeWidthPopUp);
     }
 }
