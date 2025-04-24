@@ -4,7 +4,7 @@ using System;
 public class Line : Tool
 {
     public override void draw(){
-        if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){
+        if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Noncardinal line
             line(startGpos, gridManager.getGridPos(), true);
         }
         else { //Regular (straight) line
