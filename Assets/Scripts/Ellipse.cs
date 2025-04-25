@@ -246,7 +246,7 @@ public class Ellipse : Tool
             }
         }
         else if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Math to make an ellipse
-            if (rowDif == 0 || colDif == 0){ //Line optimization i.e. draw line instead of flat ellipse
+            if (rowDif == 0 || colDif == 0){ //Line optimization i.e. draw line instead of flat ellipse, TODO: replace with soon to exist line with stroke width!
                 if (rowDif == 0){
                     Line.line( //Line with length equal to flat ellipse
                     (beginGpos.row, beginGpos.col - (gpos.col - beginGpos.col)),
@@ -264,16 +264,38 @@ public class Ellipse : Tool
                     return;                    
                 }
             }
-            else if (Toolbox.getStrokeWidth() != 1){ // If stroke is needed
-                drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif), Math.Abs(colDif)); //Outer ellipse
-                char lastActiveLetter = globalOperations.activeLetter; //Save for later
-                globalOperations.activeLetter = ' '; //Prepare empty
-                int innerRowDif = Math.Max(1, Math.Abs(rowDif) - Toolbox.getStrokeWidth()); //Prevent 0 and negative
-                int innerColDif = Math.Max(1, Math.Abs(colDif) - Toolbox.getStrokeWidth());
-                drawEllipse(drawPrevQueueLinePairs, innerRowDif, innerColDif); //Empty out middle
-                globalOperations.activeLetter = lastActiveLetter; //Restore active letter
+            else if (Toolbox.getStrokeWidth() != 1) {
+                int resolutionFactor = 10; //resolutionFactor bigger is smoother
+                int adjustedRowDif = Math.Abs(rowDif) * resolutionFactor;
+                int adjustedColDif = Math.Abs(colDif) * resolutionFactor;
+
+                float centerRow = getBeginGpos().row + 0.5f;
+                float centerCol = getBeginGpos().col + 0.5f;
+
+                float aOuter = Math.Abs(colDif) + 0.5f;
+                float bOuter = Math.Abs(rowDif) + 0.5f;
+                float aInner = Math.Max(1, aOuter - Toolbox.getStrokeWidth());
+                float bInner = Math.Max(1, bOuter - Toolbox.getStrokeWidth());
+
+                for (int i = -adjustedRowDif; i <= adjustedRowDif; i++) {
+                    for (int j = -adjustedColDif; j <= adjustedColDif; j++) {
+                        float testRow = i / (float)resolutionFactor;
+                        float testCol = j / (float)resolutionFactor;
+
+                        float adjustedRow = centerRow + testRow;
+                        float adjustedCol = centerCol + testCol;
+
+                        float outerNorm = (testCol * testCol) / (aOuter * aOuter) + (testRow * testRow) / (bOuter * bOuter);
+                        float innerNorm = (testCol * testCol) / (aInner * aInner) + (testRow * testRow) / (bInner * bInner);
+
+                        if (outerNorm <= 1.0f && innerNorm >= 1.0f) {
+                            previewQueue.Add(((int)Math.Floor(adjustedRow), (int)Math.Floor(adjustedCol), globalOperations.activeLetter));
+                        }
+                    }
+                }
                 flushPreviewQueue(previewQueue);
             }
+
             else if (!isFilled){
                 drawEllipse(drawQuadPixels, Math.Abs(rowDif), Math.Abs(colDif)); //Non-filled ellipse
             }
