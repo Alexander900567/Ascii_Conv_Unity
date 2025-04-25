@@ -205,31 +205,28 @@ public class Ellipse : Tool
 
         if (globalOperations.controls.Grid.RegularToggle.IsPressed() || //if user wants circle
         (!globalOperations.controls.Grid.RegularToggle.IsPressed() && rowDif == colDif)){ //Math to make a circle
-            float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
             //pythag: c = sqrt(a^2 + b^2)
             //this is not yet usable due to the geometry of a grid in non-cardinal cases
             //Note about precision: if not good enough, make these floats into doubles
             int r;
             if (rowDif != 0 && colDif != 0) { //non-cardinal case AKA trig time
                 if (globalOperations.controls.Grid.RegularToggle.IsPressed()){
-                int o = Math.Abs(colDif); //converts o to be positive to work with sin()
-                float angleTheta = (float)Math.Asin(o / diagonalR);
-                float h = (float)(o / diagonalR) / (float)Math.Sin(angleTheta); //hypotenuse
-                float r0 = diagonalR / h; //radius in terms of pixels
-                r = (int)Math.Floor(r0); //floor makes our radius usable
+                    float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
+                    r = (int)Math.Floor(diagonalR);
                 }
                 else if (!globalOperations.controls.Grid.RegularToggle.IsPressed()){
                     r = Math.Abs(colDif); //since they are the same, it could be rowDif as well, abs() makes it positive
                 }
                 else{
-                    r = 0;
+                    r = 1;
                 }
             }
             else if (rowDif == 0 || colDif == 0) { //cardinal cases
-                r = (int)Math.Floor(diagonalR);
+                float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
+                r = (int)Math.Floor(diagonalR); //Could just be whichever is not 0, take our diagonal R calc
             }
             else {
-                r = 0;
+                r = 1;
             }
 
             if (Toolbox.getStrokeWidth() == 1){ //If no stroke
@@ -237,11 +234,16 @@ public class Ellipse : Tool
             }
             else{ //If need stroke
                 drawCircle(r, true); //Outer Circle
+
                 char lastActiveLetter = globalOperations.activeLetter;
                 globalOperations.activeLetter = ' '; //Now draw with spaces
+
                 int innerR = Math.Max(1, r - Toolbox.getStrokeWidth()); //At least 1
+
                 drawCircle(innerR, true); //Inner Circle
+
                 globalOperations.activeLetter = lastActiveLetter; //Restore activeLetter
+
                 flushPreviewQueue(previewQueue); //Draw the circles
             }
         }
@@ -295,7 +297,6 @@ public class Ellipse : Tool
                 }
                 flushPreviewQueue(previewQueue);
             }
-
             else if (!isFilled){
                 drawEllipse(drawQuadPixels, Math.Abs(rowDif), Math.Abs(colDif)); //Non-filled ellipse
             }
