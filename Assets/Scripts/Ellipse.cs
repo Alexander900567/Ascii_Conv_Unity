@@ -253,20 +253,18 @@ public class Ellipse : Tool
                     Line.line( //Line with length equal to flat ellipse
                     (beginGpos.row, beginGpos.col - (gpos.col - beginGpos.col)),
                     (gpos.row, gpos.col),
-                    true
-                    );
+                    true);
                     return;
                 }
                 else if (colDif == 0){
                     Line.line( //Line with length equal to flat ellipse
                     (beginGpos.row - (gpos.row - beginGpos.row), beginGpos.col),
                     (gpos.row, gpos.col),
-                    true
-                    );
+                    true);
                     return;                    
                 }
             }
-            else if (Toolbox.getStrokeWidth() != 1) {
+            else if (Toolbox.getStrokeWidth() != 1) { //Stroke Width Ellipse
                 int resolutionFactor = 10; //resolutionFactor bigger is smoother
                 int adjustedRowDif = Math.Abs(rowDif) * resolutionFactor;
                 int adjustedColDif = Math.Abs(colDif) * resolutionFactor;
