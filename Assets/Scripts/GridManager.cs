@@ -141,6 +141,10 @@ public class GridManager : MonoBehaviour
         return rowCount - 1 - row;
     }
 
+    public double pythagLength(double a, double b){
+        return Math.Sqrt((a * a) + (b * b));
+    }
+
     //---setters---
 
     public void addToPreviewBuffer(int row, int col, char input){

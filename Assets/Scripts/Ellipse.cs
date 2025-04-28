@@ -11,7 +11,6 @@ public class Ellipse : Tool
     private (int row, int col) beginGpos;
     private Action<int, int> drawQuadPixels;
     private Action<int, int> drawLinePairs;
-    private Action<int, int> drawPrevQueueLinePairs;
     private List<(int, int, char)> previewQueue = new List<(int, int, char)>(); //(row, col, input)
     private void setBeginGpos((int row, int col) newBeginGpos){
         beginGpos.row = newBeginGpos.row;
@@ -136,20 +135,6 @@ public class Ellipse : Tool
                 beginGposLocal.col - colNum),
                 false);
         };
-
-        drawPrevQueueLinePairs = (rowNum, colNum) => { //Called if ellipse is stroke
-            (int row, int col) beginGposLocal = getBeginGpos();
-            previewQueueLine( //Draws lines to make the ellipse filled
-                (beginGposLocal.row - rowNum, 
-                beginGposLocal.col + colNum),
-                (beginGposLocal.row + rowNum,
-                beginGposLocal.col + colNum));
-            previewQueueLine(
-                (beginGposLocal.row - rowNum, 
-                beginGposLocal.col - colNum),
-                (beginGposLocal.row + rowNum,
-                beginGposLocal.col - colNum));
-        };
     }
     private void drawEllipse(Action <int, int> renderFunc, int rowDif, int colDif){
 
@@ -203,29 +188,24 @@ public class Ellipse : Tool
         int rowDif = gpos.row - beginGpos.row; //row and col components of
         int colDif = gpos.col - beginGpos.col; //difference between start and end
 
-        if (globalOperations.controls.Grid.RegularToggle.IsPressed() || //if user wants circle
+        if (globalOperations.controls.Grid.RegularToggle.IsPressed() || //When drawing a circle
         (!globalOperations.controls.Grid.RegularToggle.IsPressed() && rowDif == colDif)){ //Math to make a circle
-            //pythag: c = sqrt(a^2 + b^2)
-            //this is not yet usable due to the geometry of a grid in non-cardinal cases
-            //Note about precision: if not good enough, make these floats into doubles
-            int r;
-            if (rowDif != 0 && colDif != 0) { //non-cardinal case AKA trig time
-                if (globalOperations.controls.Grid.RegularToggle.IsPressed()){
-                    float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
-                    r = (int)Math.Floor(diagonalR);
+            int r; //Calculates size of circle user wants
+            if (rowDif != 0 && colDif != 0) { //Non-cardinal cases (diagonals)
+                if (globalOperations.controls.Grid.RegularToggle.IsPressed()){ //When user explicitly asks for a circle
+                    r = (int)Math.Floor(gridManager.pythagLength(rowDif, colDif));
                 }
-                else if (!globalOperations.controls.Grid.RegularToggle.IsPressed()){
-                    r = Math.Abs(colDif); //since they are the same, it could be rowDif as well, abs() makes it positive
+                else if (!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //When optimizing for a circle (when using trying to draw an ellipse)
+                    r = Math.Abs(colDif); //Since that ellipse is essentially a circle, it could be rowDif as well. abs() makes it positive
                 }
-                else{
+                else{ //If user didn't move
                     r = 1;
                 }
             }
-            else if (rowDif == 0 || colDif == 0) { //cardinal cases
-                float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
-                r = (int)Math.Floor(diagonalR); //Could just be whichever is not 0, take our diagonal R calc
+            else if (rowDif == 0 || colDif == 0) { //Cardinal cases (straight lines)
+                r = (int)Math.Floor(gridManager.pythagLength(rowDif, colDif)); //Could just be whichever is not 0
             }
-            else {
+            else { //If user didn't move.
                 r = 1;
             }
 
