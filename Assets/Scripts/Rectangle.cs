@@ -4,7 +4,6 @@ using System;
 public class Rectangle : Tool
 {
     [SerializeField] private Line Line;
-    [SerializeField] private Brush Brush;
     private bool isFilled = false;
     private void DrawRectangle((int row, int col) beginGpos, (int row, int col) gpos) {
         if (globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Checks if user wants a square

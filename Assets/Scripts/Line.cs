@@ -55,7 +55,13 @@ public class Line : Tool
                     endGridPos.col = startGpos.col - big_dif;
                 }
             }
-            line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
+            if(Toolbox.getStrokeWidth() != 1){
+                Debug.Log($"Stroke Width: {Toolbox.getStrokeWidth()}");
+                line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
+            }
+            else{
+                line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
+            }
         }
     }
 
