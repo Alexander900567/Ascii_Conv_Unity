@@ -76,7 +76,7 @@ public class ImageConvertor : Tool
     }
 
     public void uploadImage(){
-        string filePath = EditorUtility.OpenFilePanel("Choose an image", "~", "png,jpg");
+        string filePath = EditorUtility.OpenFilePanel("Choose an image", "~", "png,jpg,jpeg");
         if (filePath == ""){
             return;
         }

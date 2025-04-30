@@ -4,7 +4,7 @@ using UnityEngine;
 public class GlobalOperations : MonoBehaviour
 {
     public bool renderUpdate;
-    public char activeLetter;
+    public char activeLetter = 'a';
     public ControlFile controls;
     private GameObject currentPopUp = null;
     public Dictionary<string, dynamic> prefDict;

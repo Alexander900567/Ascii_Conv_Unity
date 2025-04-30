@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class TextVideoPlayer : MonoBehaviour
 {
@@ -11,18 +13,20 @@ public class TextVideoPlayer : MonoBehaviour
     [SerializeField] private ImageConvertor imageConvertor;
     [SerializeField] private SaveLoad saveLoad;
     [SerializeField] private GameObject videoPopUp;
+    [SerializeField] private GameObject loadingMenuObj;
 
+    private bool videoConverting = false;
     private bool videoPlaying = false;
     private string[] frameArray;
     private int frameNum;
     private int totalFrames;
-    private double secBetweenFrames;
-    private DateTime lastFrameTime;
+    private float secBetweenFrames;
+    private float frameTimer;
 
     void Update(){
         if (videoPlaying){
             handlePlayingVideo();
-        }//
+        }
     }
 
     public void displayVideoPopUp(){
@@ -30,10 +34,31 @@ public class TextVideoPlayer : MonoBehaviour
     }
 
     public void convertVideo(int frameRate){
+        if(videoConverting){
+            return;
+        }
         string filePath = EditorUtility.OpenFolderPanel("Choose a directory of images", "~", "");
         if (filePath == ""){
             return;
         }
+        StartCoroutine(processImagesIntoText(frameRate, filePath));
+    }
+
+    //ffmpeg -i bad_apple.mp4 -vf fps=30 %04d.png
+    public IEnumerator processImagesIntoText(int frameRate, string filePath){
+        videoConverting = true;
+        globalOperations.controls.Grid.Disable();
+
+        //show loading menu
+        GameObject loadingMenu = Instantiate(
+            loadingMenuObj,
+            new Vector3(-2, -2, 0),
+            transform.rotation
+        );
+        Slider loadingSlider = loadingMenu.transform.Find("LoadingSlider").GetComponent<Slider>();
+        RectTransform canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        loadingMenu.transform.SetParent(canvas);
+
 
         DirectoryInfo dirObj = new DirectoryInfo(filePath);
         FileInfo[] fileList = dirObj.GetFiles();
@@ -44,10 +69,14 @@ public class TextVideoPlayer : MonoBehaviour
         saveFile.WriteLine($"colCount:{gridManager.getColCount()}");
         saveFile.WriteLine($"frameRate:{frameRate}");
 
+        //mark the entire canvas as the size of the converted images
         imageConvertor.setCornersManual(
             (row:0,col:0),
             (row: gridManager.getRowCount() - 1, col: gridManager.getColCount() - 1)
         );
+
+        //calculate how much the loading slider should change per image
+        float loadingProgressInc = 1f / (float)fileList.Length;
 
         foreach(FileInfo file in fileList){
             string fileExtension = file.Name.Split('.')[^1];
@@ -63,8 +92,15 @@ public class TextVideoPlayer : MonoBehaviour
             foreach(string row in compString.Split("\n")){
                 saveFile.WriteLine(row);
             }
+            loadingSlider.value += loadingProgressInc;
+            yield return null;
         }
         saveFile.Close();
+
+        videoConverting = false;
+        globalOperations.controls.Grid.Enable();
+        Destroy(loadingMenu);
+        yield return null;
     }
 
     public void playVideo(){
@@ -80,7 +116,7 @@ public class TextVideoPlayer : MonoBehaviour
         int rowNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
         int colNum = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
         int frameRate = System.Int32.Parse(file.ReadLine().Split(":")[1].Trim());
-        secBetweenFrames = 1.0 / (double)frameRate;
+        secBetweenFrames = 1.0f / frameRate;
         string t = file.ReadLine();
 
         gridManager.resizeGrid(rowNum, colNum);
@@ -89,18 +125,18 @@ public class TextVideoPlayer : MonoBehaviour
         string saveString = file.ReadToEnd();
         file.Close();
         frameArray = saveString.Split("-----\n");
-        lastFrameTime = DateTime.Now;
         frameNum = 0;
         totalFrames = frameArray.Length;
         videoPlaying = true;
+        frameTimer = 0;
     }
 
     private void handlePlayingVideo(){
-        DateTime currentTime = DateTime.Now;
-        if ((currentTime - lastFrameTime).TotalSeconds < secBetweenFrames){
+        frameTimer += Time.deltaTime;
+        if (frameTimer < secBetweenFrames){
             return;
         }
-        lastFrameTime = currentTime;
+        frameTimer = frameTimer - secBetweenFrames;
 
         string frame = frameArray[frameNum];
 
