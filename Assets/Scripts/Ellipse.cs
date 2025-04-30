@@ -46,8 +46,7 @@ public class Ellipse : Tool
         previewQueue.Clear();
     }
 
-    private void drawCircle(int r, bool strokeCircle = false){
-        (int row, int col) beginGposLocal = getBeginGpos();
+    public void drawCircle((int row, int col) beginGposLocal, int r, bool forceFill = false, bool strokeCircle = false){
 
         int rowNum = 0;
         int colNum = r;
@@ -68,7 +67,7 @@ public class Ellipse : Tool
                 (beginGposLocal.row + colNum, beginGposLocal.col - rowNum),
                 (beginGposLocal.row - colNum, beginGposLocal.col - rowNum));
             }
-            else if (!isFilled){
+            else if (!isFilled && !forceFill){
                 gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
                 gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
                 gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
@@ -78,7 +77,7 @@ public class Ellipse : Tool
                 gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
                 gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
             }
-            else if (isFilled){ //much like the filled ellipse, we use lines to fill within the circle
+            else if (isFilled || forceFill){ //much like the filled ellipse, we use lines to fill within the circle
                 Line.line(
                 (beginGposLocal.row + rowNum, beginGposLocal.col + colNum),
                 (beginGposLocal.row - rowNum, beginGposLocal.col + colNum),
@@ -210,17 +209,17 @@ public class Ellipse : Tool
             }
 
             if (Toolbox.getStrokeWidth() == 1){ //If no stroke
-                drawCircle(r); //Regular circle
+                drawCircle(getBeginGpos(), r); //Regular circle
             }
             else{ //If need stroke
-                drawCircle(r, true); //Outer Circle
+                drawCircle(getBeginGpos(), r, false, true); //Outer Circle
 
                 char lastActiveLetter = globalOperations.activeLetter;
                 globalOperations.activeLetter = ' '; //Now draw with spaces
 
                 int innerR = Math.Max(1, r - Toolbox.getStrokeWidth()); //At least 1
 
-                drawCircle(innerR, true); //Inner Circle
+                drawCircle(getBeginGpos(), innerR, false, true); //Inner Circle
 
                 globalOperations.activeLetter = lastActiveLetter; //Restore activeLetter
 
