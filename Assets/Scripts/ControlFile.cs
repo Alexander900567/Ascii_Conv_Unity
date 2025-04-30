@@ -145,6 +145,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""OffsetToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""7f42efc2-1aec-499e-8031-6fad7993cb16"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""RegularToggle"",
                     ""type"": ""Button"",
                     ""id"": ""3acc2d48-7dc9-4528-854c-0562cc9c4b24"",
@@ -642,6 +651,17 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""BucketSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ee0d1b3f-d81b-4d85-a977-9d77b57cb7c0"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OffsetToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -691,6 +711,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_ConverterSwitch = m_Grid.FindAction("ConverterSwitch", throwIfNotFound: true);
         m_Grid_LetterSwitch = m_Grid.FindAction("LetterSwitch", throwIfNotFound: true);
         m_Grid_FilledToggle = m_Grid.FindAction("FilledToggle", throwIfNotFound: true);
+        m_Grid_OffsetToggle = m_Grid.FindAction("OffsetToggle", throwIfNotFound: true);
         m_Grid_RegularToggle = m_Grid.FindAction("RegularToggle", throwIfNotFound: true);
         m_Grid_PerformUndo = m_Grid.FindAction("PerformUndo", throwIfNotFound: true);
         m_Grid_PerformRedo = m_Grid.FindAction("PerformRedo", throwIfNotFound: true);
@@ -784,6 +805,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_ConverterSwitch;
     private readonly InputAction m_Grid_LetterSwitch;
     private readonly InputAction m_Grid_FilledToggle;
+    private readonly InputAction m_Grid_OffsetToggle;
     private readonly InputAction m_Grid_RegularToggle;
     private readonly InputAction m_Grid_PerformUndo;
     private readonly InputAction m_Grid_PerformRedo;
@@ -811,6 +833,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @ConverterSwitch => m_Wrapper.m_Grid_ConverterSwitch;
         public InputAction @LetterSwitch => m_Wrapper.m_Grid_LetterSwitch;
         public InputAction @FilledToggle => m_Wrapper.m_Grid_FilledToggle;
+        public InputAction @OffsetToggle => m_Wrapper.m_Grid_OffsetToggle;
         public InputAction @RegularToggle => m_Wrapper.m_Grid_RegularToggle;
         public InputAction @PerformUndo => m_Wrapper.m_Grid_PerformUndo;
         public InputAction @PerformRedo => m_Wrapper.m_Grid_PerformRedo;
@@ -869,6 +892,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @FilledToggle.started += instance.OnFilledToggle;
             @FilledToggle.performed += instance.OnFilledToggle;
             @FilledToggle.canceled += instance.OnFilledToggle;
+            @OffsetToggle.started += instance.OnOffsetToggle;
+            @OffsetToggle.performed += instance.OnOffsetToggle;
+            @OffsetToggle.canceled += instance.OnOffsetToggle;
             @RegularToggle.started += instance.OnRegularToggle;
             @RegularToggle.performed += instance.OnRegularToggle;
             @RegularToggle.canceled += instance.OnRegularToggle;
@@ -942,6 +968,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @FilledToggle.started -= instance.OnFilledToggle;
             @FilledToggle.performed -= instance.OnFilledToggle;
             @FilledToggle.canceled -= instance.OnFilledToggle;
+            @OffsetToggle.started -= instance.OnOffsetToggle;
+            @OffsetToggle.performed -= instance.OnOffsetToggle;
+            @OffsetToggle.canceled -= instance.OnOffsetToggle;
             @RegularToggle.started -= instance.OnRegularToggle;
             @RegularToggle.performed -= instance.OnRegularToggle;
             @RegularToggle.canceled -= instance.OnRegularToggle;
@@ -1050,6 +1079,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnConverterSwitch(InputAction.CallbackContext context);
         void OnLetterSwitch(InputAction.CallbackContext context);
         void OnFilledToggle(InputAction.CallbackContext context);
+        void OnOffsetToggle(InputAction.CallbackContext context);
         void OnRegularToggle(InputAction.CallbackContext context);
         void OnPerformUndo(InputAction.CallbackContext context);
         void OnPerformRedo(InputAction.CallbackContext context);

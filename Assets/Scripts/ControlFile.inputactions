@@ -123,6 +123,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "OffsetToggle",
+                    "type": "Button",
+                    "id": "7f42efc2-1aec-499e-8031-6fad7993cb16",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "RegularToggle",
                     "type": "Button",
                     "id": "3acc2d48-7dc9-4528-854c-0562cc9c4b24",
@@ -618,6 +627,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "BucketSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ee0d1b3f-d81b-4d85-a977-9d77b57cb7c0",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OffsetToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

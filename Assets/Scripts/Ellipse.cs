@@ -8,6 +8,7 @@ public class Ellipse : Tool
 {
     [SerializeField] private Line Line;
     private bool isFilled = false;
+    private bool offset;
     private (int row, int col) beginGpos;
     private Action<int, int> drawQuadPixels;
     private Action<int, int> drawLinePairs;
@@ -284,16 +285,26 @@ public class Ellipse : Tool
     }
     public override void draw(){
         gridManager.emptyPreviewBuffer();
-        setBeginGpos(startGpos);
-        (int row, int col) gpos = gridManager.getGridPos();
-
+        (int row, int col) gpos;
+        if (globalOperations.controls.Grid.OffsetToggle.IsPressed()){
+            setBeginGpos(gridManager.getGridPos());
+            gpos = startGpos;
+        }
+        else{
+            setBeginGpos(startGpos);
+            gpos = gridManager.getGridPos();
+        }
+        
         ellipseLogic(beginGpos, gpos);
     }
     public override void handleInput(){
         base.handleInput();
         if (globalOperations.controls.Grid.FilledToggle.triggered){
             isFilled = !isFilled;
-        }    
+        }
+        else if (globalOperations.controls.Grid.OffsetToggle.triggered){
+            offset = !offset;
+        }
         else if(
             globalOperations.controls.Grid.RegularToggle.triggered ||
             globalOperations.controls.Grid.RegularToggle.WasReleasedThisFrame()
