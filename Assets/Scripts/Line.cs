@@ -18,7 +18,7 @@ public class Line : Tool
                 //Clockwise: Down TO Up: 0 to 180,
                 //Clockwise: Next to Up TO Next to Down: -179.9999 to -0.0001
                 int big_dif;
-                if (Math.Abs(row_dif) < Math.Abs(col_dif)){ //Determine shorter component
+                if (Math.Abs(row_dif) <= Math.Abs(col_dif)){ //Determine bigger component
                     big_dif = col_dif;
                 }
                 else{
@@ -57,7 +57,9 @@ public class Line : Tool
             }
             if(Toolbox.getStrokeWidth() != 1){
                 Debug.Log($"Stroke Width: {Toolbox.getStrokeWidth()}");
-                line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
+                for (int i = -Toolbox.getStrokeWidth(); i <= Toolbox.getStrokeWidth(); i++){
+                    line((startGpos.row + i, startGpos.col), (endGridPos.row + i, endGridPos.col), true);
+                }
             }
             else{
                 line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
