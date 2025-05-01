@@ -1084,6 +1084,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   global: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
+  letterSelector: {fileID: 835389996}
   Pencil: {fileID: 301216686}
   Line: {fileID: 301216685}
   Rectangle: {fileID: 301216684}
@@ -4962,7 +4963,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3742716123681225267, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 44.760315
+      value: 44.760254
       objectReference: {fileID: 0}
     - target: {fileID: 3742716123681225267, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
       propertyPath: m_AnchoredPosition.y
