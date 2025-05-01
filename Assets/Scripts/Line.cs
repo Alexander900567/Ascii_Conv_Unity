@@ -87,13 +87,6 @@ public class Line : Tool
         int extra = (longSlope % shortSlope) + 1;
         float extraInterval = (float)shortSlope / (float)(extra);
         float extraCounter = 1;
-        //float forcedExtras = extra - ((float) shortSlope / (float)((int)extraInterval + 1)); 
-        //float forcedCounter = 0;
-        Debug.Log("----------");
-        Debug.Log($"shortSlope: {shortSlope}");
-        Debug.Log($"extra: {extra}");
-        Debug.Log($"extraInterval: {extraInterval}");
-        //Debug.Log($"forcedExtras: {forcedExtras}");
 
         for (int x = 0; x < shortSlope; x++){
             int thisChunk = perChunk;
