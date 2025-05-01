@@ -85,12 +85,20 @@ public class Line : Tool
 
         int perChunk = longSlope / shortSlope;
         int extra = (longSlope % shortSlope) + 1;
+        float extraInterval = (float)shortSlope / (float)(extra + 1);
+        int extraCounter = 0;
+        float forcedExtras = extra - ((float) shortSlope / (float)((int)extraInterval + 1)); 
+        float forcedCounter = 0;
+        Debug.Log("----------");
+        Debug.Log($"shortSlope: {shortSlope}");
+        Debug.Log($"extra: {extra}");
+        Debug.Log($"extraInterval: {extraInterval}");
+        Debug.Log($"forcedExtras: {forcedExtras}");
 
         for (int x = 0; x < shortSlope; x++){
             int thisChunk = perChunk;
-            if (extra > 0){
+            if (extraNeeded()){
                 thisChunk += 1;
-                extra -= 1;
             }
             for (int y = 0; y < thisChunk; y++){
                 gridManager.addToPreviewBuffer(startGpos.row, startGpos.col, globalOperations.activeLetter);
@@ -107,6 +115,25 @@ public class Line : Tool
             else {
                 startGpos.col += colIter;
             }
+            extraCounter += 1;
+        }
+
+        bool extraNeeded(){
+            if(extra <= 0){
+                return false;
+            } 
+            if(extraCounter >= (int)extraInterval){
+                extra -= 1;
+                extraCounter = -1;
+                forcedCounter += extraInterval - extraCounter;
+                return true;
+            }
+            if(forcedExtras > 0 && forcedCounter >= 1){
+                forcedCounter -= 1;
+                forcedExtras -= 1;
+                return true;
+            }
+            return false;
         }
     }
 
