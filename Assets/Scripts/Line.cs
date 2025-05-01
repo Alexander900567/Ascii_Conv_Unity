@@ -107,12 +107,13 @@ public class Line : Tool
 
         int perChunk = longSlope / shortSlope;
         int extra = (longSlope % shortSlope) + 1;
+        float extraInterval = (float)shortSlope / (float)(extra);
+        float extraCounter = 1;
 
         for (int x = 0; x < shortSlope; x++){
             int thisChunk = perChunk;
-            if (extra > 0){
+            if (extraNeeded()){
                 thisChunk += 1;
-                extra -= 1;
             }
             for (int y = 0; y < thisChunk; y++){
                 gridManager.addToPreviewBuffer(startGpos.row, startGpos.col, globalOperations.activeLetter);
@@ -129,6 +130,19 @@ public class Line : Tool
             else {
                 startGpos.col += colIter;
             }
+            extraCounter += 1;
+        }
+
+        bool extraNeeded(){
+            if(extra <= 0){
+                return false;
+            } 
+            if(extraCounter >= extraInterval){
+                extra -= 1;
+                extraCounter = extraCounter - extraInterval;
+                return true;
+            }
+            return false;
         }
     }
 
