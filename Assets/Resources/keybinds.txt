@@ -40,7 +40,8 @@ create circles, and the Line tool create straight lines at 45 degree intervals
 Offset changes makes your ellipse originate from where your cursor currently is
 instead of where it started.
 Regular and Offset are compatible i.e. you can hold Shift + Alt simultaneously.
-Stroke is responsible for how thick the Pencil, Brush, Rectangle, and Ellipses are.
+Stroke is responsible for how thick the Pencil, Brush, Line, Rectangle, and
+Ellipses are.
 
 The Actions are Single Press unless otherwise specified.
 
