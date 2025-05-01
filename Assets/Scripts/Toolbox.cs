@@ -8,6 +8,7 @@ public class Toolbox : MonoBehaviour
 
     public GlobalOperations global;
     public GridManager gridManager;
+    public LetterSelector letterSelector;
 
     private bool isLetterListening;
     private (int row, int col) prevGpos; 
@@ -184,6 +185,7 @@ public class Toolbox : MonoBehaviour
         void readInActiveLetter(){
             if(Input.inputString.Length > 0){
                 global.activeLetter = Input.inputString[0];
+                letterSelector.moveBoxToActiveLetter();
                 isLetterListening = false;
             }
         }
