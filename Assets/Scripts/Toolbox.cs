@@ -31,6 +31,7 @@ public class Toolbox : MonoBehaviour
     {
         prevGpos = (-1, -1); //Load defaults
         activeTool = Pencil;
+        activeTool.onEnter();
         isLetterListening = false;
     }
 
