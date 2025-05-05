@@ -57,7 +57,6 @@ public class Text : Tool
             //for now just here to avoid new lines being written to the grid
         }
         else if (Input.anyKeyDown && Input.inputString.Length > 0){
-            //Debug.Log(Input.inputString);
             gridManager.addToPreviewBuffer(cursorGpos.row, cursorGpos.col, Input.inputString[0]);
             if (cursorGpos.col < gridManager.getColCount() - 1){
                 cursorGpos.col += 1;

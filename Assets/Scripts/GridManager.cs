@@ -66,7 +66,6 @@ public class GridManager : MonoBehaviour
     }
     
     private void renderGrid(){
-        //Debug.Log("new render");
 
         //add preview buffer to a temp version of grid
         List<List<char>> renderArray = getGridArray();
@@ -139,6 +138,10 @@ public class GridManager : MonoBehaviour
 
     public int invertRowPos(int row){
         return rowCount - 1 - row;
+    }
+
+    public double pythagLength(double a, double b){
+        return Math.Sqrt((a * a) + (b * b));
     }
 
     //---setters---

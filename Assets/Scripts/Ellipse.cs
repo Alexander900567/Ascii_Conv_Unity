@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 
-public class Ellipse : Tool
+public class Ellipse : StrokeTool
 {
     [SerializeField] private Line Line;
     private bool isFilled = false;
+    private bool offset;
     private (int row, int col) beginGpos;
     private Action<int, int> drawQuadPixels;
     private Action<int, int> drawLinePairs;
-    private Action<int, int> drawPrevQueueLinePairs;
     private List<(int, int, char)> previewQueue = new List<(int, int, char)>(); //(row, col, input)
     private void setBeginGpos((int row, int col) newBeginGpos){
         beginGpos.row = newBeginGpos.row;
@@ -30,24 +30,24 @@ public class Ellipse : Tool
             }
         }
     }
-private void flushPreviewQueue(List<(int, int, char)> queue) {
-    HashSet<(int, int)> conflictingPositions = new HashSet<(int, int)>(); //Finds difference of two circles
-    foreach ((int row, int col, char input) in queue) {
-        if (input == ' ') {
-            conflictingPositions.Add((row, col)); //Stores the void here
+    private void flushPreviewQueue(List<(int, int, char)> queue) {
+        HashSet<(int, int)> conflictingPositions = new HashSet<(int, int)>(); //Finds difference of two circles
+        foreach ((int row, int col, char input) in queue) {
+            if (input == ' ') {
+                conflictingPositions.Add((row, col)); //Stores the void here
+            }
         }
+
+        foreach ((int row, int col, char input) in queue) {
+            if (input != ' ' && !conflictingPositions.Contains((row, col))) {
+                gridManager.addToPreviewBuffer(row, col, input);
+            }
+        }
+        conflictingPositions.Clear();
+        previewQueue.Clear();
     }
 
-    foreach ((int row, int col, char input) in queue) {
-        if (input != ' ' && !conflictingPositions.Contains((row, col))) {
-            gridManager.addToPreviewBuffer(row, col, input);
-        }
-    }
-    previewQueue.Clear();
-    }
-
-    private void drawCircle(int r, bool strokeCircle = false){
-        (int row, int col) beginGposLocal = getBeginGpos();
+    public void drawCircle((int row, int col) beginGposLocal, int r, bool forceFill = false, bool strokeCircle = false){
 
         int rowNum = 0;
         int colNum = r;
@@ -68,7 +68,7 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                 (beginGposLocal.row + colNum, beginGposLocal.col - rowNum),
                 (beginGposLocal.row - colNum, beginGposLocal.col - rowNum));
             }
-            else if (!isFilled){
+            else if (!isFilled && !forceFill){
                 gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col + colNum, globalOperations.activeLetter);
                 gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
                 gridManager.addToPreviewBuffer(beginGposLocal.row - colNum, beginGposLocal.col + rowNum, globalOperations.activeLetter);
@@ -78,7 +78,7 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                 gridManager.addToPreviewBuffer(beginGposLocal.row + colNum, beginGposLocal.col - rowNum, globalOperations.activeLetter);
                 gridManager.addToPreviewBuffer(beginGposLocal.row + rowNum, beginGposLocal.col - colNum, globalOperations.activeLetter);
             }
-            else if (isFilled){ //much like the filled ellipse, we use lines to fill within the circle
+            else if (isFilled || forceFill){ //much like the filled ellipse, we use lines to fill within the circle
                 Line.line(
                 (beginGposLocal.row + rowNum, beginGposLocal.col + colNum),
                 (beginGposLocal.row - rowNum, beginGposLocal.col + colNum),
@@ -135,20 +135,6 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
                 beginGposLocal.col - colNum),
                 false);
         };
-
-        drawPrevQueueLinePairs = (rowNum, colNum) => { //Called if ellipse is stroke
-            (int row, int col) beginGposLocal = getBeginGpos();
-            previewQueueLine( //Draws lines to make the ellipse filled
-                (beginGposLocal.row - rowNum, 
-                beginGposLocal.col + colNum),
-                (beginGposLocal.row + rowNum,
-                beginGposLocal.col + colNum));
-            previewQueueLine(
-                (beginGposLocal.row - rowNum, 
-                beginGposLocal.col - colNum),
-                (beginGposLocal.row + rowNum,
-                beginGposLocal.col - colNum));
-        };
     }
     private void drawEllipse(Action <int, int> renderFunc, int rowDif, int colDif){
 
@@ -202,87 +188,93 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
         int rowDif = gpos.row - beginGpos.row; //row and col components of
         int colDif = gpos.col - beginGpos.col; //difference between start and end
 
-        if (globalOperations.controls.Grid.RegularToggle.IsPressed() || //if user wants circle
+        if (globalOperations.controls.Grid.RegularToggle.IsPressed() || //When drawing a circle
         (!globalOperations.controls.Grid.RegularToggle.IsPressed() && rowDif == colDif)){ //Math to make a circle
-            float diagonalR = (float)Math.Sqrt((rowDif * rowDif) + (colDif * colDif));
-            //pythag: c = sqrt(a^2 + b^2)
-            //this is not yet usable due to the geometry of a grid in non-cardinal cases
-            //Note about precision: if not good enough, make these floats into doubles
-            int r;
-            if (rowDif != 0 && colDif != 0) { //non-cardinal case AKA trig time
-                if (globalOperations.controls.Grid.RegularToggle.IsPressed()){
-                int o = Math.Abs(colDif); //converts o to be positive to work with sin()
-                float angleTheta = (float)Math.Asin(o / diagonalR);
-                float h = (float)(o / diagonalR) / (float)Math.Sin(angleTheta); //hypotenuse
-                float r0 = diagonalR / h; //radius in terms of pixels
-                r = (int)Math.Floor(r0); //floor makes our radius usable
+            int r; //Calculates size of circle user wants
+            if (rowDif != 0 && colDif != 0) { //Non-cardinal cases (diagonals)
+                if (globalOperations.controls.Grid.RegularToggle.IsPressed()){ //When user explicitly asks for a circle
+                    r = (int)Math.Floor(gridManager.pythagLength(rowDif, colDif));
                 }
-                else if (!globalOperations.controls.Grid.RegularToggle.IsPressed()){
-                    r = Math.Abs(colDif); //since they are the same, it could be rowDif as well, abs() makes it positive
+                else if (!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //When optimizing for a circle (when using trying to draw an ellipse)
+                    r = Math.Abs(colDif); //Since that ellipse is essentially a circle, it could be rowDif as well. abs() makes it positive
                 }
-                else{
-                    r = 0;
+                else{ //If user didn't move
+                    r = 1;
                 }
             }
-            else if (rowDif == 0 || colDif == 0) { //cardinal cases
-                r = (int)Math.Floor(diagonalR);
+            else if (rowDif == 0 || colDif == 0) { //Cardinal cases (straight lines)
+                r = (int)Math.Floor(gridManager.pythagLength(rowDif, colDif)); //Could just be whichever is not 0
             }
-            else {
-                r = 0;
+            else { //If user didn't move.
+                r = 1;
             }
-            
-            if (Toolbox.GetStrokeWidth() == 1){ //If no stroke
-                drawCircle(r); //Regular circle
+
+            if (getStrokeWidth() == 1){ //If no stroke
+                drawCircle(getBeginGpos(), r); //Regular circle
             }
             else{ //If need stroke
-                drawCircle(r, true); //Outer Circle
+                drawCircle(getBeginGpos(), r, false, true); //Outer Circle
+
                 char lastActiveLetter = globalOperations.activeLetter;
                 globalOperations.activeLetter = ' '; //Now draw with spaces
-                int innerR = Math.Max(1, r - Toolbox.GetStrokeWidth()); //At least 1
-                drawCircle(innerR, true); //Inner Circle
+
+                int innerR = Math.Max(1, r - getStrokeWidth()); //At least 1
+
+                drawCircle(getBeginGpos(), innerR, false, true); //Inner Circle
+
                 globalOperations.activeLetter = lastActiveLetter; //Restore activeLetter
+
                 flushPreviewQueue(previewQueue); //Draw the circles
             }
         }
         else if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Math to make an ellipse
-            if (rowDif == 0 || colDif == 0){ //Line optimization i.e. draw line instead of flat ellipse
+            if (rowDif == 0 || colDif == 0){ //Line optimization i.e. draw line instead of flat ellipse, TODO: replace with soon to exist line with stroke width!
                 if (rowDif == 0){
                     Line.line( //Line with length equal to flat ellipse
                     (beginGpos.row, beginGpos.col - (gpos.col - beginGpos.col)),
                     (gpos.row, gpos.col),
-                    true
-                    );
+                    true);
                     return;
                 }
                 else if (colDif == 0){
                     Line.line( //Line with length equal to flat ellipse
                     (beginGpos.row - (gpos.row - beginGpos.row), beginGpos.col),
                     (gpos.row, gpos.col),
-                    true
-                    );
+                    true);
                     return;                    
                 }
             }
-/*             else if (Toolbox.GetStrokeWidth() != 1){ //If need stroke
-                drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif), Math.Abs(colDif));  // Outer ring (not filled)
-                int bigDiff = Math.Max(Math.Abs(rowDif), Math.Abs(colDif));
-                int smallDiff = Math.Max(1, bigDiff - Toolbox.GetStrokeWidth() * (Toolbox.GetStrokeWidth() - 1));
-                int currentDiff = bigDiff;
+            else if (getStrokeWidth() != 1) { //Stroke Width Ellipse
+                int resolutionFactor = 10; //resolutionFactor bigger is smoother
+                int adjustedRowDif = Math.Abs(rowDif) * resolutionFactor;
+                int adjustedColDif = Math.Abs(colDif) * resolutionFactor;
 
-                while (currentDiff - Toolbox.GetStrokeWidth() > smallDiff){
-                    char lastActiveLetter = globalOperations.activeLetter;
-                    globalOperations.activeLetter = ' ';
-                    drawEllipse(drawPrevQueueLinePairs, Math.Abs(rowDif) - Toolbox.GetStrokeWidth(),
-                    Math.Abs(colDif) - Toolbox.GetStrokeWidth()); // Inner ring (not filled)
-                    globalOperations.activeLetter = lastActiveLetter;
-                    currentDiff -= Toolbox.GetStrokeWidth();
-                }
+                float centerRow = getBeginGpos().row + 0.5f;
+                float centerCol = getBeginGpos().col + 0.5f;
 
-                if (currentDiff >= smallDiff){
-                    drawEllipse(drawPrevQueueLinePairs, currentDiff, currentDiff);
+                float aOuter = Math.Abs(colDif) + 0.5f;
+                float bOuter = Math.Abs(rowDif) + 0.5f;
+                float aInner = Math.Max(1, aOuter - getStrokeWidth());
+                float bInner = Math.Max(1, bOuter - getStrokeWidth());
+
+                for (int i = -adjustedRowDif; i <= adjustedRowDif; i++) {
+                    for (int j = -adjustedColDif; j <= adjustedColDif; j++) {
+                        float testRow = i / (float)resolutionFactor;
+                        float testCol = j / (float)resolutionFactor;
+
+                        float adjustedRow = centerRow + testRow;
+                        float adjustedCol = centerCol + testCol;
+
+                        float outerNorm = (testCol * testCol) / (aOuter * aOuter) + (testRow * testRow) / (bOuter * bOuter);
+                        float innerNorm = (testCol * testCol) / (aInner * aInner) + (testRow * testRow) / (bInner * bInner);
+
+                        if (outerNorm <= 1.0f && innerNorm >= 1.0f) {
+                            previewQueue.Add(((int)Math.Floor(adjustedRow), (int)Math.Floor(adjustedCol), globalOperations.activeLetter));
+                        }
+                    }
                 }
                 flushPreviewQueue(previewQueue);
-            } */
+            }
             else if (!isFilled){
                 drawEllipse(drawQuadPixels, Math.Abs(rowDif), Math.Abs(colDif)); //Non-filled ellipse
             }
@@ -293,21 +285,46 @@ private void flushPreviewQueue(List<(int, int, char)> queue) {
     }
     public override void draw(){
         gridManager.emptyPreviewBuffer();
+        (int row, int col) gpos;
+        /*
+        if (globalOperations.controls.Grid.OffsetToggle.IsPressed()){
+            setBeginGpos(gridManager.getGridPos());
+            gpos = startGpos;
+        }
+        else{
+            setBeginGpos(startGpos);
+            gpos = gridManager.getGridPos();
+        }
+        */
         setBeginGpos(startGpos);
-        (int row, int col) gpos = gridManager.getGridPos();
-
+        gpos = gridManager.getGridPos();
+        
         ellipseLogic(beginGpos, gpos);
     }
     public override void handleInput(){
         base.handleInput();
         if (globalOperations.controls.Grid.FilledToggle.triggered){
             isFilled = !isFilled;
-        }    
+        }
+        /*
+        else if (globalOperations.controls.Grid.OffsetToggle.triggered){
+            offset = !offset;
+        }
+        */
         else if(
             globalOperations.controls.Grid.RegularToggle.triggered ||
             globalOperations.controls.Grid.RegularToggle.WasReleasedThisFrame()
         ){
             globalOperations.renderUpdate = true;
         }
+    }
+
+    public override void onEnter()
+    {
+        showStrokeWidthSlider();
+    }
+    public override void onExit()
+    {
+        hideStrokeWidthSlider();
     }
 }

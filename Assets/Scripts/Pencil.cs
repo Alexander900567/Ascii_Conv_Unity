@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Pencil : Tool
+public class Pencil : StrokeTool
 {
     [SerializeField] private Line Line;
     private (int row, int col) prevGpos;
@@ -11,10 +11,10 @@ public class Pencil : Tool
             if (gpos != prevGpos){
                 gridManager.addToPreviewBuffer(gpos.row, gpos.col, globalOperations.activeLetter);
                 
-                int upperRow = gpos.row - Toolbox.GetStrokeWidth() + 1;
-                int lowerRow = gpos.row + Toolbox.GetStrokeWidth() - 1;
-                int leftSide = gpos.col - Toolbox.GetStrokeWidth() + 1;
-                int rightSide = gpos.col + Toolbox.GetStrokeWidth() - 1;
+                int upperRow = gpos.row - getStrokeWidth() + 1;
+                int lowerRow = gpos.row + getStrokeWidth() - 1;
+                int leftSide = gpos.col - getStrokeWidth() + 1;
+                int rightSide = gpos.col + getStrokeWidth() - 1;
 
                 for (int i = upperRow; i <= lowerRow; i++) {
                     Line.line(
@@ -26,4 +26,14 @@ public class Pencil : Tool
             prevGpos = gpos;
         }
     }
+
+    public override void onEnter()
+    {
+        showStrokeWidthSlider();
+    }
+    public override void onExit()
+    {
+        hideStrokeWidthSlider();
+    }
+    
 }

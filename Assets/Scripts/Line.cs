@@ -1,10 +1,10 @@
 using UnityEngine;
 using System;
 
-public class Line : Tool
+public class Line : StrokeTool
 {
     public override void draw(){
-        if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){
+        if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Noncardinal line
             line(startGpos, gridManager.getGridPos(), true);
         }
         else { //Regular (straight) line
@@ -14,32 +14,53 @@ public class Line : Tool
             int col_dif = endGridPos.col - startGpos.col;
 
             if (Math.Abs(row_dif) != Math.Abs(col_dif)) { //If not already a regular, then make regular
-                int smaller_dif;
+                double theta = Math.Atan2(col_dif, row_dif) * (180d / Math.PI);
+                //Clockwise: Down TO Up: 0 to 180,
+                //Clockwise: Next to Up TO Next to Down: -179.9999 to -0.0001
+                int big_dif;
                 if (Math.Abs(row_dif) < Math.Abs(col_dif)){ //Determine shorter component
-                    smaller_dif = row_dif;
+                    big_dif = col_dif;
                 }
                 else{
-                    smaller_dif = col_dif;
+                    big_dif = row_dif;
                 }
-                smaller_dif = Math.Abs(smaller_dif); //The math can be optimized I bet
-                if (col_dif > 0 && row_dif < 0){
-                    endGridPos.row = startGpos.row - smaller_dif;
-                    endGridPos.col = startGpos.col + smaller_dif;
+
+                //8 cases because of 8 octants. Range is 45 degrees (size of octant) with offset of 22.5 degrees
+                if (theta >= -22.5 && theta < 22.5){ //Down
+                    endGridPos.col = startGpos.col; //Row stays same, Col gets straightened out
                 }
-                else if (col_dif > 0 && row_dif > 0){ //Conforms longer side to be equal to smaller side
-                    endGridPos.row = startGpos.row + smaller_dif;
-                    endGridPos.col = startGpos.col + smaller_dif;
+                else if (theta >= 22.5 && theta < 67.5){ //Bottom Right
+                    endGridPos.row = startGpos.row + big_dif;
+                    endGridPos.col = startGpos.col + big_dif;
                 }
-                else if (col_dif < 0 && row_dif > 0){
-                    endGridPos.row = startGpos.row + smaller_dif;
-                    endGridPos.col = startGpos.col - smaller_dif;
+                else if (theta >= 67.5 && theta < 112.5){ //Right
+                    endGridPos.row = startGpos.row; //Col stays same, Row gets straightened out
                 }
-                else if (col_dif < 0 && row_dif < 0){
-                    endGridPos.row = startGpos.row - smaller_dif;
-                    endGridPos.col = startGpos.col - smaller_dif;
+                else if (theta >= 112.5 && theta < 157.5){ //Top Right
+                    endGridPos.row = startGpos.row - big_dif;
+                    endGridPos.col = startGpos.col + big_dif;
+                }
+                else if ((theta >= 157.5 && theta <= 180) || (theta > -180 && theta < -157.5)){ //Up
+                    endGridPos.col = startGpos.col; //Row stays same, Col gets straightened out
+                }
+                else if (theta >= -157.5 && theta < -112.5){ //Top Left
+                    endGridPos.row = startGpos.row - big_dif;
+                    endGridPos.col = startGpos.col - big_dif;
+                }
+                else if (theta >= -112.5 && theta < -67.5){ //Left
+                    endGridPos.row = startGpos.row; //Col stays same, Row gets straightened out
+                }
+                else if (theta >= -67.5 && theta < -22.5){ //Bottom Left
+                    endGridPos.row = startGpos.row + big_dif;
+                    endGridPos.col = startGpos.col - big_dif;
                 }
             }
-            line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
+            if(getStrokeWidth() != 1){
+                line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
+            }
+            else{
+                line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
+            }
         }
     }
 
@@ -132,5 +153,13 @@ public class Line : Tool
         ){
             globalOperations.renderUpdate = true;
         }
+    }
+    public override void onEnter()
+    {
+        showStrokeWidthSlider();
+    }
+    public override void onExit()
+    {
+        hideStrokeWidthSlider();
     }
 }

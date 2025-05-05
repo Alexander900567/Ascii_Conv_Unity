@@ -13,9 +13,6 @@ public class Toolbox : MonoBehaviour
     private bool isLetterListening;
     private (int row, int col) prevGpos; 
     private Tool activeTool;
-    private static int strokeWidth;
-    private static int strokeMin;
-    private static int strokeMax;
     [SerializeField] private Pencil Pencil;
     [SerializeField] private Line Line;
     [SerializeField] private Rectangle Rectangle;
@@ -27,22 +24,18 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Brush Brush;
     [SerializeField] private SaveLoad SaveLoad;
     [SerializeField] private Bucket Bucket;
-    [SerializeField] private GameObject MoreStrokeButton;
-    [SerializeField] private GameObject LessStrokeButton;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        prevGpos = (-1, -1);
+        prevGpos = (-1, -1); //Load defaults
         activeTool = Pencil;
+        activeTool.onEnter();
         isLetterListening = false;
-        strokeWidth = 1;
-        strokeMin = 1;
-        strokeMax = 100;
     }
 
-    // Update is called once per frame
+    // Update is called once per frame 
     void Update()
     {
         //let the active tool do its thing
@@ -166,17 +159,29 @@ public class Toolbox : MonoBehaviour
             setLetterListeningTrue();
         }
         else if(global.controls.Grid.PerformStrokeBigIncrease.triggered){
-            increaseStrokeWidth(5); 
+            if (activeTool is StrokeTool){
+                StrokeTool tempTool = activeTool as StrokeTool;
+                tempTool.increaseStrokeWidth(5);
+            }
         }
         else if(global.controls.Grid.PerformStrokeBigDecrease.triggered){
-            decreaseStrokeWidth(5);
+            if (activeTool is StrokeTool){
+                StrokeTool tempTool = activeTool as StrokeTool;
+                tempTool.decreaseStrokeWidth(5);
+            }
         }
         else if(global.controls.Grid.PerformStrokeIncrease.triggered){
-            increaseStrokeWidth(1);
+            if (activeTool is StrokeTool){
+                StrokeTool tempTool = activeTool as StrokeTool;
+                tempTool.increaseStrokeWidth(1);
+            }
         }
         else if(global.controls.Grid.PerformStrokeDecrease.triggered){
-            decreaseStrokeWidth(1);
-        }   
+            if (activeTool is StrokeTool){
+                StrokeTool tempTool = activeTool as StrokeTool;
+                tempTool.decreaseStrokeWidth(1);
+            }
+        }
         
         void readInActiveLetter(){
             if(Input.inputString.Length > 0){
@@ -186,24 +191,5 @@ public class Toolbox : MonoBehaviour
             }
         }
     }
-    public static int GetStrokeWidth() {
-        return strokeWidth;
-    }
-    public static void increaseStrokeWidth(int increase){ //These are called by keybinds and buttons and soon by input fields
-        if (strokeWidth + increase <= strokeMax){ //If less than or equal to upper bound for strokeWidth
-            strokeWidth += increase; //Increase as usual
-        }
-        else if (strokeWidth + increase > strokeMax){ //If goes over
-            strokeWidth = strokeMax; //Set to max
-        }
 
-    }
-    public static void decreaseStrokeWidth(int decrease){
-        if (strokeWidth - decrease >= strokeMin){ //If less than or equal to lower bound
-            strokeWidth -= decrease; //Decrease as usual
-        }
-        else if (strokeWidth - decrease < strokeMin){ //If goes under
-            strokeWidth = strokeMin; //Set to min
-        }
-    }
 }
