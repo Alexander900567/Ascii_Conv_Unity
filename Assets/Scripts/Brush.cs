@@ -16,10 +16,10 @@ public class Brush : StrokeTool
 
     public override void onEnter()
     {
-        base.onEnter();
+        showStrokeWidthSlider();
     }
     public override void onExit()
     {
-        base.onExit();
+        hideStrokeWidthSlider();
     }
 }

@@ -1167,7 +1167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
-  strokeWidthSlider: {fileID: 0}
+  strokeWidthSliderObject: {fileID: 1723765020}
   Line: {fileID: 301216685}
 --- !u!114 &301216685
 MonoBehaviour:
@@ -1183,7 +1183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
-  strokeWidthSlider: {fileID: 0}
+  strokeWidthSliderObject: {fileID: 1723765020}
 --- !u!114 &301216686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1198,7 +1198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
-  strokeWidthSlider: {fileID: 0}
+  strokeWidthSliderObject: {fileID: 1723765020}
   Line: {fileID: 301216685}
 --- !u!114 &301216687
 MonoBehaviour:
@@ -1246,7 +1246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
-  strokeWidthSlider: {fileID: 0}
+  strokeWidthSliderObject: {fileID: 1723765020}
   Ellipse: {fileID: 301216690}
 --- !u!114 &301216690
 MonoBehaviour:
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
-  strokeWidthSlider: {fileID: 0}
+  strokeWidthSliderObject: {fileID: 1723765020}
   Line: {fileID: 301216685}
 --- !u!114 &301216691
 MonoBehaviour:
@@ -6997,6 +6997,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da774638b6510312faaf75395ebb6c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1723765020 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2990383701321354826, guid: 45972530eb4d9811fa36437a6d1d0d89, type: 3}
+  m_PrefabInstance: {fileID: 1652980787}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1723765021 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6573710765121117556, guid: 45972530eb4d9811fa36437a6d1d0d89, type: 3}

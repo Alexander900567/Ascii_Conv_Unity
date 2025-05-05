@@ -154,4 +154,12 @@ public class Line : StrokeTool
             globalOperations.renderUpdate = true;
         }
     }
+    public override void onEnter()
+    {
+        showStrokeWidthSlider();
+    }
+    public override void onExit()
+    {
+        hideStrokeWidthSlider();
+    }
 }

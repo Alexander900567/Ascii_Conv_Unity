@@ -26,4 +26,14 @@ public class Pencil : StrokeTool
             prevGpos = gpos;
         }
     }
+
+    public override void onEnter()
+    {
+        showStrokeWidthSlider();
+    }
+    public override void onExit()
+    {
+        hideStrokeWidthSlider();
+    }
+    
 }

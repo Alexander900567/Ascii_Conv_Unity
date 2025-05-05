@@ -1,34 +1,41 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class StrokeTool : Tool
 {
-    [SerializeField] private GameObject strokeWidthSlider;
-    private static int strokeWidth = 1;
-    private static int strokeMin = 1;
-    private static int strokeMax = 100;
+    [SerializeField] private GameObject strokeWidthSliderObject;
+    private Slider strokeWidthSlider = null;
+    protected int strokeMin = 1;
+    protected int strokeMax = 10;
 
-    public static int getStrokeWidth() {
-        return strokeWidth;
+
+    public void showStrokeWidthSlider(){
+        strokeWidthSliderObject.SetActive(true);
     }
-    public static void increaseStrokeWidth(int increase){ //These are called by keybinds and buttons and soon by input fields
-        if (strokeWidth + increase <= strokeMax){ //If less than or equal to upper bound for strokeWidth
-            strokeWidth += increase; //Increase as usual
-        }
-        else if (strokeWidth + increase > strokeMax){ //If goes over
-            strokeWidth = strokeMax; //Set to max
-        }
+    public void hideStrokeWidthSlider(){
+        strokeWidthSliderObject.SetActive(false);
     }
-    public static void decreaseStrokeWidth(int decrease){
-        if (strokeWidth - decrease >= strokeMin){ //If less than or equal to lower bound
-            strokeWidth -= decrease; //Decrease as usual
+    private Slider getStrokeWidthSlider(){
+        if (strokeWidthSlider == null){
+            strokeWidthSlider = strokeWidthSliderObject.transform.Find("StrokeWidthSlider").gameObject.GetComponent<Slider>();
         }
-        else if (strokeWidth - decrease < strokeMin){ //If goes under
-            strokeWidth = strokeMin; //Set to min
-        }
+        return strokeWidthSlider;
     }
-    public static void setStrokeWidth(int target){
+
+    public int getStrokeWidth() {
+        return (int) getStrokeWidthSlider().value;
+        
+    }
+    public void increaseStrokeWidth(int increase){ //These are called by keybinds and buttons and soon by input fields
+        setStrokeWidth(Mathf.Min(getStrokeWidth() + increase, strokeMax));
+    }
+    public void decreaseStrokeWidth(int decrease){
+        setStrokeWidth(Mathf.Max(getStrokeWidth() - decrease, strokeMin));
+    }
+    public void setStrokeWidth(int target){
         if (target >= strokeMin && target <= strokeMax){
-            strokeWidth = target;
+            getStrokeWidthSlider().value = target;
         }
     }
 }

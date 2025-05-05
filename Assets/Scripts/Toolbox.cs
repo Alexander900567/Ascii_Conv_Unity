@@ -181,7 +181,4 @@ public class Toolbox : MonoBehaviour
         }
     }
 
-    public Tool getActiveTool(){
-        return activeTool;
-    }
 }

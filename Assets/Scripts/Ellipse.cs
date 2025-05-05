@@ -318,4 +318,13 @@ public class Ellipse : StrokeTool
             globalOperations.renderUpdate = true;
         }
     }
+
+    public override void onEnter()
+    {
+        showStrokeWidthSlider();
+    }
+    public override void onExit()
+    {
+        hideStrokeWidthSlider();
+    }
 }
