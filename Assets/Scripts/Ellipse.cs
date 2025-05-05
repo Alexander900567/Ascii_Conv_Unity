@@ -286,6 +286,7 @@ public class Ellipse : Tool
     public override void draw(){
         gridManager.emptyPreviewBuffer();
         (int row, int col) gpos;
+        /*
         if (globalOperations.controls.Grid.OffsetToggle.IsPressed()){
             setBeginGpos(gridManager.getGridPos());
             gpos = startGpos;
@@ -294,6 +295,9 @@ public class Ellipse : Tool
             setBeginGpos(startGpos);
             gpos = gridManager.getGridPos();
         }
+        */
+        setBeginGpos(startGpos);
+        gpos = gridManager.getGridPos();
         
         ellipseLogic(beginGpos, gpos);
     }
@@ -302,9 +306,11 @@ public class Ellipse : Tool
         if (globalOperations.controls.Grid.FilledToggle.triggered){
             isFilled = !isFilled;
         }
+        /*
         else if (globalOperations.controls.Grid.OffsetToggle.triggered){
             offset = !offset;
         }
+        */
         else if(
             globalOperations.controls.Grid.RegularToggle.triggered ||
             globalOperations.controls.Grid.RegularToggle.WasReleasedThisFrame()
