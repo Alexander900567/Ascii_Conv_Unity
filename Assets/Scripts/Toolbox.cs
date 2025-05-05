@@ -27,14 +27,12 @@ public class Toolbox : MonoBehaviour
     [SerializeField] private Brush Brush;
     [SerializeField] private SaveLoad SaveLoad;
     [SerializeField] private Bucket Bucket;
-    [SerializeField] private GameObject MoreStrokeButton;
-    [SerializeField] private GameObject LessStrokeButton;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        prevGpos = (-1, -1);
+        prevGpos = (-1, -1); //Load defaults
         activeTool = Pencil;
         isLetterListening = false;
         strokeWidth = 1;
@@ -186,7 +184,7 @@ public class Toolbox : MonoBehaviour
             }
         }
     }
-    public static int GetStrokeWidth() {
+    public static int getStrokeWidth() {
         return strokeWidth;
     }
     public static void increaseStrokeWidth(int increase){ //These are called by keybinds and buttons and soon by input fields
@@ -196,7 +194,6 @@ public class Toolbox : MonoBehaviour
         else if (strokeWidth + increase > strokeMax){ //If goes over
             strokeWidth = strokeMax; //Set to max
         }
-
     }
     public static void decreaseStrokeWidth(int decrease){
         if (strokeWidth - decrease >= strokeMin){ //If less than or equal to lower bound
@@ -204,6 +201,11 @@ public class Toolbox : MonoBehaviour
         }
         else if (strokeWidth - decrease < strokeMin){ //If goes under
             strokeWidth = strokeMin; //Set to min
+        }
+    }
+    public static void setStrokeWidth(int target){
+        if (target >= strokeMin && target <= strokeMax){
+            strokeWidth = target;
         }
     }
 }
