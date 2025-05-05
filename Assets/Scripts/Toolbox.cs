@@ -157,20 +157,30 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.LetterSwitch.triggered){
             setLetterListeningTrue();
         }
-        /*
         else if(global.controls.Grid.PerformStrokeBigIncrease.triggered){
-            increaseStrokeWidth(5); 
+            if (activeTool is StrokeTool){
+                StrokeTool tempTool = activeTool as StrokeTool;
+                tempTool.increaseStrokeWidth(5);
+            }
         }
         else if(global.controls.Grid.PerformStrokeBigDecrease.triggered){
-            decreaseStrokeWidth(5);
+            if (activeTool is StrokeTool){
+                StrokeTool tempTool = activeTool as StrokeTool;
+                tempTool.decreaseStrokeWidth(5);
+            }
         }
         else if(global.controls.Grid.PerformStrokeIncrease.triggered){
-            increaseStrokeWidth(1);
+            if (activeTool is StrokeTool){
+                StrokeTool tempTool = activeTool as StrokeTool;
+                tempTool.increaseStrokeWidth(1);
+            }
         }
         else if(global.controls.Grid.PerformStrokeDecrease.triggered){
-            decreaseStrokeWidth(1);
+            if (activeTool is StrokeTool){
+                StrokeTool tempTool = activeTool as StrokeTool;
+                tempTool.decreaseStrokeWidth(1);
+            }
         }
-        */   
         
         void readInActiveLetter(){
             if(Input.inputString.Length > 0){
