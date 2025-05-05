@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 
-public class Ellipse : Tool
+public class Ellipse : StrokeTool
 {
     [SerializeField] private Line Line;
     private bool isFilled = false;
@@ -209,7 +209,7 @@ public class Ellipse : Tool
                 r = 1;
             }
 
-            if (Toolbox.getStrokeWidth() == 1){ //If no stroke
+            if (getStrokeWidth() == 1){ //If no stroke
                 drawCircle(getBeginGpos(), r); //Regular circle
             }
             else{ //If need stroke
@@ -218,7 +218,7 @@ public class Ellipse : Tool
                 char lastActiveLetter = globalOperations.activeLetter;
                 globalOperations.activeLetter = ' '; //Now draw with spaces
 
-                int innerR = Math.Max(1, r - Toolbox.getStrokeWidth()); //At least 1
+                int innerR = Math.Max(1, r - getStrokeWidth()); //At least 1
 
                 drawCircle(getBeginGpos(), innerR, false, true); //Inner Circle
 
@@ -244,7 +244,7 @@ public class Ellipse : Tool
                     return;                    
                 }
             }
-            else if (Toolbox.getStrokeWidth() != 1) { //Stroke Width Ellipse
+            else if (getStrokeWidth() != 1) { //Stroke Width Ellipse
                 int resolutionFactor = 10; //resolutionFactor bigger is smoother
                 int adjustedRowDif = Math.Abs(rowDif) * resolutionFactor;
                 int adjustedColDif = Math.Abs(colDif) * resolutionFactor;
@@ -254,8 +254,8 @@ public class Ellipse : Tool
 
                 float aOuter = Math.Abs(colDif) + 0.5f;
                 float bOuter = Math.Abs(rowDif) + 0.5f;
-                float aInner = Math.Max(1, aOuter - Toolbox.getStrokeWidth());
-                float bInner = Math.Max(1, bOuter - Toolbox.getStrokeWidth());
+                float aInner = Math.Max(1, aOuter - getStrokeWidth());
+                float bInner = Math.Max(1, bOuter - getStrokeWidth());
 
                 for (int i = -adjustedRowDif; i <= adjustedRowDif; i++) {
                     for (int j = -adjustedColDif; j <= adjustedColDif; j++) {

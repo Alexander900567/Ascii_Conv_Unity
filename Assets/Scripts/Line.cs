@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class Line : Tool
+public class Line : StrokeTool
 {
     public override void draw(){
         if(!globalOperations.controls.Grid.RegularToggle.IsPressed()){ //Noncardinal line
@@ -55,8 +55,7 @@ public class Line : Tool
                     endGridPos.col = startGpos.col - big_dif;
                 }
             }
-            if(Toolbox.getStrokeWidth() != 1){
-                Debug.Log($"Stroke Width: {Toolbox.getStrokeWidth()}");
+            if(getStrokeWidth() != 1){
                 line((startGpos.row, startGpos.col), (endGridPos.row, endGridPos.col), true);
             }
             else{

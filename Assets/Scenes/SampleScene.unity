@@ -1096,8 +1096,6 @@ MonoBehaviour:
   Brush: {fileID: 301216689}
   SaveLoad: {fileID: 1431813953}
   Bucket: {fileID: 301216691}
-  MoreStrokeButton: {fileID: 1342023325}
-  LessStrokeButton: {fileID: 1930548357}
 --- !u!4 &301216680
 Transform:
   m_ObjectHideFlags: 0
@@ -1161,8 +1159,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
+  strokeWidthSlider: {fileID: 0}
   Line: {fileID: 301216685}
-  Brush: {fileID: 301216689}
 --- !u!114 &301216685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1177,6 +1175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
+  strokeWidthSlider: {fileID: 0}
 --- !u!114 &301216686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1191,6 +1190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
+  strokeWidthSlider: {fileID: 0}
   Line: {fileID: 301216685}
 --- !u!114 &301216687
 MonoBehaviour:
@@ -1238,7 +1238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
-  Line: {fileID: 301216685}
+  strokeWidthSlider: {fileID: 0}
+  Ellipse: {fileID: 301216690}
 --- !u!114 &301216690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1253,6 +1254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
+  strokeWidthSlider: {fileID: 0}
   Line: {fileID: 301216685}
 --- !u!114 &301216691
 MonoBehaviour:
@@ -5586,11 +5588,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1342023325 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1527770463056232808, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
-  m_PrefabInstance: {fileID: 722042564}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1344308355
 GameObject:
   m_ObjectHideFlags: 0
@@ -7759,11 +7756,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1911221766}
   m_CullTransparentMesh: 1
---- !u!1 &1930548357 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1527770463056232808, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
-  m_PrefabInstance: {fileID: 960034456}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1935235229
 GameObject:
   m_ObjectHideFlags: 0

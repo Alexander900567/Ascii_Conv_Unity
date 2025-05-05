@@ -13,9 +13,6 @@ public class Toolbox : MonoBehaviour
     private bool isLetterListening;
     private (int row, int col) prevGpos; 
     private Tool activeTool;
-    private static int strokeWidth;
-    private static int strokeMin;
-    private static int strokeMax;
     [SerializeField] private Pencil Pencil;
     [SerializeField] private Line Line;
     [SerializeField] private Rectangle Rectangle;
@@ -35,12 +32,9 @@ public class Toolbox : MonoBehaviour
         prevGpos = (-1, -1); //Load defaults
         activeTool = Pencil;
         isLetterListening = false;
-        strokeWidth = 1;
-        strokeMin = 1;
-        strokeMax = 100;
     }
 
-    // Update is called once per frame
+    // Update is called once per frame 
     void Update()
     {
         //let the active tool do its thing
@@ -163,6 +157,7 @@ public class Toolbox : MonoBehaviour
         else if(global.controls.Grid.LetterSwitch.triggered){
             setLetterListeningTrue();
         }
+        /*
         else if(global.controls.Grid.PerformStrokeBigIncrease.triggered){
             increaseStrokeWidth(5); 
         }
@@ -174,7 +169,8 @@ public class Toolbox : MonoBehaviour
         }
         else if(global.controls.Grid.PerformStrokeDecrease.triggered){
             decreaseStrokeWidth(1);
-        }   
+        }
+        */   
         
         void readInActiveLetter(){
             if(Input.inputString.Length > 0){
@@ -184,28 +180,8 @@ public class Toolbox : MonoBehaviour
             }
         }
     }
-    public static int getStrokeWidth() {
-        return strokeWidth;
-    }
-    public static void increaseStrokeWidth(int increase){ //These are called by keybinds and buttons and soon by input fields
-        if (strokeWidth + increase <= strokeMax){ //If less than or equal to upper bound for strokeWidth
-            strokeWidth += increase; //Increase as usual
-        }
-        else if (strokeWidth + increase > strokeMax){ //If goes over
-            strokeWidth = strokeMax; //Set to max
-        }
-    }
-    public static void decreaseStrokeWidth(int decrease){
-        if (strokeWidth - decrease >= strokeMin){ //If less than or equal to lower bound
-            strokeWidth -= decrease; //Decrease as usual
-        }
-        else if (strokeWidth - decrease < strokeMin){ //If goes under
-            strokeWidth = strokeMin; //Set to min
-        }
-    }
-    public static void setStrokeWidth(int target){
-        if (target >= strokeMin && target <= strokeMax){
-            strokeWidth = target;
-        }
+
+    public Tool getActiveTool(){
+        return activeTool;
     }
 }

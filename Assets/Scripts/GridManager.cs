@@ -66,7 +66,6 @@ public class GridManager : MonoBehaviour
     }
     
     private void renderGrid(){
-        //Debug.Log("new render");
 
         //add preview buffer to a temp version of grid
         List<List<char>> renderArray = getGridArray();

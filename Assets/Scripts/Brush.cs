@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Brush : Tool
+public class Brush : StrokeTool
 {
     [SerializeField] private Ellipse Ellipse;
     private (int row, int col) prevGpos;
@@ -9,7 +9,7 @@ public class Brush : Tool
         (int row, int col) gpos = gridManager.getGridPos();
 
         if (gpos != prevGpos){
-            Ellipse.drawCircle(gpos, Toolbox.getStrokeWidth(), true);
+            Ellipse.drawCircle(gpos, getStrokeWidth(), true);
         }
         prevGpos = gpos;
     }
