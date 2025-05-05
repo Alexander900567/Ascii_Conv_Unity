@@ -11,10 +11,10 @@ public class Pencil : Tool
             if (gpos != prevGpos){
                 gridManager.addToPreviewBuffer(gpos.row, gpos.col, globalOperations.activeLetter);
                 
-                int upperRow = gpos.row - Toolbox.GetStrokeWidth() + 1;
-                int lowerRow = gpos.row + Toolbox.GetStrokeWidth() - 1;
-                int leftSide = gpos.col - Toolbox.GetStrokeWidth() + 1;
-                int rightSide = gpos.col + Toolbox.GetStrokeWidth() - 1;
+                int upperRow = gpos.row - Toolbox.getStrokeWidth() + 1;
+                int lowerRow = gpos.row + Toolbox.getStrokeWidth() - 1;
+                int leftSide = gpos.col - Toolbox.getStrokeWidth() + 1;
+                int rightSide = gpos.col + Toolbox.getStrokeWidth() - 1;
 
                 for (int i = upperRow; i <= lowerRow; i++) {
                     Line.line(
