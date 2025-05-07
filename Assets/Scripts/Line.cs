@@ -3,48 +3,29 @@ using System;
 
 public class Line : StrokeTool
 {
-    private (int row, int col) regularify(int rowDif, int colDif){
+    private (int row, int col) regularify(int rowDif, int colDif, (int row, int col) endGridPos){
         double theta = Math.Atan2(colDif, rowDif) * (180d / Math.PI);
-        //Clockwise: Down TO Up: 0 to 180,
-        //Clockwise: Next to Up TO Next to Down: -179.9999 to -0.0001
-        int newRow = 0;
-        int newCol = 0;
-        int bigDif;
-        if (Math.Abs(rowDif) <= Math.Abs(colDif)){ //Determine bigger component
-            bigDif = colDif;
-        }
-        else{
-            bigDif = rowDif;
-        }
+        /*
+                 180
+            -135     135
+        -90              90  
+            -45      45
+                  0
+        */
+        int newRow = endGridPos.row;
+        int newCol = endGridPos.col;
 
-        //8 cases because of 8 octants. Range is 45 degrees (size of octant) with offset of 22.5 degrees
-        if (theta >= -22.5 && theta < 22.5){ //Down
-            newCol = startGpos.col; //Row stays same, Col gets straightened out
+        if (theta <= 45 && theta >= -45){ //Down
+            newCol = startGpos.col;
+        } 
+        else if (theta <= -45 && theta >= -135){ //Left
+            newRow = startGpos.row;
         }
-        else if (theta >= 22.5 && theta < 67.5){ //Bottom Right
-            newRow = startGpos.row + bigDif;
-            newCol = startGpos.col + bigDif;
+        else if (theta <= 135 && theta >= 45){ // Right
+            newRow = startGpos.row;
         }
-        else if (theta >= 67.5 && theta < 112.5){ //Right
-            newRow = startGpos.row; //Col stays same, Row gets straightened out
-        }
-        else if (theta >= 112.5 && theta < 157.5){ //Top Right
-            newRow = startGpos.row - bigDif;
-            newCol = startGpos.col + bigDif;
-        }
-        else if ((theta >= 157.5 && theta <= 180) || (theta > -180 && theta < -157.5)){ //Up
-            newCol = startGpos.col; //Row stays same, Col gets straightened out
-        }
-        else if (theta >= -157.5 && theta < -112.5){ //Top Left
-            newRow = startGpos.row - bigDif;
-            newCol = startGpos.col - bigDif;
-        }
-        else if (theta >= -112.5 && theta < -67.5){ //Left
-            newRow = startGpos.row; //Col stays same, Row gets straightened out
-        }
-        else if (theta >= -67.5 && theta < -22.5){ //Bottom Left
-            newRow = startGpos.row + bigDif;
-            newCol = startGpos.col - bigDif;
+        else if (theta <= -135 || theta >= 135){ //Up
+            newCol = startGpos.col;
         }
 
         return (newRow, newCol);
@@ -56,10 +37,7 @@ public class Line : StrokeTool
         int colDif = endGridPos.col - startGpos.col;
 
         if(globalOperations.controls.Grid.RegularToggle.IsPressed()) { //Regular (straight) line
-
-            if (Math.Abs(rowDif) != Math.Abs(colDif)) { //If not already a regular, then make regular
-                endGridPos = regularify(rowDif, colDif); //Updates endpoints to make a regular line
-            }
+            endGridPos = regularify(rowDif, colDif, endGridPos); //Updates endpoints to make a regular line
         }
 
         gridManager.emptyPreviewBuffer(); //Clears the previously drawn lines
