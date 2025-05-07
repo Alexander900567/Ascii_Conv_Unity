@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -497.79077}
+  m_AnchoredPosition: {x: 0, y: -117.34326}
   m_SizeDelta: {x: 231, y: 48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1300791308420299821
@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 487.14136}
+  m_AnchoredPosition: {x: 0, y: 106.53241}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6887083092891858970
@@ -291,8 +291,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 173.5918, y: 9.641357}
-  m_SizeDelta: {x: 1151, y: 905}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 880, y: 119}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5298198925310280564
 CanvasRenderer:
@@ -322,109 +322,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Tools -
+  m_text: 'Created by Alexander Kerschen and Clementine Maldonado
 
-    Use Current Tool (Hold): Left Mouse Button
+    Support this
+    project by visiting our GitHub below:
 
-    Switch to
-    Pencil tool: P
-
-    Switch to Eraser tool: E
-
-    Switch to Brush tool: B
-
-    Switch
-    to Bucket: U
-
-    Switch to Line tool: L
-
-    Switch to Rectangle tool: R
-
-    Switch
-    to Ellipse tool: O
-
-    Switch to Text/Typing tool: L
-
-    Switch to Rectangle
-    Selector tool: S
-
-    Switch to Choose Letter tool: I
-
-
-    Modifiers -
-
-    Fill
-    Shape (Toggle): F
-
-    Regular Shape (Hold): Shift
-
-    Offset Ellipse/Circle
-    (Hold): Alt
-
-    Increase Stroke by 1: ]
-
-    Increase Stroke by 5: Ctrl + ]
-
-    Decrease
-    Stroke by 1: [
-
-    Decrease Stroke by 5: Ctrl + [
-
-
-    Actions -
-
-    Undo:
-    Ctrl + Z
-
-    Redo: Ctrl + Y
-
-    Copy to Clipboard: Ctrl + C
-
-    Save: Ctrl
-    + S
-
-    Load: Ctrl + O
-
-
-    Additional Information -
-
-    All Tools are Toggle
-    unless otherwise specified.
-
-    The Pencil is enabled upon startup.
-
-
-    The
-    Modifiers are Single Press unless otherwise specified.
-
-    Fill Shape makes
-    shape tools make filled shapes.
-
-    Pressing Fill Shape again will return shape
-    tools to make outlined shapes.
-
-    Regular Shape makes the Rectangle tool create
-    squares, the Ellipse tool
-
-    create circles, and the Line tool create straight
-    lines at 45 degree intervals
-
-    Offset changes makes your ellipse originate
-    from where your cursor currently is
-
-    instead of where it started.
-
-    Regular
-    and Offset are compatible i.e. you can hold Shift + Alt simultaneously.
-
-    Stroke
-    is responsible for how thick the Pencil, Brush, Line, Rectangle, and
-
-    Ellipses
-    are.
-
-
-    The Actions are Single Press unless otherwise specified.'
+    https://github.com/Alexander900567/Ascii_Conv_Unity'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -451,7 +354,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.5
+  m_fontSize: 32.95
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -489,7 +392,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: -1.7185669}
+  m_margin: {x: 0, y: 0, z: -0.45422363, w: -1.7185669}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -534,7 +437,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 851, y: 1080}
+  m_SizeDelta: {x: 965, y: 331}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &2780548774174893757
 CanvasRenderer:
@@ -586,7 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42c2bc746a44048d2a5b635b0b4d2c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  closeButton: {fileID: 0}
+  closeButton: {fileID: 7304739109272867542}
 --- !u!1 &8281966648786811731
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,7 +524,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -425.5, y: -540}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8133373647580932630
@@ -681,8 +584,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
