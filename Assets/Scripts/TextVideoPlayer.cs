@@ -152,16 +152,8 @@ public class TextVideoPlayer : MonoBehaviour
         }
         frameTimer = frameTimer - secBetweenFrames;
 
-        string frame = frameArray[frameNum];
+        renderFrameToGrid(frameNum);
 
-        List<List<char>> newGrid = saveLoad.decompressSaveStringToGrid(frame);
-        for (int row = 0; row < gridManager.getRowCount(); row++){
-            for (int col = 0; col < gridManager.getColCount(); col++){
-                gridManager.addToGridArray(row, col, newGrid[row][col]);
-            }
-        }
-
-        globalOperations.renderUpdate = true;
         frameNum += 1;
         if(frameNum >= totalFrames){
             if(!videoLooping){
@@ -170,6 +162,17 @@ public class TextVideoPlayer : MonoBehaviour
             }
             resetCurrentVideoToStart();
         }
+    }
+
+    private void renderFrameToGrid(int targetFrameNum){
+        string frame = frameArray[targetFrameNum];
+        List<List<char>> newGrid = saveLoad.decompressSaveStringToGrid(frame);
+        for (int row = 0; row < gridManager.getRowCount(); row++){
+            for (int col = 0; col < gridManager.getColCount(); col++){
+                gridManager.addToGridArray(row, col, newGrid[row][col]);
+            }
+        }
+        globalOperations.renderUpdate = true;
     }
 
     public void togglePlaying(){
@@ -192,6 +195,22 @@ public class TextVideoPlayer : MonoBehaviour
         videoPlaying = false;
         videoLooping = false;
         gridManager.clearGrid();
+    }
+
+    public void hiddenPauseVideo(){
+        videoPlaying = false;
+    }
+    public void hiddenStartVideo(){
+        videoPlaying = true;
+    }
+
+    public void changeFrame(int newFrame){
+        frameNum = newFrame;
+        renderFrameToGrid(frameNum);
+    }
+
+    public int getTotalFrames(){
+        return totalFrames;
     }
 
 }
