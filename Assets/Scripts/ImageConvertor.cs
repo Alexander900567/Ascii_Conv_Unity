@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class ImageConvertor : Tool
 {
@@ -59,6 +60,8 @@ public class ImageConvertor : Tool
 
     public override void onEnter(){
         optionsContainer.SetActive(true);
+        Toggle hiddenToggle = GameObject.Find("HiddenToggle").GetComponent<Toggle>();
+        hiddenToggle.isOn = true;
     }
     public override void onExit(){
         optionsContainer.SetActive(false);
