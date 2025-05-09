@@ -145,6 +145,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""OffsetToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a92bbcd-229d-49b6-88b1-305da232ad7c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""PerformUndo"",
                     ""type"": ""Button"",
                     ""id"": ""41541943-87b0-430b-9208-9819d11c0d07"",
@@ -622,6 +631,45 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                     ""action"": ""PerformCopy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c387f95b-33c0-4d81-90fa-acc91a68b0a3"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OffsetToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""PopUp"",
+            ""id"": ""3e7b8c5c-22cf-43d9-b0dd-42dd52a18b54"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""a7d44bac-5f29-482f-b1c5-4a586442b662"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c4bc9cba-86a1-489f-8108-66c4dcfaa0b6"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -643,6 +691,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_LetterSwitch = m_Grid.FindAction("LetterSwitch", throwIfNotFound: true);
         m_Grid_FilledToggle = m_Grid.FindAction("FilledToggle", throwIfNotFound: true);
         m_Grid_RegularToggle = m_Grid.FindAction("RegularToggle", throwIfNotFound: true);
+        m_Grid_OffsetToggle = m_Grid.FindAction("OffsetToggle", throwIfNotFound: true);
         m_Grid_PerformUndo = m_Grid.FindAction("PerformUndo", throwIfNotFound: true);
         m_Grid_PerformRedo = m_Grid.FindAction("PerformRedo", throwIfNotFound: true);
         m_Grid_PerformCopy = m_Grid.FindAction("PerformCopy", throwIfNotFound: true);
@@ -652,11 +701,15 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_PerformStrokeDecrease = m_Grid.FindAction("PerformStrokeDecrease", throwIfNotFound: true);
         m_Grid_PerformStrokeBigIncrease = m_Grid.FindAction("PerformStrokeBigIncrease", throwIfNotFound: true);
         m_Grid_PerformStrokeBigDecrease = m_Grid.FindAction("PerformStrokeBigDecrease", throwIfNotFound: true);
+        // PopUp
+        m_PopUp = asset.FindActionMap("PopUp", throwIfNotFound: true);
+        m_PopUp_Newaction = m_PopUp.FindAction("New action", throwIfNotFound: true);
     }
 
     ~@ControlFile()
     {
         UnityEngine.Debug.Assert(!m_Grid.enabled, "This will cause a leak and performance issues, ControlFile.Grid.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_PopUp.enabled, "This will cause a leak and performance issues, ControlFile.PopUp.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -731,6 +784,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     private readonly InputAction m_Grid_LetterSwitch;
     private readonly InputAction m_Grid_FilledToggle;
     private readonly InputAction m_Grid_RegularToggle;
+    private readonly InputAction m_Grid_OffsetToggle;
     private readonly InputAction m_Grid_PerformUndo;
     private readonly InputAction m_Grid_PerformRedo;
     private readonly InputAction m_Grid_PerformCopy;
@@ -757,6 +811,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         public InputAction @LetterSwitch => m_Wrapper.m_Grid_LetterSwitch;
         public InputAction @FilledToggle => m_Wrapper.m_Grid_FilledToggle;
         public InputAction @RegularToggle => m_Wrapper.m_Grid_RegularToggle;
+        public InputAction @OffsetToggle => m_Wrapper.m_Grid_OffsetToggle;
         public InputAction @PerformUndo => m_Wrapper.m_Grid_PerformUndo;
         public InputAction @PerformRedo => m_Wrapper.m_Grid_PerformRedo;
         public InputAction @PerformCopy => m_Wrapper.m_Grid_PerformCopy;
@@ -814,6 +869,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @RegularToggle.started += instance.OnRegularToggle;
             @RegularToggle.performed += instance.OnRegularToggle;
             @RegularToggle.canceled += instance.OnRegularToggle;
+            @OffsetToggle.started += instance.OnOffsetToggle;
+            @OffsetToggle.performed += instance.OnOffsetToggle;
+            @OffsetToggle.canceled += instance.OnOffsetToggle;
             @PerformUndo.started += instance.OnPerformUndo;
             @PerformUndo.performed += instance.OnPerformUndo;
             @PerformUndo.canceled += instance.OnPerformUndo;
@@ -884,6 +942,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             @RegularToggle.started -= instance.OnRegularToggle;
             @RegularToggle.performed -= instance.OnRegularToggle;
             @RegularToggle.canceled -= instance.OnRegularToggle;
+            @OffsetToggle.started -= instance.OnOffsetToggle;
+            @OffsetToggle.performed -= instance.OnOffsetToggle;
+            @OffsetToggle.canceled -= instance.OnOffsetToggle;
             @PerformUndo.started -= instance.OnPerformUndo;
             @PerformUndo.performed -= instance.OnPerformUndo;
             @PerformUndo.canceled -= instance.OnPerformUndo;
@@ -928,6 +989,52 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         }
     }
     public GridActions @Grid => new GridActions(this);
+
+    // PopUp
+    private readonly InputActionMap m_PopUp;
+    private List<IPopUpActions> m_PopUpActionsCallbackInterfaces = new List<IPopUpActions>();
+    private readonly InputAction m_PopUp_Newaction;
+    public struct PopUpActions
+    {
+        private @ControlFile m_Wrapper;
+        public PopUpActions(@ControlFile wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_PopUp_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_PopUp; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PopUpActions set) { return set.Get(); }
+        public void AddCallbacks(IPopUpActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PopUpActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PopUpActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        private void UnregisterCallbacks(IPopUpActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        public void RemoveCallbacks(IPopUpActions instance)
+        {
+            if (m_Wrapper.m_PopUpActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPopUpActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PopUpActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PopUpActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PopUpActions @PopUp => new PopUpActions(this);
     public interface IGridActions
     {
         void OnMainClick(InputAction.CallbackContext context);
@@ -943,6 +1050,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnLetterSwitch(InputAction.CallbackContext context);
         void OnFilledToggle(InputAction.CallbackContext context);
         void OnRegularToggle(InputAction.CallbackContext context);
+        void OnOffsetToggle(InputAction.CallbackContext context);
         void OnPerformUndo(InputAction.CallbackContext context);
         void OnPerformRedo(InputAction.CallbackContext context);
         void OnPerformCopy(InputAction.CallbackContext context);
@@ -952,5 +1060,9 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         void OnPerformStrokeDecrease(InputAction.CallbackContext context);
         void OnPerformStrokeBigIncrease(InputAction.CallbackContext context);
         void OnPerformStrokeBigDecrease(InputAction.CallbackContext context);
+    }
+    public interface IPopUpActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

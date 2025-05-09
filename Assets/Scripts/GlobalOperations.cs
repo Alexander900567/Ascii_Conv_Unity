@@ -14,17 +14,18 @@ public class GlobalOperations : MonoBehaviour
     void Start()
     {
         renderUpdate = true; 
-        prefDict = new Dictionary<string, dynamic>(){
+    /*      prefDict = new Dictionary<string, dynamic>(){
             {"trim cliboard input", false}, 
             {"default row count", 80},
             {"default column count", 120},
             {"defualt picture filepath", "~/"},
-        };
+        }; */
     }
 
     void Awake(){
         controls = new ControlFile();
         controls.Enable();
+        controls.PopUp.Disable(); //Do not need PopUp controls on until a pop up is opened
     }
 
     void OnApplicationQuit(){
@@ -35,8 +36,8 @@ public class GlobalOperations : MonoBehaviour
         if (currentPopUp != null){
             return;
         }
-
         controls.Grid.Disable();
+        controls.PopUp.Enable(); //We'll allow escape to be used to close any pop up
         currentPopUp = Instantiate(
             popUp,
             new Vector3(0, Screen.height - 1, 0),
@@ -52,6 +53,7 @@ public class GlobalOperations : MonoBehaviour
         }
 
         controls.Grid.Enable();
+        controls.PopUp.Disable();
         Destroy(currentPopUp);
     }
 
