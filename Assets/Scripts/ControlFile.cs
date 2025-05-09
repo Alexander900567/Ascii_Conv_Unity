@@ -650,7 +650,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
             ""id"": ""3e7b8c5c-22cf-43d9-b0dd-42dd52a18b54"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""ClosePopUp"",
                     ""type"": ""Button"",
                     ""id"": ""a7d44bac-5f29-482f-b1c5-4a586442b662"",
                     ""expectedControlType"": """",
@@ -663,11 +663,11 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c4bc9cba-86a1-489f-8108-66c4dcfaa0b6"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""ClosePopUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -703,7 +703,7 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         m_Grid_PerformStrokeBigDecrease = m_Grid.FindAction("PerformStrokeBigDecrease", throwIfNotFound: true);
         // PopUp
         m_PopUp = asset.FindActionMap("PopUp", throwIfNotFound: true);
-        m_PopUp_Newaction = m_PopUp.FindAction("New action", throwIfNotFound: true);
+        m_PopUp_ClosePopUp = m_PopUp.FindAction("ClosePopUp", throwIfNotFound: true);
     }
 
     ~@ControlFile()
@@ -993,12 +993,12 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     // PopUp
     private readonly InputActionMap m_PopUp;
     private List<IPopUpActions> m_PopUpActionsCallbackInterfaces = new List<IPopUpActions>();
-    private readonly InputAction m_PopUp_Newaction;
+    private readonly InputAction m_PopUp_ClosePopUp;
     public struct PopUpActions
     {
         private @ControlFile m_Wrapper;
         public PopUpActions(@ControlFile wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_PopUp_Newaction;
+        public InputAction @ClosePopUp => m_Wrapper.m_PopUp_ClosePopUp;
         public InputActionMap Get() { return m_Wrapper.m_PopUp; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1008,16 +1008,16 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PopUpActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PopUpActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @ClosePopUp.started += instance.OnClosePopUp;
+            @ClosePopUp.performed += instance.OnClosePopUp;
+            @ClosePopUp.canceled += instance.OnClosePopUp;
         }
 
         private void UnregisterCallbacks(IPopUpActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @ClosePopUp.started -= instance.OnClosePopUp;
+            @ClosePopUp.performed -= instance.OnClosePopUp;
+            @ClosePopUp.canceled -= instance.OnClosePopUp;
         }
 
         public void RemoveCallbacks(IPopUpActions instance)
@@ -1063,6 +1063,6 @@ public partial class @ControlFile: IInputActionCollection2, IDisposable
     }
     public interface IPopUpActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnClosePopUp(InputAction.CallbackContext context);
     }
 }
