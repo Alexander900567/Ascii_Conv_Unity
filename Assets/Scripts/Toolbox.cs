@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework.Constraints;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Toolbox : MonoBehaviour
 {
@@ -58,6 +59,17 @@ public class Toolbox : MonoBehaviour
         activeTool.onExit();
         activeTool = newTool;
         activeTool.onEnter();
+        highlightCorrectToggle(newTool);
+    }
+
+    private void highlightCorrectToggle(Tool newTool){
+        string toolName = newTool.GetType().Name;
+        GameObject toolToggle = GameObject.Find($"{toolName}Toggle");
+        if (toolToggle == null){
+            toolToggle = GameObject.Find("HiddenToggle");
+        }
+        Toggle toggle = toolToggle.GetComponent<Toggle>(); 
+        toggle.isOn = true;
     }
 
     //-----button functions-----

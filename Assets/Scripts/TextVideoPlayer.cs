@@ -14,9 +14,13 @@ public class TextVideoPlayer : MonoBehaviour
     [SerializeField] private SaveLoad saveLoad;
     [SerializeField] private GameObject videoPopUp;
     [SerializeField] private GameObject loadingMenuObj;
+    [SerializeField] private GameObject videoControlPrefab;
 
+    private GameObject vidContInst = null;
+    private Slider progSlider = null;
     private bool videoConverting = false;
     private bool videoPlaying = false;
+    private bool videoLooping = false;
     private string[] frameArray;
     private int frameNum;
     private int totalFrames;
@@ -110,6 +114,14 @@ public class TextVideoPlayer : MonoBehaviour
         }
 
         globalOperations.closePopUp();
+        vidContInst = Instantiate(
+            videoControlPrefab,
+            new Vector3(0, Screen.height - 1, 0),
+            transform.rotation
+        );
+        RectTransform canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        vidContInst.transform.SetParent(canvas);
+        progSlider = vidContInst.transform.Find("ProgressSlider").gameObject.GetComponent<Slider>();
 
         StreamReader file = new StreamReader(filePath);
 
@@ -125,9 +137,13 @@ public class TextVideoPlayer : MonoBehaviour
         string saveString = file.ReadToEnd();
         file.Close();
         frameArray = saveString.Split("-----\n");
-        frameNum = 0;
         totalFrames = frameArray.Length;
         videoPlaying = true;
+        resetCurrentVideoToStart();
+    }
+
+    private void resetCurrentVideoToStart(){
+        frameNum = 0;
         frameTimer = 0;
     }
 
@@ -138,19 +154,70 @@ public class TextVideoPlayer : MonoBehaviour
         }
         frameTimer = frameTimer - secBetweenFrames;
 
-        string frame = frameArray[frameNum];
+        renderFrameToGrid(frameNum);
+        progSlider.value = frameNum;
 
+        frameNum += 1;
+        if(frameNum >= totalFrames){
+            if(!videoLooping){
+                togglePlaying();
+                gridManager.clearGrid();
+            }
+            resetCurrentVideoToStart();
+        }
+    }
+
+    private void renderFrameToGrid(int targetFrameNum){
+        string frame = frameArray[targetFrameNum];
         List<List<char>> newGrid = saveLoad.decompressSaveStringToGrid(frame);
         for (int row = 0; row < gridManager.getRowCount(); row++){
             for (int col = 0; col < gridManager.getColCount(); col++){
                 gridManager.addToGridArray(row, col, newGrid[row][col]);
             }
         }
-
         globalOperations.renderUpdate = true;
-        frameNum += 1;
-        if(frameNum >= totalFrames){
-            videoPlaying = false;
+    }
+
+    public void togglePlaying(){
+        videoPlaying = !videoPlaying;
+        if(vidContInst != null){
+            vidContInst.transform.Find("GameObject").Find("PlayButton").Find("PlayImage").gameObject.SetActive(!videoPlaying);
+            vidContInst.transform.Find("GameObject").Find("PlayButton").Find("PauseImage").gameObject.SetActive(videoPlaying);
         }
     }
+
+    public void toggleLoop(bool toggle){
+        videoLooping = toggle;
+    }
+
+    public void ejectFromVideo(){
+        if(vidContInst != null){
+            progSlider = null;
+            Destroy(vidContInst);
+            vidContInst = null;
+        }
+        videoPlaying = false;
+        videoLooping = false;
+        gridManager.clearGrid();
+    }
+
+    public void hiddenPauseVideo(){
+        videoPlaying = false;
+    }
+    public void hiddenStartVideo(){
+        videoPlaying = true;
+    }
+    public bool isVideoPlaying(){
+        return videoPlaying;
+    }
+
+    public void changeFrame(int newFrame){
+        frameNum = newFrame;
+        renderFrameToGrid(frameNum);
+    }
+
+    public int getTotalFrames(){
+        return totalFrames;
+    }
+
 }

@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class ImageConvertor : Tool
 {
