@@ -3,18 +3,18 @@ using System;
 
 public class Line : StrokeTool
 {
-    private (int row, int col) regularify(int rowDif, int colDif){
+    private (int row, int col) regularify(int rowDif, int colDif, (int row, int col) endGridPos){
         double theta = Math.Atan2(colDif, rowDif) * (180d / Math.PI);
         //Clockwise: Down TO Up: 0 to 180,
         //Clockwise: Next to Up TO Next to Down: -179.9999 to -0.0001
-        int newRow = 0;
-        int newCol = 0;
+        int newRow = endGridPos.row;
+        int newCol = endGridPos.col;
         int bigDif;
         if (Math.Abs(rowDif) <= Math.Abs(colDif)){ //Determine bigger component
-            bigDif = colDif;
+            bigDif = Math.Abs(colDif);
         }
         else{
-            bigDif = rowDif;
+            bigDif = Math.Abs(rowDif);
         }
 
         //8 cases because of 8 octants. Range is 45 degrees (size of octant) with offset of 22.5 degrees
@@ -58,7 +58,7 @@ public class Line : StrokeTool
         if(globalOperations.controls.Grid.RegularToggle.IsPressed()) { //Regular (straight) line
 
             if (Math.Abs(rowDif) != Math.Abs(colDif)) { //If not already a regular, then make regular
-                endGridPos = regularify(rowDif, colDif); //Updates endpoints to make a regular line
+                endGridPos = regularify(rowDif, colDif, endGridPos); //Updates endpoints to make a regular line
             }
         }
 
