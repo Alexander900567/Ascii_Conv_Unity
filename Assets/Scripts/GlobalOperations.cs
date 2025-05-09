@@ -51,7 +51,6 @@ public class GlobalOperations : MonoBehaviour
         if(currentPopUp == null){
             return;
         }
-
         controls.Grid.Enable();
         controls.PopUp.Disable();
         Destroy(currentPopUp);

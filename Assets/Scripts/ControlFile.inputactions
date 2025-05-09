@@ -628,7 +628,7 @@
             "id": "3e7b8c5c-22cf-43d9-b0dd-42dd52a18b54",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "ClosePopUp",
                     "type": "Button",
                     "id": "a7d44bac-5f29-482f-b1c5-4a586442b662",
                     "expectedControlType": "",
@@ -641,11 +641,11 @@
                 {
                     "name": "",
                     "id": "c4bc9cba-86a1-489f-8108-66c4dcfaa0b6",
-                    "path": "",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "ClosePopUp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
