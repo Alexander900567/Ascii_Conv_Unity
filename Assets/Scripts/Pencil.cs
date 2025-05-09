@@ -27,13 +27,4 @@ public class Pencil : StrokeTool
         }
     }
 
-    public override void onEnter()
-    {
-        showStrokeWidthSlider();
-    }
-    public override void onExit()
-    {
-        hideStrokeWidthSlider();
-    }
-    
 }

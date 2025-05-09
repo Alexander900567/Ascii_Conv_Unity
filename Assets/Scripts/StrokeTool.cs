@@ -38,4 +38,13 @@ public class StrokeTool : Tool
             getStrokeWidthSlider().value = target;
         }
     }
+
+    public override void onEnter()
+    {
+        showStrokeWidthSlider();
+    }
+    public override void onExit()
+    {
+        hideStrokeWidthSlider();
+    }
 }
