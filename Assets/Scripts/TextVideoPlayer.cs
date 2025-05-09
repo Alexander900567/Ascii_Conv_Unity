@@ -17,6 +17,7 @@ public class TextVideoPlayer : MonoBehaviour
     [SerializeField] private GameObject videoControlPrefab;
 
     private GameObject vidContInst = null;
+    private Slider progSlider = null;
     private bool videoConverting = false;
     private bool videoPlaying = false;
     private bool videoLooping = false;
@@ -120,6 +121,7 @@ public class TextVideoPlayer : MonoBehaviour
         );
         RectTransform canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
         vidContInst.transform.SetParent(canvas);
+        progSlider = vidContInst.transform.Find("ProgressSlider").gameObject.GetComponent<Slider>();
 
         StreamReader file = new StreamReader(filePath);
 
@@ -153,6 +155,7 @@ public class TextVideoPlayer : MonoBehaviour
         frameTimer = frameTimer - secBetweenFrames;
 
         renderFrameToGrid(frameNum);
+        progSlider.value = frameNum;
 
         frameNum += 1;
         if(frameNum >= totalFrames){
@@ -189,6 +192,7 @@ public class TextVideoPlayer : MonoBehaviour
 
     public void ejectFromVideo(){
         if(vidContInst != null){
+            progSlider = null;
             Destroy(vidContInst);
             vidContInst = null;
         }
@@ -202,6 +206,9 @@ public class TextVideoPlayer : MonoBehaviour
     }
     public void hiddenStartVideo(){
         videoPlaying = true;
+    }
+    public bool isVideoPlaying(){
+        return videoPlaying;
     }
 
     public void changeFrame(int newFrame){
