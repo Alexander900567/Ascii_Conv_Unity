@@ -8392,6 +8392,7 @@ MonoBehaviour:
   saveLoad: {fileID: 1431813953}
   videoPopUp: {fileID: 5054144640268066423, guid: 67816a5eaaceb7a1ea7de10c51d7369d, type: 3}
   loadingMenuObj: {fileID: 7198758851435300729, guid: 3285091f1d50abb7187cce88b6c43891, type: 3}
+  videoControlPrefab: {fileID: 3788272415675294726, guid: ca9f768700961f612ba392add9e28b53, type: 3}
 --- !u!4 &1885893772
 Transform:
   m_ObjectHideFlags: 0

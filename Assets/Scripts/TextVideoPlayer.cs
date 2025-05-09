@@ -14,9 +14,12 @@ public class TextVideoPlayer : MonoBehaviour
     [SerializeField] private SaveLoad saveLoad;
     [SerializeField] private GameObject videoPopUp;
     [SerializeField] private GameObject loadingMenuObj;
+    [SerializeField] private GameObject videoControlPrefab;
 
+    private GameObject vidContInst = null;
     private bool videoConverting = false;
     private bool videoPlaying = false;
+    private bool videoLooping = false;
     private string[] frameArray;
     private int frameNum;
     private int totalFrames;
@@ -110,6 +113,13 @@ public class TextVideoPlayer : MonoBehaviour
         }
 
         globalOperations.closePopUp();
+        vidContInst = Instantiate(
+            videoControlPrefab,
+            new Vector3(0, Screen.height - 1, 0),
+            transform.rotation
+        );
+        RectTransform canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
+        vidContInst.transform.SetParent(canvas);
 
         StreamReader file = new StreamReader(filePath);
 
@@ -125,9 +135,13 @@ public class TextVideoPlayer : MonoBehaviour
         string saveString = file.ReadToEnd();
         file.Close();
         frameArray = saveString.Split("-----\n");
-        frameNum = 0;
         totalFrames = frameArray.Length;
         videoPlaying = true;
+        resetCurrentVideoToStart();
+    }
+
+    private void resetCurrentVideoToStart(){
+        frameNum = 0;
         frameTimer = 0;
     }
 
@@ -150,7 +164,34 @@ public class TextVideoPlayer : MonoBehaviour
         globalOperations.renderUpdate = true;
         frameNum += 1;
         if(frameNum >= totalFrames){
-            videoPlaying = false;
+            if(!videoLooping){
+                togglePlaying();
+                gridManager.clearGrid();
+            }
+            resetCurrentVideoToStart();
         }
     }
+
+    public void togglePlaying(){
+        videoPlaying = !videoPlaying;
+        if(vidContInst != null){
+            vidContInst.transform.Find("GameObject").Find("PlayButton").Find("PlayImage").gameObject.SetActive(!videoPlaying);
+            vidContInst.transform.Find("GameObject").Find("PlayButton").Find("PauseImage").gameObject.SetActive(videoPlaying);
+        }
+    }
+
+    public void toggleLoop(bool toggle){
+        videoLooping = toggle;
+    }
+
+    public void ejectFromVideo(){
+        if(vidContInst != null){
+            Destroy(vidContInst);
+            vidContInst = null;
+        }
+        videoPlaying = false;
+        videoLooping = false;
+        gridManager.clearGrid();
+    }
+
 }
