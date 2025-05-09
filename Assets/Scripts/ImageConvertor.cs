@@ -60,8 +60,6 @@ public class ImageConvertor : Tool
 
     public override void onEnter(){
         optionsContainer.SetActive(true);
-        Toggle hiddenToggle = GameObject.Find("HiddenToggle").GetComponent<Toggle>();
-        hiddenToggle.isOn = true;
     }
     public override void onExit(){
         optionsContainer.SetActive(false);

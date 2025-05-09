@@ -1472,6 +1472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalOperations: {fileID: 1327812282}
   gridManager: {fileID: 202442179}
+  strokeWidthSliderObject: {fileID: 1723765020}
   pencil: {fileID: 301216686}
 --- !u!114 &301216688
 MonoBehaviour:

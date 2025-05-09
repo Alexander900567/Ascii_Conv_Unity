@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Eraser : Tool
+public class Eraser : StrokeTool
 {
     private char lastActiveLetter;
     [SerializeField] private Pencil pencil;
@@ -10,11 +10,13 @@ public class Eraser : Tool
     }
 
     public override void onEnter(){
+        base.onEnter();
         lastActiveLetter = globalOperations.activeLetter;
         globalOperations.activeLetter = ' ';
     }
 
     public override void onExit(){
+        base.onExit();
         globalOperations.activeLetter = lastActiveLetter;
     }
 }

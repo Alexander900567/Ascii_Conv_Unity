@@ -247,6 +247,15 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public void clearGrid(){
+        for(int row = 0; row < gridArray.Count; row+=1){
+            for(int col = 0; col < gridArray[row].Count; col+=1){
+                gridArray[row][col] = ' ';
+            }
+        }
+        global.renderUpdate = true;
+    }
+
     //---getters---
 
     public int getColCount(){
