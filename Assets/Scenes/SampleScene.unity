@@ -9283,6 +9283,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FontSource
       objectReference: {fileID: 0}
+    - target: {fileID: 8369788999301918338, guid: e08bb6ebd249ed33284f985b013ee14b, type: 3}
+      propertyPath: fontTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: b3701c22794127a83adcd1df2a8054bd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
