@@ -558,7 +558,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fba8d6996745a237999238f586dec825, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a6243f8c2e750d7019add39963d98d8f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -658,7 +658,7 @@ PrefabInstance:
     - target: {fileID: 2890716062541999981, guid: f5c333ec01c9e7361be2849ce6e22f34, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 5509367888719450140, guid: dc313114157b07a48a6ab0ce9a4383e6, type: 3}
+      objectReference: {fileID: 5509367888719450140, guid: 9b26935c91c8dda0ab08a48a493076c8, type: 3}
     - target: {fileID: 3983980316521241116, guid: f5c333ec01c9e7361be2849ce6e22f34, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -899,7 +899,7 @@ PrefabInstance:
     - target: {fileID: 5419815859797402735, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 3794550611322748858, guid: 1fa36d9b420135289ac8daac8fd92684, type: 3}
+      objectReference: {fileID: 3794550611322748858, guid: 64f66476ef9db099992800d933e33e17, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1702418047980802647, guid: d05bb96ac5191add5b5e4b510f776bfa, type: 3}
