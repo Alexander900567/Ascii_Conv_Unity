@@ -286,7 +286,6 @@ public class Ellipse : StrokeTool
     public override void draw(){
         gridManager.emptyPreviewBuffer();
         (int row, int col) gpos;
-        /*
         if (globalOperations.controls.Grid.OffsetToggle.IsPressed()){
             setBeginGpos(gridManager.getGridPos());
             gpos = startGpos;
@@ -295,9 +294,6 @@ public class Ellipse : StrokeTool
             setBeginGpos(startGpos);
             gpos = gridManager.getGridPos();
         }
-        */
-        setBeginGpos(startGpos);
-        gpos = gridManager.getGridPos();
         
         ellipseLogic(beginGpos, gpos);
     }
@@ -306,25 +302,14 @@ public class Ellipse : StrokeTool
         if (globalOperations.controls.Grid.FilledToggle.triggered){
             isFilled = !isFilled;
         }
-        /*
         else if (globalOperations.controls.Grid.OffsetToggle.triggered){
             offset = !offset;
         }
-        */
         else if(
             globalOperations.controls.Grid.RegularToggle.triggered ||
             globalOperations.controls.Grid.RegularToggle.WasReleasedThisFrame()
         ){
             globalOperations.renderUpdate = true;
         }
-    }
-
-    public override void onEnter()
-    {
-        showStrokeWidthSlider();
-    }
-    public override void onExit()
-    {
-        hideStrokeWidthSlider();
     }
 }

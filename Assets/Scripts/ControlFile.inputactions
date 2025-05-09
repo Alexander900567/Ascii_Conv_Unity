@@ -123,6 +123,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "OffsetToggle",
+                    "type": "Button",
+                    "id": "6a92bbcd-229d-49b6-88b1-305da232ad7c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "PerformUndo",
                     "type": "Button",
                     "id": "41541943-87b0-430b-9208-9819d11c0d07",
@@ -600,6 +609,45 @@
                     "action": "PerformCopy",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c387f95b-33c0-4d81-90fa-acc91a68b0a3",
+                    "path": "<Keyboard>/alt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OffsetToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PopUp",
+            "id": "3e7b8c5c-22cf-43d9-b0dd-42dd52a18b54",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "a7d44bac-5f29-482f-b1c5-4a586442b662",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c4bc9cba-86a1-489f-8108-66c4dcfaa0b6",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
