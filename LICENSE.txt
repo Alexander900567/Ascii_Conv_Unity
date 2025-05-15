@@ -4,12 +4,12 @@ Unity is not itself open source, we are happy to release the code we have
 written. That being said, we are not entirely responsible for our own work.
 In order to further creativity in this field, we have built upon the work
 of other open source and similarly licensed materials. Below are the
-licenses necessary for using said material. The MIT license is for
-PistonDevelopers' circle and ellipse algorithms, adapted from
-Bresenham's algorithms. Those algorithms are used to generate circles
-and ellipses in their respective tools. The SIL Open Font License is for
-Gelasio which is used in our button labels. Gelasio was designed by
-Eben Sorkin.
+licenses necessary for using said material. First is Unity's notiece.
+The MIT license is for PistonDevelopers' circle and ellipse algorithms,
+adapted from Bresenham's algorithms. Those algorithms are used to
+generate circles and ellipses in their respective tools. The SIL
+Open Font License is for Gelasio which is used in our button labels.
+Gelasio was designed by Eben Sorkin.
 
 The MIT License (MIT)
 
