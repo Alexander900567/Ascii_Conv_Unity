@@ -11,6 +11,8 @@ generate circles and ellipses in their respective tools. The SIL
 Open Font License is for Gelasio which is used in our button labels.
 Gelasio was designed by Eben Sorkin.
 
+Copyright © 2005-2025 Unity Technologies. All rights reserved.
+
 The MIT License (MIT)
 
 Copyright (c) 2015 PistonDevelopers
