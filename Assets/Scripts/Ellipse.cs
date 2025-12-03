@@ -235,7 +235,6 @@ public class Ellipse : StrokeTool
             renderFunc(rowNum, colNum);
         }
     }
-    //TODO: Fix filled circle and ellipse with stroke > 1 (drawn with stroke despite fill being enabled)
     //Controls logic to draw circle, ellipse, filled or not filled
     private void ellipseLogic((int row, int col) beginGpos, (int row, int col) gpos)
     {
@@ -287,8 +286,13 @@ public class Ellipse : StrokeTool
             //Now that radius is known
             //We can handle drawing the preview
 
+            //Filled Circle Case
+            if (isFilled)
+            {
+                drawCircle(getBeginGpos(), r, true);
+            }
             //No Stroke Circle Case
-            if (getStrokeWidth() == 1)
+            else if (getStrokeWidth() == 1)
             {
                 drawCircle(getBeginGpos(), r); //Regular circle
             }
@@ -335,7 +339,7 @@ public class Ellipse : StrokeTool
                 }
             }
             //Stroke Ellipse Case
-            else if (getStrokeWidth() != 1)
+            else if (getStrokeWidth() != 1 && !isFilled)
             {
                 int resolutionFactor = 10; //resolutionFactor bigger is smoother
                 int adjustedRowDif = Math.Abs(rowDif) * resolutionFactor;
